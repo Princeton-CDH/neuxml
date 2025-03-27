@@ -84,9 +84,17 @@ def loadSchema(uri, base_uri=None):
 
     try:
         logger.debug('Loading schema %s' % uri)
-        _loaded_schemas[uri] = etree.XMLSchema(etree.parse(uri,
-                                                           parser=_get_xmlparser(),
-                                                           base_url=base_uri))
+        try:
+            # handle both HTTP and HTTPS using urlopen
+            with urlopen(uri) as f:
+                _loaded_schemas[uri] = etree.XMLSchema(etree.parse(f,
+                                                                parser=_get_xmlparser(),
+                                                                base_url=base_uri))
+        except ValueError:
+            # if this is not a web URL, parse without urlopen
+            _loaded_schemas[uri] = etree.XMLSchema(etree.parse(uri,
+                                                                parser=_get_xmlparser(),
+                                                                base_url=base_uri))
         return _loaded_schemas[uri]
     except IOError as io_err:
         # add a little more detail to the error message - but should still be an IO error

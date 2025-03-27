@@ -12,4 +12,4 @@ neuxml/schema_data
 .cache
 coverage.xml
 nosetests.xml
-
+venv*

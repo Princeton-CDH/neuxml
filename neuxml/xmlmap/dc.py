@@ -140,7 +140,7 @@ class DublinCore(_BaseDublinCore):
                     # check that this item is defined by dcmitype
                     if (item, rdflib.RDFS.isDefinedBy, self.DCMI_TYPE_URI) in self.dcmi_types_graph:
                         # add the label to the list
-                        self._dcmi_types.append(str(self.dcmi_types_graph.label(subject=item)))
+                        self._dcmi_types.append(str(self.dcmi_types_graph.value(item, rdflib.RDFS.label)))
             return self._dcmi_types
     else:
         # no rdflib
