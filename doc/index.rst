@@ -1,12 +1,12 @@
-eulxml
+neuxml
 ======
 
-eulxml is an extensible library for reading and writing XML documents in
+neuxml is an extensible library for reading and writing XML documents in
 idiomatic Python. It allows developers to `map predictable XML node
 structures <xmlmap.html#general-usage>`_ to
-:class:`~eulxml.xmlmap.XmlObject` subclasses, using field definitions to map
+:class:`~neuxml.xmlmap.XmlObject` subclasses, using field definitions to map
 `XPath <http://www.w3.org/TR/xpath/>`_ expressions directly to Python
-attributes. EULxml also includes an XPath parser in :mod:`eulxml.xpath`.
+attributes. neuxml also includes an XPath parser in :mod:`neuxml.xpath`.
 
 Contents
 --------

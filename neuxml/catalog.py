@@ -1,4 +1,4 @@
-# file eulxml/catalog.py
+# file neuxml/catalog.py
 #
 #   Copyright 2016 Emory University Libraries
 #
@@ -22,7 +22,7 @@ is required.
 
 Catalog generation is available via the setup.py custom command xmlcatalog,
 and a generated catalog and corresponding schema files should be included
-in packaged releases of eulxml.
+in packaged releases of neuxml.
 
 For more information about setting up and testing XML catalogs, see the
 `libxml2 documentation <http://xmlsoft.org/catalog.html>`_.
@@ -34,7 +34,7 @@ from datetime import date
 from lxml import etree
 import sys
 
-from eulxml import xmlmap, __version__, XMLCATALOG_DIR, XMLCATALOG_FILE
+from neuxml import xmlmap, __version__, XMLCATALOG_DIR, XMLCATALOG_FILE
 
 # requests is an optional dependency, handle gracefully if not present
 try:
@@ -132,7 +132,7 @@ def generate_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None
 
     Creates the XML Catalog directory if it doesn't already exist.
     Uses :meth:`download_schema` to save local copies of schemas,
-    adding a comment indicating the date downloaded by eulxml.
+    adding a comment indicating the date downloaded by neuxml.
 
     Generates a new catalog.xml file, with entries for all schemas
     that downloaded successfully.  If no schemas downloaded, the catalog
@@ -167,7 +167,7 @@ def generate_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None
     catalog = Catalog()
 
     # comment string to be added to locally-saved schemas
-    comment = 'Downloaded by eulxml %s on %s' % \
+    comment = 'Downloaded by neuxml %s on %s' % \
         (__version__, date.today().isoformat())
 
     for schema_uri in xsd_schemas:

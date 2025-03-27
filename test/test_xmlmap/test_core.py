@@ -29,8 +29,8 @@ import tempfile
 from six import string_types
 from six.moves.builtins import str as text
 
-from eulxml.utils.compat import u
-import eulxml.xmlmap.core as xmlmap
+from neuxml.utils.compat import u
+import neuxml.xmlmap.core as xmlmap
 
 
 class TestXsl(unittest.TestCase):

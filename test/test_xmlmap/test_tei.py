@@ -20,8 +20,8 @@ from __future__ import unicode_literals
 import unittest
 from os import path
 
-from eulxml.xmlmap import load_xmlobject_from_file, NodeListField
-from eulxml.xmlmap import teimap
+from neuxml.xmlmap import load_xmlobject_from_file, NodeListField
+from neuxml.xmlmap import teimap
 
 
 class ExtendedTei(teimap.Tei):

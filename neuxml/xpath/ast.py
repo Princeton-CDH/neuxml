@@ -1,4 +1,4 @@
-# file eulxml/xpath/ast.py
+# file neuxml/xpath/ast.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #

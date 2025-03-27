@@ -1,7 +1,7 @@
-:mod:`eulxml.xmlmap.eadmap` - Encoded Archival Description (EAD)
+:mod:`neuxml.xmlmap.eadmap` - Encoded Archival Description (EAD)
 =================================================================
 
-.. module:: eulxml.xmlmap.eadmap
+.. module:: neuxml.xmlmap.eadmap
 
 General Information
 -------------------
@@ -18,17 +18,17 @@ Encoded Archival Description
 `LOC documentation for EAD element <http://www.loc.gov/ead/tglib/elements/ead.html>`_
 
 Nearly all fields in all EAD XmlObjects are mapped as
-:class:`eulxml.xmlmap.XPathString` or :class:`eulxml.xmlmap.XPathStringList`,
+:class:`neuxml.xmlmap.XPathString` or :class:`neuxml.xmlmap.XPathStringList`,
 except for custom EAD sub-objects, which are indicated where in use.
 
-  .. autoclass:: eulxml.xmlmap.eadmap.EncodedArchivalDescription(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.EncodedArchivalDescription(node[, context])
       :members:
 
 Archival Description
 --------------------
 `LOC documentation for EAD archdesc element <http://www.loc.gov/ead/tglib/elements/archdesc.html>`_
 
-  .. autoclass:: eulxml.xmlmap.eadmap.ArchivalDescription(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.ArchivalDescription(node[, context])
       :members:
 
 Subordinate Components
@@ -36,20 +36,20 @@ Subordinate Components
 See also LOC documentation for `dsc element <http://www.loc.gov/ead/tglib/elements/dsc.html>`_ ,
 `c (component) element <http://www.loc.gov/ead/tglib/elements/c.html>`_
 
-  .. autoclass:: eulxml.xmlmap.eadmap.SubordinateComponents(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.SubordinateComponents(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Component(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Component(node[, context])
       :members:
 
 Controlled Access Headings
 --------------------------
 `LOC Documentation for controlaccess element <http://www.loc.gov/ead/tglib/elements/controlaccess.html>`_
 
-  .. autoclass:: eulxml.xmlmap.eadmap.ControlledAccessHeadings(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.ControlledAccessHeadings(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Heading(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Heading(node[, context])
       :members:
 
 Index and Index Entry
@@ -57,10 +57,10 @@ Index and Index Entry
 See also LOC Documentation for `index element <http://www.loc.gov/ead/tglib/elements/index-element.html>`_,
 `indexentry element <http://www.loc.gov/ead/tglib/elements/indexentry.html>`_
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Index(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Index(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.IndexEntry(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.IndexEntry(node[, context])
       :members:
 
 File Description
@@ -68,10 +68,10 @@ File Description
 See also LOC Documentation for `filedesc element <http://www.loc.gov/ead/tglib/elements/filedesc.html>`_,
 `publicationstmt element <http://www.loc.gov/ead/tglib/elements/publicationstmt.html>`_
 
-  .. autoclass:: eulxml.xmlmap.eadmap.FileDescription(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.FileDescription(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.PublicationStatement(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.PublicationStatement(node[, context])
       :members:
 
 
@@ -81,28 +81,28 @@ See also LOC documentation for `did element <http://www.loc.gov/ead/tglib/elemen
 `container element <http://www.loc.gov/ead/tglib/elements/container.html>`_
 
 
-  .. autoclass:: eulxml.xmlmap.eadmap.DescriptiveIdentification(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.DescriptiveIdentification(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Container(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Container(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Section(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Section(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Address(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Address(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.PointerGroup(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.PointerGroup(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.Reference(node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.Reference(node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.ProfileDescription(dom_node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.ProfileDescription(dom_node[, context])
       :members:
 
-  .. autoclass:: eulxml.xmlmap.eadmap.DigitalArchivalObject(dom_node[, context])
+  .. autoclass:: neuxml.xmlmap.eadmap.DigitalArchivalObject(dom_node[, context])
       :members:
 
 

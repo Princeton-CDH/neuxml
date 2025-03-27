@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Setup.py for eulxml package"""
+"""Setup.py for neuxml package"""
 from distutils.command.build_py import build_py
 from distutils.command.clean import clean
 from distutils.command.sdist import sdist
@@ -8,7 +8,7 @@ import os
 import sys
 import shutil
 from setuptools import setup, find_packages
-import eulxml
+import neuxml
 
 
 class GenerateXmlCatalog(Command):
@@ -24,14 +24,14 @@ class GenerateXmlCatalog(Command):
         pass
 
     def run(self):
-        from eulxml.catalog import generate_catalog
+        from neuxml.catalog import generate_catalog
         generate_catalog()
 
 
 def generate_catalog_if_needed():
     # helper method to check if catalog is present, and generate if not
-    if not os.path.exists(eulxml.XMLCATALOG_FILE):
-        from eulxml.catalog import generate_catalog
+    if not os.path.exists(neuxml.XMLCATALOG_FILE):
+        from neuxml.catalog import generate_catalog
         print("Cenerating XML catalog...")
         generate_catalog()
 
@@ -44,7 +44,7 @@ class CleanSchemaData(clean):
     def run(self):
         # remove schema data and then do any other normal cleaning
         try:
-            shutil.rmtree(eulxml.XMLCATALOG_DIR)
+            shutil.rmtree(neuxml.XMLCATALOG_DIR)
         except OSError:
             pass
         clean.run(self)
@@ -55,7 +55,7 @@ class BuildPyWithPly(build_py):
 
     def run(self):
         # importing this forces ply to generate parsetab/lextab
-        import eulxml.xpath.core
+        import neuxml.xpath.core
 
         generate_catalog_if_needed()
 
@@ -121,11 +121,11 @@ setup(
         'xmlcatalog': GenerateXmlCatalog
     },
 
-    name='eulxml',
-    version=eulxml.__version__,
+    name='neuxml',
+    version=neuxml.__version__,
     author='Emory University Libraries',
     author_email='libsysdev-l@listserv.cc.emory.edu',
-    url='https://github.com/emory-libraries/eulxml',
+    url='https://github.com/emory-libraries/neuxml',
     license='Apache License, Version 2.0',
     packages=find_packages(),
 
@@ -141,9 +141,9 @@ setup(
         'rdf': ['rdflib>=3.0'],
         'dev': dev_requirements
     },
-    package_data={'eulxml': [
+    package_data={'neuxml': [
         # include schema catalog and all downloaded schemas in the package
-        '%s/*' % eulxml.SCHEMA_DATA_DIR
+        '%s/*' % neuxml.SCHEMA_DATA_DIR
     ]},
     description='XPath-based XML data binding',
     long_description=LONG_DESCRIPTION,

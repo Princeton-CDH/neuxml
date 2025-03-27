@@ -1,4 +1,4 @@
-# file eulxml/xpath/__init__.py
+# file neuxml/xpath/__init__.py
 # 
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -22,14 +22,14 @@ This module exports two key functions, :func:`parse` and :func:`serialize`.
 .. function:: parse(xpath_str)
 
    Parse a string XPath expression into an abstract syntax tree. The AST
-   will be built from the classes defined in :mod:`eulxml.xpath.ast`.
+   will be built from the classes defined in :mod:`neuxml.xpath.ast`.
 
 .. function:: serialize(xpath_ast)
 
-   Serialize an XPath AST expressed in terms of :mod:`eulxml.xpath.ast`
+   Serialize an XPath AST expressed in terms of :mod:`neuxml.xpath.ast`
    objects into a valid XPath string.
 
 This module does not support evaluating XPath expressions.
 """
 
-from eulxml.xpath.core import parse, serialize
+from neuxml.xpath.core import parse, serialize

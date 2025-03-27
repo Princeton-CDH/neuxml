@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/teimap.py
+# file neuxml/xmlmap/teimap.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -15,7 +15,7 @@
 #   limitations under the License.
 
 from __future__ import unicode_literals
-from eulxml import xmlmap
+from neuxml import xmlmap
 
 # TODO: generic/base tei xml object with common attributes?
 

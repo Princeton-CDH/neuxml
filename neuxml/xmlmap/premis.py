@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/premis.py
+# file neuxml/xmlmap/premis.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -15,7 +15,7 @@
 #   limitations under the License.
 
 '''
-:mod:`eulxml.xmlmap` classes for dealing with the `PREMIS
+:mod:`neuxml.xmlmap` classes for dealing with the `PREMIS
 <http://www.loc.gov/standards/premis/>`_ metadata format for
 preservation metadata.
 
@@ -23,7 +23,7 @@ preservation metadata.
 '''
 
 from __future__ import unicode_literals
-from eulxml import xmlmap
+from neuxml import xmlmap
 
 PREMIS_NAMESPACE = 'info:lc/xmlns/premis-v2'
 'authoritative namespace for PREMIS'
@@ -38,7 +38,7 @@ class BasePremis(xmlmap.XmlObject):
 
        This class is intended mostly for internal use, but could be
        useful when extending or adding additional PREMIS
-       :class:`~eulxml.xmlmap.XmlObject` classes.  The
+       :class:`~neuxml.xmlmap.XmlObject` classes.  The
        :attr:`PREMIS_NAMESPACE` is mapped to the prefix **p**.
     '''
     ROOT_NS = PREMIS_NAMESPACE
@@ -61,7 +61,7 @@ class PremisRoot(BasePremis):
     XSD_SCHEMA = PREMIS_SCHEMA
 
 class Object(PremisRoot):
-    '''Preliminary :class:`~eulxml.xmlmap.XmlObject` for a PREMIS
+    '''Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     object.
 
     Curently only includes the minimal required fields.
@@ -73,7 +73,7 @@ class Object(PremisRoot):
     .. Note::
       To be schema valid, object types must be in the PREMIS namespace, e.g.::
 
-        from eulxml.xmlmap import premis
+        from neuxml.xmlmap import premis
         obj = premis.Object()
         obj.type = "p:file"
     '''
@@ -83,13 +83,13 @@ class Object(PremisRoot):
     'identifier value (`objectIdentifier/objectIdentifierValue`)'
 
 class Event(PremisRoot):
-    '''Preliminary :class:`~eulxml.xmlmap.XmlObject` for a PREMIS
+    '''Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     event.
 
     .. Note::
 
       The PREMIS schema requires that elements occur in a specified
-      order, which :mod:`eulxml` does not currently handle or manage.
+      order, which :mod:`neuxml` does not currently handle or manage.
       As a work-around, when creating a new :class:`Event` from
       scratch, you should set the following required fields in this
       order: identifier (:attr:`id` and :attr:`ad_type`
@@ -125,7 +125,7 @@ class Event(PremisRoot):
 
 
 class Premis(PremisRoot):
-    '''Preliminary :class:`~eulxml.xmlmap.XmlObject` for a PREMIS
+    '''Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     container element that can contain any of the other top-level
     PREMIS elements.
 

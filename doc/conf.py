@@ -1,6 +1,6 @@
 # eulcore documentation build configuration file
 
-import eulxml
+import neuxml
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
@@ -10,11 +10,11 @@ html_static_path = ['_static']
 source_suffix = '.rst'
 master_doc = 'index'
 
-project = 'eulxml'
+project = 'neuxml'
 copyright = '2011, Emory University Libraries'
-version = '%d.%d' % eulxml.__version_info__[:2]
-release = eulxml.__version__
-modindex_common_prefix = ['eulxml.']
+version = '%d.%d' % neuxml.__version_info__[:2]
+release = neuxml.__version__
+modindex_common_prefix = ['neuxml.']
 
 html_theme = 'alabaster'
 html_style = 'style.css'
@@ -38,10 +38,10 @@ pygments_style = 'sphinx'
 
 # html_style = 'default.css'
 #html_static_path = ['static']
-htmlhelp_basename = 'eulxmldoc'
+htmlhelp_basename = 'neuxmldoc'
 
 latex_documents = [
-  ('index', 'eulxml.tex', 'EULxml Documentation',
+  ('index', 'neuxml.tex', 'neuxml Documentation',
    'Emory University Libraries', 'manual'),
 ]
 

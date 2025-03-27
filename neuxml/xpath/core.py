@@ -1,4 +1,4 @@
-# file eulxml/xpath/core.py
+# file neuxml/xpath/core.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -17,12 +17,12 @@
 """Core XPath parsing glue.
 
 This module builds a lexer and parser for XPath expressions for import into
-eulxml.xpath. To understand how this module builds the lexer and parser, it
+neuxml.xpath. To understand how this module builds the lexer and parser, it
 is helpful to understand how the `ply <http://www.dabeaz.com/ply/>`_ module
 works.
 
 Note that most client applications will import htese objects from
-eulxml.xpath, not directly from here."""
+neuxml.xpath, not directly from here."""
 
 from __future__ import unicode_literals
 import os
@@ -30,13 +30,13 @@ import re
 from ply import lex, yacc
 import tempfile
 
-from eulxml.xpath import lexrules
-from eulxml.xpath import parserules
-from eulxml.xpath.ast import serialize
+from neuxml.xpath import lexrules
+from neuxml.xpath import parserules
+from neuxml.xpath.ast import serialize
 
 __all__ = ['lexer', 'parser', 'parse', 'serialize']
 
-# build the lexer. This will generate a lextab.py in the eulxml.xpath
+# build the lexer. This will generate a lextab.py in the neuxml.xpath
 # directory. Unfortunately, xpath requires some wonky lexing.
 # Per http://www.w3.org/TR/xpath/#exprlex :
 #  1 If there is a preceding token and the preceding token is not one of @,
@@ -134,7 +134,7 @@ if lexer is None:
 lexer.__class__ = LexerWrapper
 lexer.last = None
 
-# build the parser. This will generate a parsetab.py in the eulxml.xpath
+# build the parser. This will generate a parsetab.py in the neuxml.xpath
 # directory. Unlike lex, though, this just logs a complaint when it fails
 # (contrast lex's explosion). Other than that, it's much less exciting
 # than the lexer wackiness.

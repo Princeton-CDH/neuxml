@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/dc.py
+# file neuxml/xmlmap/dc.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -22,7 +22,7 @@ except ImportError:
     # use rdflib if it's available, but it's ok if it's not
     rdflib = None
 
-from eulxml import xmlmap
+from neuxml import xmlmap
 
 class _BaseDublinCore(xmlmap.XmlObject):
     'Base Dublin Core class for common namespace declarations'

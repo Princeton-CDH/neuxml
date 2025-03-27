@@ -1,4 +1,4 @@
-# file eulxml/xpath/lexrules.py
+# file neuxml/xpath/lexrules.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #

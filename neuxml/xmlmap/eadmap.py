@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/eadmap.py
+# file neuxml/xmlmap/eadmap.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -19,7 +19,7 @@ from copy import deepcopy
 
 import six
 
-from eulxml import xmlmap
+from neuxml import xmlmap
 
 # xmlmap objects for various sections of an ead
 # organized from smallest/lowest level to highest level
@@ -167,7 +167,7 @@ class UnitTitle(_EadBase):
     @property
     def short(self):
         '''Short-form of the unit title, excluding any unit date, as an instance
-        of :class:`~eulxml.xmlmap.eadmap.UnitTitle` . Can be used with formatting
+        of :class:`~neuxml.xmlmap.eadmap.UnitTitle` . Can be used with formatting
         anywhere the full form of the unittitle can be used.'''
         # if there is no unitdate to remove, just return the current object
         if not self.unitdate:
@@ -486,7 +486,7 @@ class EadId(_EadBase):
 
 
 class EncodedArchivalDescription(_EadBase):
-    """:class:`~eulxml.xmlmap.XmlObject` for an Encoded Archival Description
+    """:class:`~neuxml.xmlmap.XmlObject` for an Encoded Archival Description
     (EAD) Finding Aid (Schema-based).  All XPaths use the EAD namespace; this
     class can not be used with non-namespaced, DTD-based EAD.
 

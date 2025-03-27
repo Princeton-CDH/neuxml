@@ -1,5 +1,5 @@
 
-# file eulxml/__init__.py
+# file neuxml/__init__.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -29,7 +29,7 @@ if __version_info__[-1] is not None:
 
 # NOTE: these paths are defined here so they can easily be included
 # without requiring the import of other parts of the code (e.g.
-# in setup.py, which could be run when eulxml isn't fully installed)
+# in setup.py, which could be run when neuxml isn't fully installed)
 
 #: relative path for schema data directory
 SCHEMA_DATA_DIR = 'schema_data'
@@ -50,7 +50,7 @@ else:
 # Add local XML catalog file to the environment variable so
 # it will automatically be used by libxml to resolve URIs.
 # See http://xmlsoft.org/catalog.html for more details.
-# Only add once, even if eulxml is loaded multiple times.
+# Only add once, even if neuxml is loaded multiple times.
 if XMLCATALOG_FILE not in os.environ.get('XML_CATALOG_FILES', ''):
     os.environ['XML_CATALOG_FILES'] = ":".join(
         [path for path in (os.environ.get('XML_CATALOG_FILES'), XMLCATALOG_FILE)

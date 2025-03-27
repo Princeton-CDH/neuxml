@@ -1,11 +1,11 @@
-:mod:`eulxml.xpath` -- Parse and Serialize XPath
+:mod:`neuxml.xpath` -- Parse and Serialize XPath
 =================================================
 
-.. automodule:: eulxml.xpath
+.. automodule:: neuxml.xpath
 
-:mod:`eulxml.xpath.ast` -- Abstract syntax trees for XPath
+:mod:`neuxml.xpath.ast` -- Abstract syntax trees for XPath
 -----------------------------------------------------------
-.. automodule:: eulxml.xpath.ast
+.. automodule:: neuxml.xpath.ast
    :members:
 
 

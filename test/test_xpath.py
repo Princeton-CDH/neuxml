@@ -19,8 +19,8 @@
 from __future__ import unicode_literals
 import unittest
 
-from eulxml import xpath
-from eulxml.xpath import ast, serialize
+from neuxml import xpath
+from neuxml.xpath import ast, serialize
 
 
 class ParseTest(unittest.TestCase):

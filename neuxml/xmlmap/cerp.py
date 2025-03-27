@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/cerp.py
+# file neuxml/xmlmap/cerp.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -23,8 +23,8 @@ import os
 
 import six
 
-from eulxml import xmlmap
-from eulxml.utils.compat import u
+from neuxml import xmlmap
+from neuxml.utils.compat import u
 
 logger = logging.getLogger(__name__)
 
@@ -178,7 +178,7 @@ class _BaseMessage(_BaseCerp):
             true='1', false=None)
     mime_version = xmlmap.StringField('xm:MimeVersion')
     orig_date_list = xmlmap.StringListField('xm:OrigDate') # FIXME: really datetime
-    # NOTE: eulxml.xmlmap.DateTimeField supports specifying format,
+    # NOTE: neuxml.xmlmap.DateTimeField supports specifying format,
     # but we might need additional work since %z only works with
     # strftime, not strptime
     from_list = xmlmap.StringListField('xm:From')
@@ -219,13 +219,13 @@ class Message(_BaseMessage, _BaseExternal):
     def from_email_message(cls, message, local_id=None):
         '''
         Convert an :class:`email.message.Message` or compatible message
-        object into a CERP XML :class:`eulxml.xmlmap.cerp.Message`. If an
+        object into a CERP XML :class:`neuxml.xmlmap.cerp.Message`. If an
         id is specified, it will be stored in the Message <LocalId>.
 
         :param message: `email.message.Message` object
         :param id: optional message id to be set as `local_id`
 
-        :returns: :class:`eulxml.xmlmap.cerp.Message` instance populated
+        :returns: :class:`neuxml.xmlmap.cerp.Message` instance populated
     	    with message information
 
         '''
@@ -319,7 +319,7 @@ class ChildMessage(_BaseMessage):
     # no additional elements
 
 # Patch-up from above. FIXME: This is necessary because of recursive
-# NodeFields. eulxml.xmlmap.NodeField doesn't currently support these
+# NodeFields. neuxml.xmlmap.NodeField doesn't currently support these
 SingleBody.child_message.node_class = ChildMessage
 
 #

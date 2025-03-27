@@ -1,4 +1,4 @@
-# Makefile for EULxml Sphinx-based documentation
+# Makefile for neuxml Sphinx-based documentation
 #
 
 export PYTHONPATH=.:..

@@ -1,5 +1,5 @@
-:mod:`eulxml.catalog` - XML Catalogs for loading schemas
+:mod:`neuxml.catalog` - XML Catalogs for loading schemas
 --------------------------------------------------------
 
-.. automodule:: eulxml.catalog
+.. automodule:: neuxml.catalog
     :members:

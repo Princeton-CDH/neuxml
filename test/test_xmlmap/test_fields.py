@@ -22,7 +22,7 @@ import unittest
 
 from six.moves.builtins import str as text
 
-import eulxml.xmlmap.core as xmlmap
+import neuxml.xmlmap.core as xmlmap
 
 
 class TestFields(unittest.TestCase):

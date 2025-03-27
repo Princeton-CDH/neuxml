@@ -20,7 +20,7 @@ import email
 import unittest
 import os
 
-from eulxml.xmlmap import cerp, load_xmlobject_from_file
+from neuxml.xmlmap import cerp, load_xmlobject_from_file
 
 class TestCerp(unittest.TestCase):
     FIXTURE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),

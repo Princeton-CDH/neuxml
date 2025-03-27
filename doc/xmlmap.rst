@@ -1,9 +1,9 @@
-:mod:`eulxml.xmlmap` -- Map XML to Python objects
+:mod:`neuxml.xmlmap` -- Map XML to Python objects
 ==================================================
 
-.. module:: eulxml.xmlmap
+.. module:: neuxml.xmlmap
 
-:mod:`eulxml.xmlmap` makes it easier to map XML to Python objects. The
+:mod:`neuxml.xmlmap` makes it easier to map XML to Python objects. The
 Python DOM does some of this, of course, but sometimes it's prettier to wrap
 an XML node in a typed Python object and assign attributes on that object to
 reference subnodes by `XPath <http://www.w3.org/TR/xpath/>`_ expressions.
@@ -44,7 +44,7 @@ Python integer and the second ``<baz>`` as a string value. We also want to
 access all of them (there may be lots on another ``<foo>``) as a big list of
 integers. We can create an object to map these fields like this::
 
-   from eulxml import xmlmap
+   from neuxml import xmlmap
 
    class Foo(xmlmap.XmlObject):
        first_baz = xmlmap.IntegerField('bar[1]/baz')
@@ -81,8 +81,8 @@ this::
 Concepts
 --------
 
-:mod:`~eulxml.xmlmap` simplifies access to XML data in Python. Programs
-can define new :class:`~eulxml.xmlmap.XmlObject` subclasses representing a
+:mod:`~neuxml.xmlmap` simplifies access to XML data in Python. Programs
+can define new :class:`~neuxml.xmlmap.XmlObject` subclasses representing a
 type of XML node with predictable structure. Members of these classes can be
 regular methods and values like in regular Python classes, but they can also be
 special :ref:`field <xmlmap-field>` objects that associate XPath expressions
@@ -93,7 +93,7 @@ Python value.
 :class:`XmlObject`
 ------------------
 
-Most programs will use :mod:`~eulxml.xmlmap` by defining a subclass of
+Most programs will use :mod:`~neuxml.xmlmap` by defining a subclass of
 :class:`XmlObject` containing :ref:`field <xmlmap-field>` members.
 
 .. autoclass:: XmlObject([node[, context]])
@@ -106,10 +106,10 @@ Most programs will use :mod:`~eulxml.xmlmap` by defining a subclass of
       class as well as those inherited from its parents.
       
 
-:class:`~eulxml.xmlmap.core.XmlObjectType`
+:class:`~neuxml.xmlmap.core.XmlObjectType`
 -------------------------------------------
 
-.. autoclass:: eulxml.xmlmap.core.XmlObjectType
+.. autoclass:: neuxml.xmlmap.core.XmlObjectType
     :members:
 
 
@@ -128,22 +128,22 @@ whole collection of them.
 Field objects are typically created as part of an :class:`XmlObject`
 definition and accessed with standard Python object attribute syntax. If a
 :class:`Foo` class defines a :attr:`bar` attribute as an
-:mod:`~eulxml.xmlmap` field object, then an object will reference it simply
+:mod:`~neuxml.xmlmap` field object, then an object will reference it simply
 as ``foo.bar``.
 
-.. automodule:: eulxml.xmlmap.fields
+.. automodule:: neuxml.xmlmap.fields
    :members:               
 
 
 Other facilities
 ----------------
 
-.. autofunction:: eulxml.xmlmap.load_xmlobject_from_string
+.. autofunction:: neuxml.xmlmap.load_xmlobject_from_string
 
-.. autofunction:: eulxml.xmlmap.load_xmlobject_from_file
+.. autofunction:: neuxml.xmlmap.load_xmlobject_from_file
 
-.. autofunction:: eulxml.xmlmap.parseString
+.. autofunction:: neuxml.xmlmap.parseString
 
-.. autofunction:: eulxml.xmlmap.parseUri
+.. autofunction:: neuxml.xmlmap.parseUri
 
-.. autofunction:: eulxml.xmlmap.loadSchema(uri, base_uri=None)
+.. autofunction:: neuxml.xmlmap.loadSchema(uri, base_uri=None)

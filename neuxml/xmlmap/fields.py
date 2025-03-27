@@ -1,4 +1,4 @@
-# file eulxml/xmlmap/fields.py
+# file neuxml/xmlmap/fields.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -23,8 +23,8 @@ from lxml import etree
 from lxml.builder import ElementMaker
 import six
 
-from eulxml.utils.compat import u
-from eulxml.xpath import ast, parse, serialize
+from neuxml.utils.compat import u
+from neuxml.xpath import ast, parse, serialize
 
 __all__ = [
     'StringField', 'StringListField',
@@ -429,12 +429,12 @@ def _set_in_xml(node, val, context, step):
 
 def _remove_xml(xast, node, context, if_empty=False):
     '''Remove a node or attribute.  For multipart XPaths that are
-    constructible by :mod:`eulxml.xmlmap`, the corresponding nodes
+    constructible by :mod:`neuxml.xmlmap`, the corresponding nodes
     will be removed if they are empty (other than predicates specified
     in the XPath).
 
     :param xast: parsed xpath (xpath abstract syntax tree) from
-	:mod:`eulxml.xpath`
+	:mod:`neuxml.xpath`
     :param node: lxml node relative to which xast should be removed
     :param context: any context required for the xpath (e.g.,
     	namespace definitions)
@@ -488,7 +488,7 @@ def _remove_child_node(node, context, xast, if_empty=False):
     :param context: any context required for the xpath (e.g.,
     	namespace definitions)
     :param xast: parsed xpath (xpath abstract syntax tree) from
-	:mod:`eulxml.xpath`
+	:mod:`neuxml.xpath`
     :param if_empty: optional boolean; only remove a node if it is
 	empty (no attributes and no child nodes); defaults to False
 
@@ -515,7 +515,7 @@ def _remove_predicates(xast, node, context):
     relative to the specified node.
 
     :param xast: parsed xpath (xpath abstract syntax tree) from
-	:mod:`eulxml.xpath`
+	:mod:`neuxml.xpath`
     :param node: lxml element which predicates will be removed from
     :param context: any context required for the xpath (e.g.,
     	namespace definitions)
@@ -563,7 +563,7 @@ def _empty_except_predicates(xast, node, context):
     for any predicates defined in the specified xpath.
 
     :param xast: parsed xpath (xpath abstract syntax tree) from
-	:mod:`eulxml.xpath`
+	:mod:`neuxml.xpath`
     :param node: lxml element to check
     :param context: any context required for the xpath (e.g.,
     	namespace definitions)
@@ -671,10 +671,10 @@ class NodeList(object):
     Supports the methods that Python documentation indicates should be provided
     by Mutable sequences, with the exceptions of reverse and sort; in the
     particular case of :class:`NodeListField`, it is unclear how a list of
-    :class:`~eulxml.xmlmap.XmlObject` should be sorted, or whether or not such
+    :class:`~neuxml.xmlmap.XmlObject` should be sorted, or whether or not such
     a thing would be useful or meaningful for XML content.
 
-    When a new element is appended to a :class:`~eulxml.xmlmap.fields.NodeList`,
+    When a new element is appended to a :class:`~neuxml.xmlmap.fields.NodeList`,
     it will be added to the XML immediately after the last element in the list.
     In the case of an empty list, the new content will be appended at the end of
     the appropriate XML parent node.  For XML content where element order is important
@@ -695,7 +695,7 @@ class NodeList(object):
         return self.node.xpath(self.xpath, **self.context)
 
     def is_empty(self):
-        '''Parallel to :meth:`eulxml.xmlmap.XmlObject.is_empty`.  A
+        '''Parallel to :meth:`neuxml.xmlmap.XmlObject.is_empty`.  A
         NodeList is considered to be empty if every element in the
         list is empty.'''
         return all(n.is_empty() for n in self)
@@ -885,7 +885,7 @@ class StringListField(Field):
 
     Takes an optional list of choices to restrict possible values.
 
-    Actual return type is :class:`~eulxml.xmlmap.fields.NodeList`, which can be
+    Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
     """
     def __init__(self, xpath, normalize=False, choices=None, *args, **kwargs):
@@ -914,7 +914,7 @@ class FloatListField(Field):
     expression evaluates to an empty NodeList, an IntegerListField evaluates to
     an empty list.
 
-    Actual return type is :class:`~eulxml.xmlmap.fields.NodeList`, which can be
+    Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
     """
 
@@ -944,7 +944,7 @@ class IntegerListField(Field):
     expression evaluates to an empty NodeList, an IntegerListField evaluates to
     an empty list.
 
-    Actual return type is :class:`~eulxml.xmlmap.fields.NodeList`, which can be
+    Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
     """
 
@@ -1024,7 +1024,7 @@ class DateTimeListField(Field):
     :class:`DateTimeListField` evaluates to an empty list.  Date
     formatting is as described in :class:`DateTimeField`.
 
-    Actual return type is :class:`~eulxml.xmlmap.fields.NodeList`, which can be
+    Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
 
     :param format: optional date-time format.  See
@@ -1079,15 +1079,15 @@ class DateListField(Field):
 class NodeField(Field):
 
     """Map an XPath expression to a single
-    :class:`~eulxml.xmlmap.XmlObject` subclass instance. If the XPath
+    :class:`~neuxml.xmlmap.XmlObject` subclass instance. If the XPath
     expression evaluates to an empty NodeList, a NodeField evaluates
     to `None`.
 
     Normally a ``NodeField``'s ``node_class`` is a class. As a special
     exception, it may be the string ``"self"``, in which case it recursively
-    refers to objects of its containing :class:`~eulxml.xmlmap.XmlObject` class.
+    refers to objects of its containing :class:`~neuxml.xmlmap.XmlObject` class.
 
-    If an :class:`~eulxml.xmlmap.XmlObject` contains a NodeField named
+    If an :class:`~neuxml.xmlmap.XmlObject` contains a NodeField named
     ``foo``, then the object will automatically have a
     ``create_foo()`` method in addition to its ``foo`` property. Code
     can call this ``create_foo()`` method to create the child element
@@ -1118,15 +1118,15 @@ class NodeField(Field):
 class NodeListField(Field):
 
     """Map an XPath expression to a list of
-    :class:`~eulxml.xmlmap.XmlObject` subclass instances. If the XPath
+    :class:`~neuxml.xmlmap.XmlObject` subclass instances. If the XPath
     expression evalues to an empty NodeList, a NodeListField evaluates
     to an empty list.
 
     Normally a ``NodeListField``'s ``node_class`` is a class. As a special
     exception, it may be the string ``"self"``, in which case it recursively
-    refers to objects of its containing :class:`~eulxml.xmlmap.XmlObject` class.
+    refers to objects of its containing :class:`~neuxml.xmlmap.XmlObject` class.
 
-    Actual return type is :class:`~eulxml.xmlmap.fields.NodeList`, which can be
+    Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
     """
 
@@ -1155,7 +1155,7 @@ class ItemField(Field):
 
 class SchemaField(Field):
     """Schema-based field.  At class definition time, a SchemaField will be
-    **replaced** with the appropriate :class:`eulxml.xmlmap.fields.Field` type
+    **replaced** with the appropriate :class:`neuxml.xmlmap.fields.Field` type
     based on the schema type definition.
 
     Takes an xpath (which will be passed on to the real Field init) and a schema
@@ -1186,10 +1186,10 @@ class SchemaField(Field):
 
     def get_field(self, schema):
         """Get the requested type definition from the schema and return the
-        appropriate :class:`~eulxml.xmlmap.fields.Field`.
+        appropriate :class:`~neuxml.xmlmap.fields.Field`.
 
-        :param schema: instance of :class:`eulxml.xmlmap.core.XsdSchema`
-        :rtype: :class:`eulxml.xmlmap.fields.Field`
+        :param schema: instance of :class:`neuxml.xmlmap.core.XsdSchema`
+        :rtype: :class:`neuxml.xmlmap.fields.Field`
         """
         type = schema.get_type(self.schema_type)
         logger.debug('Found schema type %s; base type %s, restricted values %s' % \

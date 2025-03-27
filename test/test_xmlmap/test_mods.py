@@ -22,8 +22,8 @@ except ImportError:
     from unittest2 import skipIf
 import os
 
-from eulxml.utils.compat import u
-from eulxml.xmlmap import load_xmlobject_from_string, mods
+from neuxml.utils.compat import u
+from neuxml.xmlmap import load_xmlobject_from_string, mods
 
 
 

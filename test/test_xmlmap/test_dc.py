@@ -22,8 +22,8 @@ except ImportError:
   from unittest2 import skipIf
 import os
 
-from eulxml.xmlmap import load_xmlobject_from_string
-from eulxml.xmlmap.dc import DublinCore
+from neuxml.xmlmap import load_xmlobject_from_string
+from neuxml.xmlmap.dc import DublinCore
 
 
 

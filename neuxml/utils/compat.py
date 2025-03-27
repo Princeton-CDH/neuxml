@@ -1,4 +1,4 @@
-# file eulxml/__init__.py
+# file neuxml/__init__.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #

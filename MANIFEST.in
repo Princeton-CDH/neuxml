@@ -2,7 +2,7 @@ include *LICENSE*
 include CHANGELOG
 include README*
 include pip-dev-req.txt
-exclude eulxml/xpath/parsetab.py eulxml/xpath/lextab.py
+exclude neuxml/xpath/parsetab.py neuxml/xpath/lextab.py
 recursive-include doc Makefile *.rst *.py
 recursive-include test *.py
 recursive-include test/test_xmlmap *.py

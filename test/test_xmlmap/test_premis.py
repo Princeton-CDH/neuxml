@@ -22,8 +22,8 @@ except ImportError:
     from unittest2 import skipIf
 import os
 
-from eulxml.xmlmap import load_xmlobject_from_file
-from eulxml.xmlmap import premis
+from neuxml.xmlmap import load_xmlobject_from_file
+from neuxml.xmlmap import premis
 
 
 
@@ -80,7 +80,7 @@ class TestPremis(unittest.TestCase):
         ev.detail = 'python unittest'
         ev.outcome = 'successful'
         ev.agent_type = 'code'
-        ev.agent_id = 'eulxml'
+        ev.agent_id = 'neuxml'
         # event can be schema-validated by itself
         self.assertTrue(ev.schema_valid())
         pr.events.append(ev)

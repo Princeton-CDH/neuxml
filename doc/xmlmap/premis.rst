@@ -1,6 +1,6 @@
-:mod:`eulxml.xmlmap.premis` - PREMIS
+:mod:`neuxml.xmlmap.premis` - PREMIS
 ====================================
 
-.. automodule:: eulxml.xmlmap.premis
+.. automodule:: neuxml.xmlmap.premis
    :members:
 

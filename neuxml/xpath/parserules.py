@@ -1,4 +1,4 @@
-# file eulxml/xpath/parserules.py
+# file neuxml/xpath/parserules.py
 #
 #   Copyright 2010,2011 Emory University Libraries
 #
@@ -21,8 +21,8 @@ understanding of the `ply <http://www.dabeaz.com/ply/>` module.
 """
 
 from __future__ import unicode_literals
-from eulxml.xpath import ast
-from eulxml.xpath.lexrules import tokens
+from neuxml.xpath import ast
+from neuxml.xpath.lexrules import tokens
 
 precedence = (
     ('left', 'OR_OP'),
