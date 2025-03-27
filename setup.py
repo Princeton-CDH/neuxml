@@ -72,7 +72,6 @@ class SdistWithCatalog(sdist):
 
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
-    'Framework :: Django',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: Apache Software License',
     'Natural Language :: English',
@@ -100,7 +99,6 @@ except:
 dev_requirements = [
     'sphinx>=1.3.5',
     'coverage',
-    'Django<4',
     'rdflib>=3.0',
     'mock',
     'nose',
@@ -140,7 +138,6 @@ setup(
         'six>=1.10',
     ],
     extras_require={
-        'django': ['Django<4'],
         'rdf': ['rdflib>=3.0'],
         'dev': dev_requirements
     },
@@ -148,7 +145,7 @@ setup(
         # include schema catalog and all downloaded schemas in the package
         '%s/*' % eulxml.SCHEMA_DATA_DIR
     ]},
-    description='XPath-based XML data binding, with Django form support',
+    description='XPath-based XML data binding',
     long_description=LONG_DESCRIPTION,
     classifiers=CLASSIFIERS,
 )

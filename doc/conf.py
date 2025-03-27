@@ -14,7 +14,6 @@ project = 'eulxml'
 copyright = '2011, Emory University Libraries'
 version = '%d.%d' % eulxml.__version_info__[:2]
 release = eulxml.__version__
-#modindex_common_prefix = ['eulxml.', 'eulxml.django.']
 modindex_common_prefix = ['eulxml.']
 
 html_theme = 'alabaster'
@@ -46,8 +45,7 @@ latex_documents = [
    'Emory University Libraries', 'manual'),
 ]
 
-# configuration for intersphinx: refer to the Python standard library, django, eulfedora
+# configuration for intersphinx: refer to the Python standard library
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'django': ('http://django.readthedocs.org/en/latest/', None),
 }
