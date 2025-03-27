@@ -54,6 +54,15 @@ Dependencies
 **neuxml** depends on `PLY <http://www.dabeaz.com/ply/>`_ and `lxml
 <http://lxml.de/>`_.
 
+
+Contact Information
+-------------------
+
+**eulxml** was created by the `Center for Digital Humanities at Princeton <https://cdh.princeton.edu/>`_.
+
+cdhdevteam@princeton.edu
+
+
 License
 -------
 **neuxml** is distributed under the Apache 2.0 License.
