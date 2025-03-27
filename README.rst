@@ -62,14 +62,15 @@ License
 Development History
 -------------------
 
-For instructions on how to see and interact with the full development
-history of **neuxml**, see
-`eulcore-history <https://github.com/Princeton-CDH/eulcore-history>`_.
+This codebase was forked from a package called **eulxml**, originally developed
+by Emory University Libraries. To see and interact with the full development
+history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_
+and `eulcore-history <https://github.com/emory-libraries/eulcore-history>`_.
 
 Developer notes
 ---------------
 
-As of version 1.1, neuxml provides an `XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_
+neuxml provides an `XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_
 for loading schemas referenced by included XmlObject instances. `Requests <https://github.com/kennethreitz/requests>`_ is required for downloading schemas, but it is not a dependency of neuxml. The
 catalog and schemas will be included in distributed releases, but if you
 want to use the catalog when installing directly from GitHub you can

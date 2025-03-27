@@ -123,9 +123,9 @@ setup(
 
     name='neuxml',
     version=neuxml.__version__,
-    author='Emory University Libraries',
-    author_email='libsysdev-l@listserv.cc.emory.edu',
-    url='https://github.com/emory-libraries/neuxml',
+    author='Center for Digital Humanities at Princeton',
+    author_email='cdhdevteam@princeton.edu',
+    url='https://github.com/Princeton-CDH/neuxml',
     license='Apache License, Version 2.0',
     packages=find_packages(),
 

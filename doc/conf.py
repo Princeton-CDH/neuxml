@@ -1,4 +1,4 @@
-# eulcore documentation build configuration file
+# Sphinx documentation build configuration file
 
 import neuxml
 
@@ -11,7 +11,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 project = 'neuxml'
-copyright = '2011, Emory University Libraries'
+copyright = '2025, Center for Digital Humanities at Princeton'
 version = '%d.%d' % neuxml.__version_info__[:2]
 release = neuxml.__version__
 modindex_common_prefix = ['neuxml.']
@@ -20,8 +20,8 @@ html_theme = 'alabaster'
 html_style = 'style.css'
 html_theme_options = {
     # 'logo': 'logo.png',
-    'github_user': 'emory-libraries',
-    'github_repo': 'eulfedora',
+    'github_user': 'Princeton-CDH',
+    'github_repo': 'neuxml',
     # 'travis_button': True,  # enable when we get travis-ci set up
     'description': 'Python library to read and write structured XML'
     # 'analytics_id':
@@ -41,8 +41,7 @@ pygments_style = 'sphinx'
 htmlhelp_basename = 'neuxmldoc'
 
 latex_documents = [
-  ('index', 'neuxml.tex', 'neuxml Documentation',
-   'Emory University Libraries', 'manual'),
+  ('index', 'neuxml.tex', 'neuxml Documentation', 'manual'),
 ]
 
 # configuration for intersphinx: refer to the Python standard library
