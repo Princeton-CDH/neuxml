@@ -21,17 +21,12 @@ from __future__ import unicode_literals
 import os
 import unittest
 import tempfile
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
 import glob
 import shutil
 from datetime import date
-import requests
-from neuxml import __version__
+import neuxml
 from lxml import etree
-from neuxml.catalog import download_schema, generate_catalog, XSD_SCHEMAS
+from neuxml.catalog import download_schema, generate_catalog
 
 
 
@@ -41,7 +36,7 @@ class TestGenerateSchema(unittest.TestCase):
         self.correct_schema = 'http://www.loc.gov/standards/mods/v3/mods-3-4.xsd'
         self.wrong_schema = 'http://www.loc.gov/standards/mods/v3/mods34.xsd'
         self.comment = 'Downloaded by neuxml %s on %s' % \
-              (__version__, date.today().isoformat())
+              (neuxml.__version__, date.today().isoformat())
         # parseString wants a url. let's give it a proper one.
         self.path = tempfile.mkdtemp()
 

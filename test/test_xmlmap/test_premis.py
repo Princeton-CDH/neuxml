@@ -16,10 +16,6 @@
 
 from __future__ import unicode_literals
 import unittest
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
 import os
 
 from neuxml.xmlmap import load_xmlobject_from_file
@@ -37,10 +33,10 @@ class TestPremis(unittest.TestCase):
         self.premis = load_xmlobject_from_file(self.FIXTURE_FILE, premis.Premis)
 
     def test_init(self):
-        self.assert_(isinstance(self.premis, premis.Premis))
-        self.assert_(isinstance(self.premis.object, premis.Object))
-        self.assert_(self.premis.events)  # list should be non-empty
-        self.assert_(isinstance(self.premis.events[0], premis.Event))
+        self.assertTrue(isinstance(self.premis, premis.Premis))
+        self.assertTrue(isinstance(self.premis.object, premis.Object))
+        self.assertTrue(self.premis.events)  # list should be non-empty
+        self.assertTrue(isinstance(self.premis.events[0], premis.Event))
 
         self.assertTrue(self.premis.is_valid())
 

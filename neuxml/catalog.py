@@ -34,7 +34,8 @@ from datetime import date
 from lxml import etree
 import sys
 
-from neuxml import xmlmap, __version__, XMLCATALOG_DIR, XMLCATALOG_FILE
+import neuxml
+from neuxml import xmlmap
 
 # requests is an optional dependency, handle gracefully if not present
 try:
@@ -155,10 +156,10 @@ def generate_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None
         xsd_schemas = XSD_SCHEMAS
 
     if xmlcatalog_file is None:
-        xmlcatalog_file = XMLCATALOG_FILE
+        xmlcatalog_file = neuxml.XMLCATALOG_FILE
 
     if xmlcatalog_dir is None:
-        xmlcatalog_dir = XMLCATALOG_DIR
+        xmlcatalog_dir = neuxml.XMLCATALOG_DIR
     # if the catalog dir doesn't exist, create it
     if not os.path.isdir(xmlcatalog_dir):
         os.mkdir(xmlcatalog_dir)
@@ -168,7 +169,7 @@ def generate_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None
 
     # comment string to be added to locally-saved schemas
     comment = 'Downloaded by neuxml %s on %s' % \
-        (__version__, date.today().isoformat())
+        (neuxml.__version__, date.today().isoformat())
 
     for schema_uri in xsd_schemas:
         filename = os.path.basename(schema_uri)

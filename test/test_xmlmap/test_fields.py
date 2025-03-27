@@ -93,9 +93,9 @@ class TestFields(unittest.TestCase):
         class CreateTestObject(xmlmap.XmlObject):
             missing = xmlmap.NodeField('missing', TestSubobject)
         obj = CreateTestObject(self.fixture)
-        self.assert_(obj.missing is None)
+        self.assertTrue(obj.missing is None)
         obj.create_missing()
-        self.assert_(isinstance(obj.missing, TestSubobject))
+        self.assertTrue(isinstance(obj.missing, TestSubobject))
 
         # test del
         del obj.missing
@@ -105,7 +105,7 @@ class TestFields(unittest.TestCase):
         class GetTestObject(xmlmap.XmlObject):
             missing = xmlmap.NodeField('missing', TestSubobject, instantiate_on_get=True)
         obj = GetTestObject(self.fixture)
-        self.assert_(isinstance(obj.missing, TestSubobject),
+        self.assertTrue(isinstance(obj.missing, TestSubobject),
             "non-existent nodefield is created on get when 'instantiate_on_get' flag is set")
 
     def testNodeListField(self):
@@ -441,8 +441,8 @@ class TestFields(unittest.TestCase):
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
-        self.assert_(isinstance(obj.date, datetime))
-        self.assert_(isinstance(obj.dates[1], datetime))
+        self.assertTrue(isinstance(obj.date, datetime))
+        self.assertTrue(isinstance(obj.dates[1], datetime))
         # inspect date parsing
         self.assertEqual(2010, obj.date.year)
         self.assertEqual(1, obj.date.month)
@@ -466,8 +466,8 @@ class TestFields(unittest.TestCase):
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
-        self.assert_(isinstance(obj.date, datetime))
-        self.assert_(isinstance(obj.dates[1], datetime))
+        self.assertTrue(isinstance(obj.date, datetime))
+        self.assertTrue(isinstance(obj.dates[1], datetime))
         # inspect date parsing
         self.assertEqual(2010, obj.date.year)
         self.assertEqual(1, obj.date.month)
@@ -490,8 +490,8 @@ class TestFields(unittest.TestCase):
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
-        self.assert_(isinstance(obj.date, date))
-        self.assert_(isinstance(obj.dates[1], date))
+        self.assertTrue(isinstance(obj.date, date))
+        self.assertTrue(isinstance(obj.dates[1], date))
         # inspect date parsing
         self.assertEqual(2010, obj.date.year)
         self.assertEqual(1, obj.date.month)
@@ -540,7 +540,7 @@ class TestFields(unittest.TestCase):
 
         valid = xmlmap.load_xmlobject_from_string(valid_xml, TestSchemaObject)
         self.assertEqual('some text', valid.txt, 'schema field value is accessible as text')
-        self.assert_(isinstance(valid._fields['txt'], xmlmap.StringField),
+        self.assertTrue(isinstance(valid._fields['txt'], xmlmap.StringField),
                 'txt SchemaField with base string in schema initialized as StringField')
         self.assertEqual(['', 'c', 'd', 'e'], valid._fields['txt'].choices,
                 'txt SchemaField has choices based on restriction enumeration in schema')
@@ -921,13 +921,13 @@ class TestNodeList(unittest.TestCase):
         # append then remove
         self.obj.nodes.append(node)
         self.obj.nodes.remove(node)
-        self.assert_(node not in self.obj.nodes, "node is not in NodeList after remove")
+        self.assertTrue(node not in self.obj.nodes, "node is not in NodeList after remove")
 
     def test_pop(self):
         last = self.obj.letters.pop()
         self.assertEqual('y', last,
             "pop with no index returned last letter in list - expected 'y', got '%s'" % last)
-        self.assert_('y' not in self.obj.letters,
+        self.assertTrue('y' not in self.obj.letters,
             "'y' not in stringlistfield after popping last element")
 
         first = self.obj.letters.pop(0)
@@ -942,15 +942,15 @@ class TestNodeList(unittest.TestCase):
 
         # node
         node = self.obj.nodes.pop()
-        self.assert_(isinstance(node, SubList), "popped node is ")
+        self.assertTrue(isinstance(node, SubList), "popped node is ")
         self.assertEqual('007', node.id, "popped node has expected id")
         self.assertEqual(['side-a', 'side-b'], node.parts, "popped node has expected parts")
 
     def test_extend(self):
         letters = self.obj.letters
         letters.extend(['w', 'd', '40'])
-        self.assert_('w' in letters, 'value in extend list is now in StringList')
-        self.assert_('d' in letters, 'value in extend list is now in StringList')
+        self.assertTrue('w' in letters, 'value in extend list is now in StringList')
+        self.assertTrue('d' in letters, 'value in extend list is now in StringList')
         self.assertEqual('40', letters[len(letters) - 1],
             'last value in extend list is now last element StringList')
 

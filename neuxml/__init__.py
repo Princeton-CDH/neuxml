@@ -16,7 +16,9 @@
 #   limitations under the License.
 
 import os
-import pkg_resources
+
+from importlib import resources
+from contextlib import ExitStack
 
 __version_info__ = (1, 1, 3, None)
 
@@ -36,12 +38,13 @@ SCHEMA_DATA_DIR = 'schema_data'
 
 # use package resources if possible, so this will work from an egg
 # http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources
-if pkg_resources.resource_isdir(__name__, SCHEMA_DATA_DIR):
-    XMLCATALOG_DIR = pkg_resources.resource_filename(__name__,
-                                                     SCHEMA_DATA_DIR)
-    XMLCATALOG_FILE = pkg_resources.\
-        resource_filename(__name__,
-                          '%s/catalog.xml' % SCHEMA_DATA_DIR)
+if resources.files(__name__).joinpath(SCHEMA_DATA_DIR).is_dir():
+    file_manager = ExitStack()
+    ref = resources.files(__name__) / SCHEMA_DATA_DIR
+    XMLCATALOG_DIR = file_manager.enter_context(resources.as_file(ref))
+    file_manager = ExitStack()
+    ref = resources.files(__name__) / '%s/catalog.xml' % SCHEMA_DATA_DIR
+    XMLCATALOG_FILE = file_manager.enter_context(resources.as_file(ref))
 else:
     XMLCATALOG_DIR = os.path.join(os.path.dirname(__file__),
                                   SCHEMA_DATA_DIR)

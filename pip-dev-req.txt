@@ -4,5 +4,5 @@ coverage
 requests
 rdflib>=3.0
 mock
-nose
+pynose
 unittest2

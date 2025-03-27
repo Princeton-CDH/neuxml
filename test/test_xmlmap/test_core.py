@@ -20,10 +20,6 @@ from __future__ import unicode_literals
 from lxml import etree
 import os
 import unittest
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
 import tempfile
 
 from six import string_types
@@ -143,17 +139,17 @@ class TestXsl(unittest.TestCase):
         obj = TestObject(self.fixture)
         result = obj.xsl_transform(xsl=self.TEXT_OUTPUT_XSL, return_type=str)
         self.assertEqual('42 13 ', result)
-        self.assert_(isinstance(result, str))
+        self.assertTrue(isinstance(result, str))
 
         result = obj.xsl_transform(xsl=self.TEXT_OUTPUT_XSL, return_type=text)
-        self.assert_(isinstance(result, string_types))
+        self.assertTrue(isinstance(result, string_types))
 
         # transform with parameters
         obj = TestObject(self.fixture)
         input_text = "some text content"
         result = obj.xsl_transform(xsl=self.PARAM_XSL, return_type=str,
             input=input_text)
-        self.assert_(input_text in result)
+        self.assertTrue(input_text in result)
 
         # pre-compiled xslt
         identity_transform = xmlmap.load_xslt(xsl=self.IDENTITY_XSL)
@@ -196,7 +192,7 @@ class TestXmlObjectStringInit(unittest.TestCase):
     def test_load_from_string(self):
         """Test using shortcut to initialize XmlObject from string"""
         obj = xmlmap.load_xmlobject_from_string(TestXsl.FIXTURE_TEXT)
-        self.assert_(isinstance(obj, xmlmap.XmlObject))
+        self.assertTrue(isinstance(obj, xmlmap.XmlObject))
 
 
     def test_load_from_string_with_classname(self):
@@ -206,7 +202,7 @@ class TestXmlObjectStringInit(unittest.TestCase):
             pass
 
         obj = xmlmap.load_xmlobject_from_string(TestXsl.FIXTURE_TEXT, TestObject)
-        self.assert_(isinstance(obj, TestObject))
+        self.assertTrue(isinstance(obj, TestObject))
 
     def test_load_from_string_with_validation(self):
 
@@ -216,7 +212,7 @@ class TestXmlObjectStringInit(unittest.TestCase):
             TestXsl.FIXTURE_TEXT, validate=True)
 
         obj = xmlmap.load_xmlobject_from_string(self.VALID_XML)
-        self.assert_(isinstance(obj, xmlmap.XmlObject))
+        self.assertTrue(isinstance(obj, xmlmap.XmlObject))
 
     def test_load_from_string_with_duplicate_ids(self):
         """
@@ -228,7 +224,7 @@ class TestXmlObjectStringInit(unittest.TestCase):
                           self.DUPLICATE_IDS, validate=True)
 
         obj = xmlmap.load_xmlobject_from_string(self.DUPLICATE_IDS)
-        self.assert_(isinstance(obj, xmlmap.XmlObject))
+        self.assertTrue(isinstance(obj, xmlmap.XmlObject))
 
 
 
@@ -255,7 +251,7 @@ class TestXmlObjectFileInit(unittest.TestCase):
     def test_load_from_file(self):
         """Test using shortcut to initialize XmlObject from a file"""
         obj = xmlmap.load_xmlobject_from_file(self.FILE.name)
-        self.assert_(isinstance(obj, xmlmap.XmlObject))
+        self.assertTrue(isinstance(obj, xmlmap.XmlObject))
 
     def test_load_from_file_with_classname(self):
         """Test using shortcut to initialize named XmlObject class from string"""
@@ -264,7 +260,7 @@ class TestXmlObjectFileInit(unittest.TestCase):
             pass
 
         obj = xmlmap.load_xmlobject_from_file(self.FILE.name, TestObject)
-        self.assert_(isinstance(obj, TestObject))
+        self.assertTrue(isinstance(obj, TestObject))
 
     def test_load_from_file_with_validation(self):
         # has doctype, but not valid
@@ -273,7 +269,7 @@ class TestXmlObjectFileInit(unittest.TestCase):
         self.assertRaises(Exception, xmlmap.load_xmlobject_from_file, self.FILE.name, validate=True)
         # doctype, valid
         obj = xmlmap.load_xmlobject_from_file(self.VALID.name, validate=True)
-        self.assert_(isinstance(obj, xmlmap.XmlObject))
+        self.assertTrue(isinstance(obj, xmlmap.XmlObject))
 
 
 class TestXmlObject(unittest.TestCase):
@@ -283,7 +279,7 @@ class TestXmlObject(unittest.TestCase):
 
     def test__unicode(self):
         stu = u(self.obj)
-        self.assert_("42 13" in stu)
+        self.assertTrue("42 13" in stu)
 
     def test__string(self):
         self.assertEqual(b'42 13', self.obj.__string__())
@@ -294,7 +290,7 @@ class TestXmlObject(unittest.TestCase):
 
     def test_serialize_tostring(self):
         xml_s = self.obj.serialize()
-        self.assert_(b"<baz>42</baz>" in xml_s)
+        self.assertTrue(b"<baz>42</baz>" in xml_s)
 
         # serialize subobjects
         baz = self.obj.node.xpath('bar/baz[1]')[0]
@@ -306,15 +302,15 @@ class TestXmlObject(unittest.TestCase):
         self.obj.serialize(stream=FILE)
         FILE.flush()
         FILE.seek(0)
-        self.assert_(b"<baz>13</baz>" in FILE.read())
+        self.assertTrue(b"<baz>13</baz>" in FILE.read())
         FILE.close()
 
     def test_serializeDocument(self):
         obj = xmlmap.load_xmlobject_from_string(TestXmlObjectStringInit.VALID_XML)
         xmlstr = obj.serializeDocument()
-        self.assert_(b"encoding='UTF-8'" in xmlstr,
+        self.assertTrue(b"encoding='UTF-8'" in xmlstr,
             "XML generated by serializeDocument should include xml character encoding")
-        self.assert_(b'<!DOCTYPE a' in xmlstr,
+        self.assertTrue(b'<!DOCTYPE a' in xmlstr,
             "XML generated by serializeDocument should include DOCTYPE declaration")
 
     def test_isvalid(self):
@@ -357,7 +353,7 @@ class TestXmlObject(unittest.TestCase):
         # do schema validation at load time
         valid = xmlmap.load_xmlobject_from_string(valid_xml, TestSchemaObject,
             validate=True)
-        self.assert_(isinstance(valid, TestSchemaObject))
+        self.assertTrue(isinstance(valid, TestSchemaObject))
 
         self.assertRaises(etree.XMLSyntaxError, xmlmap.load_xmlobject_from_string,
             invalid_xml, TestSchemaObject, validate=True)
@@ -428,7 +424,7 @@ class TestLoadSchema(unittest.TestCase):
 
     def test_load_schema(self):
         schema = xmlmap.loadSchema('http://www.w3.org/2001/xml.xsd')
-        self.assert_(isinstance(schema, etree.XMLSchema),
+        self.assertTrue(isinstance(schema, etree.XMLSchema),
             'loadSchema should return an etree.XMLSchema object when successful')
 
     def test_load_after_parsestring(self):
@@ -445,7 +441,7 @@ class TestLoadSchema(unittest.TestCase):
         try:
             xmlmap.loadSchema('/bogus.xsd')
         except IOError as io_err:
-            self.assert_('bogus.xsd' in str(io_err),
+            self.assertTrue('bogus.xsd' in str(io_err),
                 'exception message indicates load error on specific document')
         self.assertRaises(IOError, xmlmap.loadSchema, '/bogus.xsd', 'file://some/dir')
 
@@ -460,9 +456,9 @@ class TestLoadSchema(unittest.TestCase):
         try:
             xmlmap.loadSchema(xmldoc)
         except etree.XMLSchemaParseError as parse_err:
-            self.assert_('Failed to parse schema %s' % xmldoc in str(parse_err),
+            self.assertTrue('Failed to parse schema %s' % xmldoc in str(parse_err),
                 'schema parse exception includes detail about schema document that failed')
-            self.assert_('not a schema document' in str(parse_err),
+            self.assertTrue('not a schema document' in str(parse_err),
                 'schema parse exception includes detail about why parsing failed')
 
         # schema that attempts to import something inaccessible
@@ -482,5 +478,5 @@ class TestLoadSchema(unittest.TestCase):
         try:
             xmlmap.loadSchema(FILE.name)
         except etree.XMLSchemaParseError as parse_err:
-            self.assert_('Failed to parse' in str(parse_err),
+            self.assertTrue('Failed to parse' in str(parse_err),
                 'schema parse exception includes detail about what went wrong')
