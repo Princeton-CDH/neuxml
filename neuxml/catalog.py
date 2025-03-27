@@ -16,7 +16,7 @@
 
 '''
 Logic for downloading local copies of schemas and generating an
-`XML catalog <http://lxml.de/resolvers.html#xml-catalogs`_ for use in
+`XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_ for use in
 resolving schemas locally instead of downloading them every time validation
 is required.
 
