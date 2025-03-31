@@ -17,6 +17,7 @@
 from __future__ import unicode_literals
 import unittest
 import os
+import pytest
 
 from neuxml.utils.compat import u
 from neuxml.xmlmap import load_xmlobject_from_file, load_xmlobject_from_string
@@ -49,7 +50,8 @@ class TestEad(unittest.TestCase):
         self.assertTrue("12 oversized papers (OP)" in self.ead.physical_desc)
         self.assertTrue("materials relating to Irish poet Seamus Heaney" in u(self.ead.abstract))
 
-    
+
+    @pytest.mark.skip(reason="request to real server")
     def test_validation(self):
         # EAD objects can now be validated aginst XSD schema
         self.assertTrue(self.ead.schema_valid())

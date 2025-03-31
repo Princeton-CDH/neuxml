@@ -19,6 +19,7 @@
 from __future__ import unicode_literals
 from lxml import etree
 import os
+import pytest
 import unittest
 import tempfile
 
@@ -421,12 +422,13 @@ class TestXmlObject(unittest.TestCase):
 
 class TestLoadSchema(unittest.TestCase):
 
-
+    @pytest.mark.skip(reason="request to real server")
     def test_load_schema(self):
         schema = xmlmap.loadSchema('http://www.w3.org/2001/xml.xsd')
         self.assertTrue(isinstance(schema, etree.XMLSchema),
             'loadSchema should return an etree.XMLSchema object when successful')
 
+    @pytest.mark.skip(reason="request to real server")
     def test_load_after_parsestring(self):
         # lxml 2.2.7 (used internally by xmlmap) has a bug that causes
         # lxml.etree.parse() to fail after a call to

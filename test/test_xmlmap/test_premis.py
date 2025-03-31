@@ -17,6 +17,7 @@
 from __future__ import unicode_literals
 import unittest
 import os
+import pytest
 
 from neuxml.xmlmap import load_xmlobject_from_file
 from neuxml.xmlmap import premis
@@ -58,7 +59,7 @@ class TestPremis(unittest.TestCase):
         self.assertEqual('hdl', ev.object_type)
         self.assertEqual('loc.music/gottlieb.09601', ev.object_id)
 
-    
+    @pytest.mark.skip(reason="request to real server")
     def test_create_valid_premis(self):
         # test creating a premis xml object from scratch - should be valid
         pr = premis.Premis()
