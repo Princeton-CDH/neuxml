@@ -95,7 +95,8 @@ dev_requirements = [
     'coverage',
     'rdflib>=3.0',
     'mock',
-    'pynose',
+    'pytest>=4.6',
+    'pytest-cov',
     'tox',
     'requests',
 ]

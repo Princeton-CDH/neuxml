@@ -4,5 +4,6 @@ coverage
 requests
 rdflib>=3.0
 mock
-pynose
+pytest
+pytest-cov
 unittest2

@@ -80,12 +80,12 @@ need to install development dependencies::
 
 To run all unit tests::
 
-    nosetests   # for normal development
-    nosetests --with-coverage --cover-package=neuxml --cover-xml --with-xunit   # for continuous integration
+    pytest   # for normal development
+    pytest --cov=./ --cov-report=xml   # for continuous integration
 
 To run unit tests for a specific module, use syntax like this::
 
-    nosetests test/test_xpath.py
+    pytest test/test_xpath.py
 
 
 To generate sphinx documentation::
