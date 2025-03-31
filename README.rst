@@ -1,3 +1,4 @@
+======
 neuxml
 ======
 
@@ -27,14 +28,14 @@ scratch (in cases where the configured XPath is simple enough to
 determine the nodes that should be constructed).
 
 Dependencies
-------------
+============
 
 **neuxml** depends on `PLY <http://www.dabeaz.com/ply/>`_ and `lxml
 <http://lxml.de/>`_.
 
 
 Contact Information
--------------------
+===================
 
 **eulxml** was created by the `Center for Digital Humanities at Princeton <https://cdh.princeton.edu/>`_.
 
@@ -42,19 +43,19 @@ cdhdevteam@princeton.edu
 
 
 License
--------
+=======
 **neuxml** is distributed under the Apache 2.0 License.
 
 
 Development History
--------------------
+===================
 
 This codebase was forked from a package called **eulxml**, originally developed
 by Emory University Libraries. To see and interact with the full development
 history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_.
 
 Developer notes
----------------
+===============
 
 neuxml provides an `XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_
 for loading schemas referenced by included XmlObject instances. `Requests <https://github.com/kennethreitz/requests>`_ is required for downloading schemas, but it is not a dependency of neuxml. The
@@ -92,3 +93,23 @@ To generate sphinx documentation::
     cd doc
     make html
 
+Migration from ``eulxml``
+-------------------------
+
+After updating your project's dependencies to point at the new package name,
+you can run this one-line shell script to find and replace every instance of
+``eulxml`` with ``neuxml`` in all ``.py`` files in the current working
+directory and subdirectories.
+
+On MacOS:
+
+.. code-block:: shell
+
+   find . -name '*.py' -print0 | xargs -0 sed -i '' -e 's/eulxml/neuxml/g'
+
+
+Or on other Unix-based operating systems:
+
+.. code-block:: shell
+
+   find . -name '*.py' -print0 | xargs -0 sed -i 's/eulxml/neuxml/g'
