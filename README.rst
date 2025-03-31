@@ -12,28 +12,6 @@ neuxml
   .. image:: https://img.shields.io/pypi/dm/neuxml.svg
     :alt: PyPI downloads
 
-**documentation**
-  .. image:: https://readthedocs.org/projects/neuxml/badge/?version=latest
-    :target: http://neuxml.readthedocs.org/en/latest/?badge=latest
-    :alt: Documentation Status
-
-**code**
-  .. image:: https://travis-ci.org/Princeton-CDH/neuxml.svg
-    :alt: travis-ci build
-    :target: https://travis-ci.org/Princeton-CDH/neuxml
-
-  .. image:: https://coveralls.io/repos/github/Princeton-CDH/neuxml/badge.svg
-    :target: https://coveralls.io/github/Princeton-CDH/neuxml
-    :alt: Code Coverage
-
-  .. image:: https://codeclimate.com/github/Princeton-CDH/neuxml/badges/gpa.svg
-    :target: https://codeclimate.com/github/Princeton-CDH/neuxml
-    :alt: Code Climate
-
-
-  .. image:: https://requires.io/github/Princeton-CDH/neuxml/requirements.svg
-    :target: https://requires.io/github/Princeton-CDH/neuxml/requirements
-
 neuxml is a `Python <http://www.python.org/>`_ module that provides
 utilities and classes for interacting with XML that allow the
 definition of re-usable XML objects that can be accessed, updated and
@@ -73,8 +51,7 @@ Development History
 
 This codebase was forked from a package called **eulxml**, originally developed
 by Emory University Libraries. To see and interact with the full development
-history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_
-and `eulcore-history <https://github.com/emory-libraries/eulcore-history>`_.
+history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_.
 
 Developer notes
 ---------------
