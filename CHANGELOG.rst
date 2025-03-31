@@ -8,12 +8,8 @@ any necessary information about installation or upgrade notes.
 0.1.0
 -----
 
-* Fork package with the new name `neuxml`
+* Fork `eulxml <https://github.com/emory-libraries/eulxml>`_
+  package from version `1.1.3` with the new name `neuxml`
 * Remove `forms` submodule and drop Django requirements
 * Add GitHub workflow for pypi publication
 * Update for Python 3.12 compatibility
-
-eulxml 1.1.3
-------------
-
-* Final version of the `eulxml` package before the fork to `neuxml`.
