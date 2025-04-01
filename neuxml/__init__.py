@@ -43,8 +43,8 @@ if resources.files(__name__).joinpath(SCHEMA_DATA_DIR).is_dir():
     ref = resources.files(__name__) / SCHEMA_DATA_DIR
     XMLCATALOG_DIR = file_manager.enter_context(resources.as_file(ref))
     file_manager = ExitStack()
-    ref = resources.files(__name__) / '%s/catalog.xml' % SCHEMA_DATA_DIR
-    XMLCATALOG_FILE = file_manager.enter_context(resources.as_file(ref))
+    ref = resources.files(__name__) / ('%s/catalog.xml' % SCHEMA_DATA_DIR)
+    XMLCATALOG_FILE = str(file_manager.enter_context(resources.as_file(ref)))
 else:
     XMLCATALOG_DIR = os.path.join(os.path.dirname(__file__),
                                   SCHEMA_DATA_DIR)

@@ -5,7 +5,6 @@ dist
 test-results
 neuxml/xpath/lextab.py
 neuxml/xpath/parsetab.py
-neuxml/schema_data
 .tox
 .eggs
 .coverage

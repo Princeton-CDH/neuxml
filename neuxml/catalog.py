@@ -54,16 +54,19 @@ req_requests_msg = 'Please install requests to download schemas ' + \
 XSD_SCHEMAS = [
     'http://www.loc.gov/standards/mods/mods.xsd',
     'http://www.loc.gov/standards/mods/v3/mods-3-4.xsd',
-    'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
     'http://www.loc.gov/standards/xlink/xlink.xsd',
     'http://www.loc.gov/standards/premis/premis.xsd',
     'http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd',
     'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd',
-    'http://www.history.ncdcr.gov/SHRAB/ar/emailpreservation/mail-account/mail-account.xsd',
+    'https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd',
     'http://www.loc.gov/ead/ead.xsd'
 ]
-# , 'http://www.archives.ncdcr.gov/mail-account.xsd'
+# Deprecated URLs. Current schema lives on Github at https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs.
+# 'http://www.archives.ncdcr.gov/mail-account.xsd',
+# 'http://www.history.ncdcr.gov/SHRAB/ar/emailpreservation/mail-account/mail-account.xsd',
 
+# Returns a 403 on programmatic requests:
+# 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
 
 class Uri(xmlmap.XmlObject):
     """:class:`xmlmap.XmlObject` class for Catalog URIs"""
