@@ -28,16 +28,13 @@ from neuxml.utils.compat import u
 
 logger = logging.getLogger(__name__)
 
-# CERP is described at http://siarchives.si.edu/cerp/ . XML spec available at
-# http://www.records.ncdcr.gov/emailpreservation/mail-account/mail-account_docs.html
-# schema resolves but appears to be empty as of April 2016
-# Current schema : http://www.history.ncdcr.gov/SHRAB/ar/emailpreservation/mail-account/mail-account.xsd
-# internally-reused and general-utility objects
-#
+# CERP mail-account schema is now called EAXS (Email Account XML Schema) as of 2018, but has not changed.
+# Information: https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs/
+# Current schema : https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd
 
 class _BaseCerp(xmlmap.XmlObject):
     'Common CERP namespace declarations'
-    ROOT_NS = 'http://www.archives.ncdcr.gov/mail-account'
+    ROOT_NS = 'https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs'
     ROOT_NAMESPACES = { 'xm': ROOT_NS }
 
 
@@ -362,7 +359,7 @@ class Account(_BaseCerp):
     composed of multiple :class:`Folder` objects and additional metadata."""
 
     ROOT_NAME = 'Account'
-    XSD_SCHEMA = 'http://www.history.ncdcr.gov/SHRAB/ar/emailpreservation/mail-account/mail-account.xsd'
+    XSD_SCHEMA = 'https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd'
 
     email_address = xmlmap.StringField('xm:EmailAddress')
     global_id = xmlmap.StringField('xm:GlobalId')
