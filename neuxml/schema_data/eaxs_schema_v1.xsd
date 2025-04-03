@@ -1,8 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:xm="https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs"
-        targetNamespace="https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs"
-        elementFormDefault="qualified">
+<?xml version='1.0' encoding='UTF-8'?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xm="https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs" targetNamespace="https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs" elementFormDefault="qualified">
 	<annotation>
 		<documentation>Schema to define an XML document which can store the information found in a single e-mail account.</documentation>
 		<documentation>Authored jointly by the State Archives of North Carolina and Smithsonian Institution Archives.</documentation>
@@ -18,6 +15,7 @@
 					<!-- David R. Minor [david.minor@ncdcr.gov] (NC State Archives technical contact); -->
 					<!-- Steve Burbeck [sburbeck@mindspring.com] (technical contact) -->
 		<!-- </documentation> DEPRECATED July 2018 -->
+
 	</annotation>
 
 	<element name="Account">
@@ -524,4 +522,4 @@
 	</simpleType>
 
 
-</schema>
+<!--Downloaded by neuxml 1.1.3 on 2025-04-03--></schema>

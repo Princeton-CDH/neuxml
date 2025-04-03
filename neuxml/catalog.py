@@ -59,7 +59,11 @@ XSD_SCHEMAS = [
     'http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd',
     'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd',
     'https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd',
-    'http://www.loc.gov/ead/ead.xsd'
+    'http://www.loc.gov/ead/ead.xsd',
+    'http://www.loc.gov/mods/xml.xsd',
+    'http://www.w3.org/2001/xml.xsd',
+    'http://www.w3.org/2001/03/xml.xsd',
+    'http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd',
 ]
 # Deprecated URLs. Current schema lives on Github at https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs.
 # 'http://www.archives.ncdcr.gov/mail-account.xsd',
