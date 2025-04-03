@@ -54,62 +54,8 @@ This codebase was forked from a package called **eulxml**, originally developed
 by Emory University Libraries. To see and interact with the full development
 history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_.
 
-Developer notes
-===============
 
-neuxml provides an `XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_
-for loading schemas referenced by included XmlObject instances. `Requests <https://github.com/kennethreitz/requests>`_ is required for downloading schemas, but it is not a dependency of neuxml. The
-catalog and schemas will be included in distributed releases, but if you
-want to use the catalog when installing directly from GitHub you can
-use a normal pip install and then run::
+Developer instructions
+======================
 
-  python -c 'from neuxml.catalog import generate_catalog; generate_catalog()'
-
-
-To install dependencies for your local check out of the code, run ``pip install``
-in the ``neuxml`` directory (the use of `virtualenv`_ is recommended)::
-
-    pip install -e .
-
-.. _virtualenv: http://www.virtualenv.org/en/latest/
-
-If you want to run unit tests or build sphinx documentation, you will also
-need to install development dependencies::
-
-    pip install -e . "neuxml[dev]"
-
-To run all unit tests::
-
-    pytest   # for normal development
-    pytest --cov=./ --cov-report=xml   # for continuous integration
-
-To run unit tests for a specific module, use syntax like this::
-
-    pytest test/test_xpath.py
-
-
-To generate sphinx documentation::
-
-    cd doc
-    make html
-
-Migration from ``eulxml``
--------------------------
-
-After updating your project's dependencies to point at the new package name,
-you can run this one-line shell script to find and replace every instance of
-``eulxml`` with ``neuxml`` in all ``.py`` files in the current working
-directory and subdirectories.
-
-On MacOS:
-
-.. code-block:: shell
-
-   find . -name '*.py' -print0 | xargs -0 sed -i '' -e 's/eulxml/neuxml/g'
-
-
-Or on other Unix-based operating systems:
-
-.. code-block:: shell
-
-   find . -name '*.py' -print0 | xargs -0 sed -i 's/eulxml/neuxml/g'
+For development instructions and notes, see ``DEVNOTES.rst``.
