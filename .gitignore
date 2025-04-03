@@ -12,3 +12,4 @@ neuxml/xpath/parsetab.py
 coverage.xml
 nosetests.xml
 venv*
+.DS_Store
