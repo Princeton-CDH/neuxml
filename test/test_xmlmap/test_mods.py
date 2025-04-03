@@ -171,7 +171,6 @@ class TestMods(unittest.TestCase):
         self.assertEqual('http://so.me/other/uri', self.mods.locations[0].url)
         self.assertEqual('Atlanta', self.mods.locations[0].physical)
 
-    @pytest.mark.skip(reason="request to real server")
     def test_create_mods(self):
         # test creating MODS from scratch - ensure sub-xmlobject definitions are correct
         # and produce schema-valid MODS

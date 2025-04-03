@@ -116,7 +116,6 @@ class TestDc(unittest.TestCase):
         self.assertTrue(b'xmlns:dc="http://purl.org/dc/elements/1.1/"' in dc_xml)
         self.assertTrue(b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml)
 
-    @pytest.mark.skip(reason="request to real server")
     def test_isvalid(self):
         self.assertTrue(self.dc.is_valid())
 
@@ -128,6 +127,7 @@ class TestDc(unittest.TestCase):
         invalid_dc = load_xmlobject_from_string(invalid, DublinCore)
         self.assertFalse(invalid_dc.is_valid())
 
+    @pytest.mark.skip(reason="request to real server by RDFLib")
     def test_dcmitypes(self):
         types = self.dc.dcmi_types
         self.assertTrue(isinstance(types, list))

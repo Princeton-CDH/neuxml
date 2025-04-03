@@ -51,7 +51,6 @@ class TestEad(unittest.TestCase):
         self.assertTrue("materials relating to Irish poet Seamus Heaney" in u(self.ead.abstract))
 
 
-    @pytest.mark.skip(reason="request to real server")
     def test_validation(self):
         # EAD objects can now be validated aginst XSD schema
         self.assertTrue(self.ead.schema_valid())
