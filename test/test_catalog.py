@@ -26,7 +26,7 @@ import shutil
 from datetime import date
 import neuxml
 from lxml import etree
-from neuxml.catalog import download_schema, generate_catalog
+from neuxml.catalog import download_schema, refresh_catalog
 
 
 
@@ -86,7 +86,7 @@ class TestGenerateSchema(unittest.TestCase):
         catalog_file = os.path.join(self.path, 'catalog.xml')
         filename = os.path.basename(self.correct_schema)
         #generate empty catalog xml object
-        catalog = generate_catalog(xsd_schemas=[self.correct_schema], xmlcatalog_dir=self.path, xmlcatalog_file=catalog_file)
+        catalog = refresh_catalog(xsd_schemas=[self.correct_schema], xmlcatalog_dir=self.path, xmlcatalog_file=catalog_file)
 
         #check if catalog was generated
         check_catalog = len(glob.glob(''.join([self.path, '/catalog.xml'])))

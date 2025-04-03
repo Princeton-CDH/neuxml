@@ -135,7 +135,7 @@ def download_schema(uri, path, comment=None):
         return False
 
 
-def generate_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None):
+def refresh_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None):
     """Generating an XML catalog for use in resolving schemas
 
     Creates the XML Catalog directory if it doesn't already exist.
