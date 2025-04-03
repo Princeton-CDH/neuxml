@@ -6,4 +6,5 @@ rdflib>=3.0
 mock
 pytest
 pytest-cov
+pytest-socket
 unittest2

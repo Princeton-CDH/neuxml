@@ -97,6 +97,7 @@ dev_requirements = [
     'mock',
     'pytest>=4.6',
     'pytest-cov',
+    'pytest-socket',
     'tox',
     'requests',
 ]
