@@ -16,16 +16,10 @@
 
 from __future__ import unicode_literals
 import logging
-import os
-import warnings
-import urllib
-import time
+import io
 from lxml import etree
 from lxml.builder import ElementMaker
-import six
-from six.moves.urllib.request import urlopen
 
-from neuxml.utils.compat import u
 from neuxml.xmlmap.fields import Field
 
 
@@ -193,7 +187,7 @@ class XmlObjectType(type):
                 # collect self-referential NodeFields so that we can resolve
                 # them once we've created the new class
                 node_class = getattr(field, 'node_class', None)
-                if isinstance(node_class, six.string_types):
+                if isinstance(node_class, str):
                     if node_class in ('self', name):
                         recursive_fields.append(field)
                     else:
@@ -235,8 +229,7 @@ class XmlObjectType(type):
         return create_field
 
 
-@six.python_2_unicode_compatible
-class XmlObject(six.with_metaclass(XmlObjectType, object)):
+class XmlObject(object, metaclass=XmlObjectType):
 
     """
     A Python object wrapped around an XML node.
@@ -324,7 +317,7 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
 
         # xpath has no notion of a default namespace - omit any namespace with no prefix
         self.context = {'namespaces': dict([(prefix, ns) for prefix, ns
-                                            in six.iteritems(nsmap) if prefix])}
+                                            in nsmap.items() if prefix])}
 
         if context is not None:
             self.context.update(context)
@@ -332,7 +325,7 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
             # also include any root namespaces to guarantee that expected prefixes are available
             self.context['namespaces'].update(self.ROOT_NAMESPACES)
 
-        for field, value in six.iteritems(kwargs):
+        for field, value in kwargs.items():
             # TODO (maybe): handle setting/creating list fields
             setattr(self, field, value)
 
@@ -373,8 +366,8 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
             return_type = XmlObject
 
         # automatically encode any string params as XSLT string parameters
-        for key, val in six.iteritems(params):
-            if isinstance(val, six.string_types):
+        for key, val in params.items():
+            if isinstance(val, str):
                 params[key] = etree.XSLT.strparam(val)
 
         parser = _get_xmlparser()
@@ -407,7 +400,7 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
         # empty xmlobject which will behave unexpectedly.
 
         # text output does not include a root node, so check separately
-        if issubclass(return_type, six.string_types):
+        if issubclass(return_type, str):
             if result is None:
                 logger.warning("XSL transform generated an empty result")
                 return
@@ -421,14 +414,14 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
             return return_type(result.getroot())
 
     def __str__(self):
-        if isinstance(self.node, six.string_types):
+        if isinstance(self.node, str):
             return self.node
         return self.node.xpath("normalize-space(.)")
 
     def __string__(self):
-        if isinstance(self.node, six.string_types):
+        if isinstance(self.node, str):
             return self.node
-        return u(self).encode('ascii', 'xmlcharrefreplace')
+        return str(self).encode('ascii', 'xmlcharrefreplace')
 
     def __eq__(self, other):
         # consider two xmlobjects equal if they are pointing to the same xml node
@@ -471,7 +464,7 @@ class XmlObject(six.with_metaclass(XmlObjectType, object)):
         # actual logic of xml serialization
         if stream is None:
             string_mode = True
-            stream = six.BytesIO()
+            stream = io.BytesIO()
         else:
             string_mode = False
 

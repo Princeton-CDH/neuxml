@@ -17,8 +17,6 @@
 from __future__ import unicode_literals
 from copy import deepcopy
 
-import six
-
 from neuxml import xmlmap
 
 # xmlmap objects for various sections of an ead
@@ -62,7 +60,6 @@ class Section(_EadBase):
     ":class:`Note`"
 
 
-@six.python_2_unicode_compatible
 class Heading(_EadBase):
     """Generic xml object for headings used under `controlaccess`"""
     source = xmlmap.StringField("@source")
@@ -107,7 +104,6 @@ class ControlledAccessHeadings(Section):
     "list of :class:`ControlledAccessHeadings` - recursive mapping to `controlaccess`"
 
 
-@six.python_2_unicode_compatible
 class Container(_EadBase):
     """
     Container - :class:`DescriptiveIdentification` subelement for locating materials.
@@ -123,7 +119,6 @@ class Container(_EadBase):
         return self.value
 
 
-@six.python_2_unicode_compatible
 class DateField(_EadBase):
     """
     DateField - for access to date and unitdate elements value and attributes.
@@ -312,7 +307,6 @@ class SubordinateComponents(Section):
             return False
 
 
-@six.python_2_unicode_compatible
 class Reference(_EadBase):
     """Internal linking element that may contain text.
 

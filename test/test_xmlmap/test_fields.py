@@ -20,8 +20,6 @@ from datetime import datetime, date
 import tempfile
 import unittest
 
-from six.moves.builtins import str as text
-
 import neuxml.xmlmap.core as xmlmap
 
 
@@ -506,7 +504,7 @@ class TestFields(unittest.TestCase):
         self.assertEqual(obj.node.xpath('string(date)'), today.isoformat())
         # alternate format
         obj.dates[1] = today
-        self.assertEqual(obj.node.xpath('string(date[1])'), text(today))
+        self.assertEqual(obj.node.xpath('string(date[1])'), str(today))
 
 
     def testSchemaField(self):

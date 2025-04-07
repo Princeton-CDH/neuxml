@@ -16,17 +16,11 @@
 
 #!/usr/bin/env python
 
-from __future__ import unicode_literals
 from lxml import etree
 import os
-import pytest
 import unittest
 import tempfile
 
-from six import string_types
-from six.moves.builtins import str as text
-
-from neuxml.utils.compat import u
 import neuxml.xmlmap.core as xmlmap
 
 
@@ -141,9 +135,6 @@ class TestXsl(unittest.TestCase):
         result = obj.xsl_transform(xsl=self.TEXT_OUTPUT_XSL, return_type=str)
         self.assertEqual('42 13 ', result)
         self.assertTrue(isinstance(result, str))
-
-        result = obj.xsl_transform(xsl=self.TEXT_OUTPUT_XSL, return_type=text)
-        self.assertTrue(isinstance(result, string_types))
 
         # transform with parameters
         obj = TestObject(self.fixture)
@@ -279,7 +270,7 @@ class TestXmlObject(unittest.TestCase):
         self.obj = xmlmap.load_xmlobject_from_string(TestXsl.FIXTURE_TEXT)
 
     def test__unicode(self):
-        stu = u(self.obj)
+        stu = str(self.obj)
         self.assertTrue("42 13" in stu)
 
     def test__string(self):

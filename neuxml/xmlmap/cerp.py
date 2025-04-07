@@ -21,10 +21,7 @@ import email
 import logging
 import os
 
-import six
-
 from neuxml import xmlmap
-from neuxml.utils.compat import u
 
 logger = logging.getLogger(__name__)
 
@@ -281,7 +278,7 @@ class Message(_BaseMessage, _BaseExternal):
             payload = message.get_payload(decode=False)
 
             # if not unicode, attempt to convert
-            if isinstance(payload, six.binary_type):
+            if isinstance(payload, bytes):
                 charset = message.get_charset()
                 # decode according to the specified character set, if any
                 if charset is not None:
@@ -290,14 +287,14 @@ class Message(_BaseMessage, _BaseExternal):
 
                 # otherwise, just try to convert
                 else:
-                    payload = u(payload)
+                    payload = str(payload)
 
             # remove any control characters not allowed in XML
             control_char_map = dict.fromkeys(range(32))
             for i in [9, 10, 13]: # preserve horizontal tab, line feed, carriage return
                 del control_char_map[i]
 
-            payload = u(payload).translate(control_char_map)
+            payload = str(payload).translate(control_char_map)
 
             result.single_body.body_content.content = payload
 

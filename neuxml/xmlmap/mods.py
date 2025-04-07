@@ -20,9 +20,6 @@
 (Metadata Object Description Schema).
 '''
 
-from __future__ import unicode_literals
-import six
-
 from neuxml import xmlmap
 
 MODS_NAMESPACE = 'http://www.loc.gov/mods/v3'
@@ -42,7 +39,6 @@ class Common(xmlmap.XmlObject):
     XSD_SCHEMA = MODSv34_SCHEMA
     schema_validate = False
 
-@six.python_2_unicode_compatible
 class Date(Common):
     ''':class:`~neuxml.xmlmap.XmlObject` for MODS date element (common fields
     for the dates under mods:originInfo).'''
@@ -192,7 +188,7 @@ class Name(Common):
         # default text display of a name (excluding roles for now)
         # TODO: improve logic for converting to plain-text name
         # (e.g., for template display, setting as dc:creator, etc)
-        return ' '.join([unicode(part) for part in self.name_parts])
+        return ' '.join([str(part) for part in self.name_parts])
 
 class Genre(Common):
     ROOT_NAME = 'genre'

@@ -16,9 +16,7 @@
 
 from __future__ import unicode_literals
 import unittest
-import pytest
 
-from neuxml.utils.compat import u
 from neuxml.xmlmap import load_xmlobject_from_string, mods
 
 
@@ -119,9 +117,9 @@ class TestMods(unittest.TestCase):
         self.assertEqual('text', self.mods.resource_type)
         self.assertEqual('a general note', self.mods.note.label)
         self.assertEqual('general', self.mods.note.type)
-        self.assertEqual(u'remember to...', u(self.mods.note))
+        self.assertEqual(u'remember to...', str(self.mods.note))
         self.assertEqual('remember to...', self.mods.note.text)
-        self.assertEqual(u'2010-06-17', u(self.mods.origin_info.created[0]))
+        self.assertEqual(u'2010-06-17', str(self.mods.origin_info.created[0]))
         self.assertEqual('2010-06-17', self.mods.origin_info.created[0].date)
         self.assertEqual('2010-06-18', self.mods.origin_info.issued[0].date)
         self.assertEqual('2010-06-19', self.mods.origin_info.captured[0].date)

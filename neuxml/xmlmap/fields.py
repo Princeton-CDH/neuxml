@@ -21,9 +21,7 @@ import logging
 
 from lxml import etree
 from lxml.builder import ElementMaker
-import six
 
-from neuxml.utils.compat import u
 from neuxml.xpath import ast, parse, serialize
 
 __all__ = [
@@ -94,7 +92,7 @@ class Mapper(object):
         if value is None:
             return value
         else:
-            return u(value)
+            return str(value)
 
 
 class StringMapper(Mapper):
@@ -106,7 +104,7 @@ class StringMapper(Mapper):
     def to_python(self, node):
         if node is None:
             return None
-        if isinstance(node, six.string_types):
+        if isinstance(node, str):
             return node
         return self.XPATH(node)
 
@@ -117,7 +115,7 @@ class IntegerMapper(Mapper):
             return None
         try:
             # xpath functions such as count return a float and must be converted to int
-            if isinstance(node, six.string_types) or isinstance(node, float):
+            if isinstance(node, str) or isinstance(node, float):
                 return int(node)
 
             return int(self.XPATH(node))
@@ -131,7 +129,7 @@ class FloatMapper(Mapper):
         if node is None:
             return None
         try:
-            if isinstance(node, six.string_types):
+            if isinstance(node, str):
                 return float(node)
 
             return float(self.XPATH(node))
@@ -155,7 +153,7 @@ class SimpleBooleanMapper(Mapper):
             else:
                 return None
 
-        if isinstance(node, six.string_types):
+        if isinstance(node, str):
             value = node
         else:
             value = self.XPATH(node)
@@ -187,7 +185,7 @@ class DateTimeMapper(object):
     def to_python(self, node):
         if node is None:
             return None
-        if isinstance(node, six.string_types):
+        if isinstance(node, str):
             rep = node
         else:
             rep = self.XPATH(node)
@@ -209,9 +207,9 @@ class DateTimeMapper(object):
     def to_xml(self, dt):
         val = None
         if self.format is not None:
-            val = u(dt.strftime(self.format))
+            val = str(dt.strftime(self.format))
         else:
-            val = u(dt.isoformat())
+            val = str(dt.isoformat())
         return val
 
 
@@ -225,7 +223,7 @@ class DateMapper(DateTimeMapper):
     def to_python(self, node):
         if node is None:
             return None
-        if isinstance(node, six.string_types):
+        if isinstance(node, str):
             rep = node
         elif hasattr(node, 'text'):
             rep = node.text
@@ -365,7 +363,7 @@ def _predicate_is_constructible(pred):
             if not _predicate_is_constructible(pred.left):
                 return False
             if not isinstance(pred.right,
-                    (six.integer_types, six.string_types, ast.VariableReference)):
+                    (int, str, ast.VariableReference)):
                 return False
 
     # otherwise, i guess we're ok
@@ -730,7 +728,7 @@ class NodeList(object):
 
     def _check_key_type(self, key):
         # check argument type for getitem, setitem, delitem
-        if not isinstance(key, (slice, six.integer_types)):
+        if not isinstance(key, (slice, int)):
             raise TypeError
         assert not isinstance(key, slice), "Slice indexing is not supported"
 
