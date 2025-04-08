@@ -63,20 +63,36 @@ keyword arguments ``xsd_schemas``, ``xmlcatalog_dir``, and ``xmlcatalog_file``.
 Migration from ``eulxml``
 -------------------------
 
-After updating your project's dependencies to point at the new package name,
-you can run this one-line shell script to find and replace every instance of
-``eulxml`` with ``neuxml`` in all ``.py`` files in the current working
-directory and subdirectories.
+A convenience script has been included under ``scripts/`` called
+``migrate_eulxml.py`` to migrate your project from ``eulxml`` to ``neuxml``,
+which will replace any usage of the package name in all ``.py`` files in the
+passed directory and subdirectories. After upgrading to Python 3.12+ and
+updating the package in your project's dependencies, you can run the script::
 
-On MacOS:
+    python scripts/migrate_eulxml.py /path/to/your/project
 
-.. code-block:: shell
+In addition to renaming the package from ``eulxml`` to ``neuxml``, the usage
+of indirect imports from ``neuxml.xmlmap`` has been removed, and definitions
+must be imported directly from its submodules instead. The migration script
+will also attempt to make these changes automatically.
 
-   find . -name '*.py' -print0 | xargs -0 sed -i '' -e 's/eulxml/neuxml/g'
+For example, imports have changed from this style:
 
+.. code-block:: python
 
-Or on other Unix-based operating systems:
+    from neuxml import xmlmap
 
-.. code-block:: shell
+    xmlmap.XmlObject
+    xmlmap.Field
 
-   find . -name '*.py' -print0 | xargs -0 sed -i 's/eulxml/neuxml/g'
+to this style:
+
+.. code-block:: python
+
+    from neuxml import xmlmap
+
+    xmlmap.core.XmlObject
+    xmlmap.fields.Field
+
+Submodule or class imports are also acceptable (e.g. ``from neuxml.xmlmap.core
+import XmlObject``).
