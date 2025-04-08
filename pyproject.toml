@@ -34,6 +34,7 @@ dev = [
     "pytest-socket",
     "tox",
     "requests",
+    "pre-commit",
 ]
 
 [project.urls]
