@@ -20,7 +20,8 @@ import email
 import unittest
 import os
 
-from neuxml.xmlmap import cerp, load_xmlobject_from_file
+from neuxml.xmlmap import cerp
+from neuxml.xmlmap.core import load_xmlobject_from_file
 
 
 class TestCerp(unittest.TestCase):

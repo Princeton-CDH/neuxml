@@ -20,17 +20,17 @@
 (Metadata Object Description Schema).
 """
 
-from neuxml import xmlmap
+from neuxml.xmlmap import core, fields
 
 MODS_NAMESPACE = "http://www.loc.gov/mods/v3"
 MODS_SCHEMA = "http://www.loc.gov/standards/mods/mods.xsd"
 MODSv34_SCHEMA = "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
 
 
-class Common(xmlmap.XmlObject):
+class Common(core.XmlObject):
     """MODS class with namespace declaration common to all MODS
     XmlObjects.  Defines the MODS schema (e.g., for use with
-    :class:`xmlmap.SchemaField`), but by sets ``schema_validate`` to
+    :class:`fields.SchemaField`), but by sets ``schema_validate`` to
     False.
     """
 
@@ -43,16 +43,16 @@ class Common(xmlmap.XmlObject):
 
 
 class Date(Common):
-    """:class:`~neuxml.xmlmap.XmlObject` for MODS date element (common fields
+    """:class:`~neuxml.xmlmap.core.XmlObject` for MODS date element (common fields
     for the dates under mods:originInfo)."""
 
     # this class not meant for direct use; should be extended for specific dates.
 
-    date = xmlmap.StringField("text()")
-    key_date = xmlmap.SimpleBooleanField("@keyDate", "yes", false=None)
-    encoding = xmlmap.SchemaField("@encoding", "dateEncodingAttributeDefinition")
-    point = xmlmap.SchemaField("@point", "datePointAttributeDefinition")
-    qualifier = xmlmap.SchemaField("@qualifier", "dateQualifierAttributeDefinition")
+    date = fields.StringField("text()")
+    key_date = fields.SimpleBooleanField("@keyDate", "yes", false=None)
+    encoding = fields.SchemaField("@encoding", "dateEncodingAttributeDefinition")
+    point = fields.SchemaField("@point", "datePointAttributeDefinition")
+    qualifier = fields.SchemaField("@qualifier", "dateQualifierAttributeDefinition")
 
     def is_empty(self):
         """Returns False if no date value is set; returns True if any date value
@@ -91,57 +91,57 @@ class CopyrightDate(Date):
 
 class DateOther(Date):
     ROOT_NAME = "dateOther"
-    type = xmlmap.StringField("@type")
+    type = fields.StringField("@type")
 
 
 class OriginInfo(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS originInfo element (incomplete)"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS originInfo element (incomplete)"
 
     ROOT_NAME = "originInfo"
-    created = xmlmap.NodeListField(
+    created = fields.NodeListField(
         "mods:dateCreated",
         DateCreated,
         verbose_name="Date Created",
         help_text="Date the resource was first created (e.g., date of recording,"
         + " photograph taken, or letter written)",
     )
-    issued = xmlmap.NodeListField(
+    issued = fields.NodeListField(
         "mods:dateIssued",
         DateIssued,
         verbose_name="Date Issued",
         help_text="Date the resource was published, released, or issued",
     )
-    captured = xmlmap.NodeListField(
+    captured = fields.NodeListField(
         "mods:dateCaptured",
         DateCaptured,
         verbose_name="Date Captured",
         help_text="Date on which the resource was digitized or a subsequent snapshot was taken",
     )
-    valid = xmlmap.NodeListField(
+    valid = fields.NodeListField(
         "mods:dateValid",
         DateValid,
         verbose_name="Date Valid",
         help_text="Date in which the content of a resource is valid",
     )
-    modified = xmlmap.NodeListField(
+    modified = fields.NodeListField(
         "mods:dateModified",
         DateModified,
         verbose_name="Date Modified",
         help_text="Date in which a resource is modified or changed",
     )
-    copyright = xmlmap.NodeListField(
+    copyright = fields.NodeListField(
         "mods:copyrightDate",
         CopyrightDate,
         verbose_name="Copyright Date",
         help_text="Date in which a resource is copyrighted",
     )
-    other = xmlmap.NodeListField(
+    other = fields.NodeListField(
         "mods:dateOther",
         DateOther,
         verbose_name="Other Date",
         help_text="Date that does not fall into another category but is important to record",
     )
-    publisher = xmlmap.StringField("mods:publisher")
+    publisher = fields.StringField("mods:publisher")
 
     def is_empty(self):
         """Returns True if all child date elements present are empty
@@ -155,19 +155,19 @@ class OriginInfo(Common):
 
 class RecordInfo(Common):
     ROOT_NAME = "recordInfo"
-    record_id = xmlmap.StringField("mods:recordIdentifier")
-    record_origin = xmlmap.StringField("mods:recordOrigin")
-    creation_date = xmlmap.StringField('mods:recordCreationDate[@encoding="w3cdtf"]')
-    change_date = xmlmap.StringField('mods:recordChangeDate[@encoding="w3cdtf"]')
+    record_id = fields.StringField("mods:recordIdentifier")
+    record_origin = fields.StringField("mods:recordOrigin")
+    creation_date = fields.StringField('mods:recordCreationDate[@encoding="w3cdtf"]')
+    change_date = fields.StringField('mods:recordChangeDate[@encoding="w3cdtf"]')
 
 
 class Note(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS note element"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS note element"
 
     ROOT_NAME = "note"
-    label = xmlmap.StringField("@displayLabel")
-    type = xmlmap.StringField("@type")
-    text = xmlmap.StringField("text()")  # actual text value of the note
+    label = fields.StringField("@displayLabel")
+    type = fields.StringField("@type")
+    text = fields.StringField("text()")  # actual text value of the note
 
 
 class TypedNote(Note):
@@ -189,61 +189,61 @@ class TypedNote(Note):
 
 
 class Identifier(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS identifier"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS identifier"
 
     ROOT_NAME = "identifier"
-    type = xmlmap.StringField("@type")
-    text = xmlmap.StringField("text()")
-    label = xmlmap.StringField("@displayLabel")
+    type = fields.StringField("@type")
+    text = fields.StringField("text()")
+    label = fields.StringField("@displayLabel")
 
 
 class AccessCondition(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS accessCondition"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS accessCondition"
 
     ROOT_NAME = "accessCondition"
-    type = xmlmap.StringField(
+    type = fields.StringField(
         "@type", choices=["restrictions on access", "use and reproduction"]
     )
-    text = xmlmap.StringField("text()")
+    text = fields.StringField("text()")
 
 
 class NamePart(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS namePart"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS namePart"
 
     ROOT_NAME = "namePart"
     # FIXME: schema required here for schemafields; this should be refactored
 
-    type = xmlmap.SchemaField(
+    type = fields.SchemaField(
         "@type", "namePartTypeAttributeDefinition", required=False
     )  # type is optional
-    text = xmlmap.StringField("text()")
+    text = fields.StringField("text()")
 
 
 class Role(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS role"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS role"
 
     ROOT_NAME = "role"
-    type = xmlmap.StringField("mods:roleTerm/@type")
-    authority = xmlmap.StringField(
+    type = fields.StringField("mods:roleTerm/@type")
+    authority = fields.StringField(
         "mods:roleTerm/@authority", choices=["", "marcrelator", "local"]
     )
-    text = xmlmap.StringField("mods:roleTerm")
+    text = fields.StringField("mods:roleTerm")
 
 
 class Name(Common):
-    ":class:`~neuxml.xmlmap.XmlObject` for MODS name"
+    ":class:`~neuxml.xmlmap.core.XmlObject` for MODS name"
 
     ROOT_NAME = "name"
 
-    type = xmlmap.SchemaField("@type", "nameTypeAttributeDefinition", required=False)
-    authority = xmlmap.StringField(
+    type = fields.SchemaField("@type", "nameTypeAttributeDefinition", required=False)
+    authority = fields.StringField(
         "@authority", choices=["", "local", "naf"], required=False
     )  # naf = NACO authority file
-    id = xmlmap.StringField("@ID", required=False)  # optional
-    name_parts = xmlmap.NodeListField("mods:namePart", NamePart)
-    display_form = xmlmap.StringField("mods:displayForm")
-    affiliation = xmlmap.StringField("mods:affiliation")
-    roles = xmlmap.NodeListField("mods:role", Role)
+    id = fields.StringField("@ID", required=False)  # optional
+    name_parts = fields.NodeListField("mods:namePart", NamePart)
+    display_form = fields.StringField("mods:displayForm")
+    affiliation = fields.StringField("mods:affiliation")
+    roles = fields.NodeListField("mods:role", Role)
 
     def __unicode__(self):
         # default text display of a name (excluding roles for now)
@@ -254,52 +254,52 @@ class Name(Common):
 
 class Genre(Common):
     ROOT_NAME = "genre"
-    authority = xmlmap.StringField("@authority")
-    text = xmlmap.StringField("text()")
+    authority = fields.StringField("@authority")
+    text = fields.StringField("text()")
 
 
 class LanguageTerm(Common):
     ROOT_NAME = "languageTerm"
-    type = xmlmap.StringField("@type")
-    authority = xmlmap.StringField("@authority")
-    text = xmlmap.StringField("text()")
+    type = fields.StringField("@type")
+    authority = fields.StringField("@authority")
+    text = fields.StringField("text()")
 
 
 class Language(Common):
     ROOT_NAME = "language"
-    terms = xmlmap.NodeListField("mods:languageTerm", LanguageTerm)
+    terms = fields.NodeListField("mods:languageTerm", LanguageTerm)
 
 
 class Location(Common):
     ROOT_NAME = "location"
-    physical = xmlmap.StringField("mods:physicalLocation")
-    url = xmlmap.StringField("mods:url")
+    physical = fields.StringField("mods:physicalLocation")
+    url = fields.StringField("mods:url")
     # NOTE: mods:location subfields are ordered;
     # setting them in the wrong order could currently generate invalid mods...
 
 
 class Subject(Common):
     ROOT_NAME = "subject"
-    authority = xmlmap.StringField("@authority")
-    id = xmlmap.StringField("@ID")
+    authority = fields.StringField("@authority")
+    id = fields.StringField("@ID")
 
     # and one of the following:
-    geographic = xmlmap.StringField("mods:geographic")
-    name = xmlmap.NodeField("mods:name", Name)
-    topic = xmlmap.StringField("mods:topic")
-    title = xmlmap.StringField("mods:titleInfo/mods:title")
+    geographic = fields.StringField("mods:geographic")
+    name = fields.NodeField("mods:name", Name)
+    topic = fields.StringField("mods:topic")
+    title = fields.StringField("mods:titleInfo/mods:title")
 
 
 class TitleInfo(Common):
     ROOT_NAME = "titleInfo"
 
-    title = xmlmap.StringField("mods:title")
-    subtitle = xmlmap.StringField("mods:subTitle")
-    part_number = xmlmap.StringField("mods:partNumber")
-    part_name = xmlmap.StringField("mods:partName")
-    non_sort = xmlmap.StringField("mods:nonSort")
-    type = xmlmap.SchemaField("@type", "titleInfoTypeAttributeDefinition")
-    label = xmlmap.StringField("@displayLabel")
+    title = fields.StringField("mods:title")
+    subtitle = fields.StringField("mods:subTitle")
+    part_number = fields.StringField("mods:partNumber")
+    part_name = fields.StringField("mods:partName")
+    non_sort = fields.StringField("mods:nonSort")
+    type = fields.SchemaField("@type", "titleInfoTypeAttributeDefinition")
+    label = fields.StringField("@displayLabel")
 
     def is_empty(self):
         """Returns True if all titleInfo subfields are not set or
@@ -316,21 +316,21 @@ class TitleInfo(Common):
 
 class Abstract(Common):
     ROOT_NAME = "abstract"
-    text = xmlmap.StringField("text()")
-    type = xmlmap.StringField("@type")
-    label = xmlmap.StringField("@displayLabel")
+    text = fields.StringField("text()")
+    type = fields.StringField("@type")
+    label = fields.StringField("@displayLabel")
 
 
 class PhysicalDescription(Common):
     ROOT_NAME = "physicalDescription"
-    media_type = xmlmap.StringField("mods:internetMediaType")
-    extent = xmlmap.StringField("mods:extent")
+    media_type = fields.StringField("mods:internetMediaType")
+    extent = fields.StringField("mods:extent")
 
 
 class PartDetail(Common):
     ROOT_NAME = "detail"
-    type = xmlmap.StringField("@type")
-    number = xmlmap.StringField("mods:number")
+    type = fields.StringField("@type")
+    number = fields.StringField("mods:number")
 
     def is_empty(self):
         """Returns False if no number value is set; returns True if
@@ -343,10 +343,10 @@ class PartDetail(Common):
 
 class PartExtent(Common):
     ROOT_NAME = "extent"
-    unit = xmlmap.StringField("@unit")
-    start = xmlmap.StringField("mods:start")
-    end = xmlmap.StringField("mods:end")
-    total = xmlmap.StringField("mods:total")
+    unit = fields.StringField("@unit")
+    start = fields.StringField("mods:start")
+    end = fields.StringField("mods:end")
+    total = fields.StringField("mods:total")
 
     def is_empty(self):
         """Returns False if no extent value is set; returns True if
@@ -359,9 +359,9 @@ class PartExtent(Common):
 
 class Part(Common):
     ROOT_NAME = "part"
-    type = xmlmap.StringField("@type")
-    details = xmlmap.NodeListField("mods:detail", PartDetail)
-    extent = xmlmap.NodeField("mods:extent", PartExtent)
+    type = fields.StringField("@type")
+    details = fields.NodeListField("mods:detail", PartDetail)
+    extent = fields.NodeField("mods:extent", PartExtent)
 
     def is_empty(self):
         """Returns True if details, extent, and type are not set or
@@ -378,57 +378,57 @@ class Part(Common):
 
 
 class BaseMods(Common):
-    """:class:`~neuxml.xmlmap.XmlObject` with common field declarations for all
+    """:class:`~neuxml.xmlmap.core.XmlObject` with common field declarations for all
     top-level MODS elements; base class for :class:`MODS` and :class:`RelatedItem`."""
 
     schema_validate = True
 
-    id = xmlmap.StringField("@ID")
-    title = xmlmap.StringField("mods:titleInfo/mods:title")
-    title_info = xmlmap.NodeField("mods:titleInfo", TitleInfo)
-    title_info_list = xmlmap.NodeListField("mods:titleInfo", TitleInfo)
-    resource_type = xmlmap.SchemaField("mods:typeOfResource", "resourceTypeDefinition")
-    name = xmlmap.NodeField("mods:name", Name)  # DEPRECATED: use names instead
-    names = xmlmap.NodeListField("mods:name", Name)
-    note = xmlmap.NodeField("mods:note", Note)
-    notes = xmlmap.NodeListField("mods:note", Note)
-    origin_info = xmlmap.NodeField("mods:originInfo", OriginInfo)
-    record_info = xmlmap.NodeField("mods:recordInfo", RecordInfo)
-    identifiers = xmlmap.NodeListField("mods:identifier", Identifier)
-    access_conditions = xmlmap.NodeListField("mods:accessCondition", AccessCondition)
-    genres = xmlmap.NodeListField("mods:genre", Genre)
-    languages = xmlmap.NodeListField("mods:language", Language)
-    location = xmlmap.StringField("mods:location/mods:physicalLocation", required=False)
-    locations = xmlmap.NodeListField("mods:location", Location)
-    subjects = xmlmap.NodeListField("mods:subject", Subject)
-    physical_description = xmlmap.NodeField(
+    id = fields.StringField("@ID")
+    title = fields.StringField("mods:titleInfo/mods:title")
+    title_info = fields.NodeField("mods:titleInfo", TitleInfo)
+    title_info_list = fields.NodeListField("mods:titleInfo", TitleInfo)
+    resource_type = fields.SchemaField("mods:typeOfResource", "resourceTypeDefinition")
+    name = fields.NodeField("mods:name", Name)  # DEPRECATED: use names instead
+    names = fields.NodeListField("mods:name", Name)
+    note = fields.NodeField("mods:note", Note)
+    notes = fields.NodeListField("mods:note", Note)
+    origin_info = fields.NodeField("mods:originInfo", OriginInfo)
+    record_info = fields.NodeField("mods:recordInfo", RecordInfo)
+    identifiers = fields.NodeListField("mods:identifier", Identifier)
+    access_conditions = fields.NodeListField("mods:accessCondition", AccessCondition)
+    genres = fields.NodeListField("mods:genre", Genre)
+    languages = fields.NodeListField("mods:language", Language)
+    location = fields.StringField("mods:location/mods:physicalLocation", required=False)
+    locations = fields.NodeListField("mods:location", Location)
+    subjects = fields.NodeListField("mods:subject", Subject)
+    physical_description = fields.NodeField(
         "mods:physicalDescription", PhysicalDescription
     )
-    abstract = xmlmap.NodeField("mods:abstract", Abstract)
-    parts = xmlmap.NodeListField("mods:part", Part)
+    abstract = fields.NodeField("mods:abstract", Abstract)
+    parts = fields.NodeListField("mods:part", Part)
 
 
 class RelatedItem(BaseMods):
-    """:class:`~neuxml.xmlmap.XmlObject` for MODS relatedItem: contains all the
+    """:class:`~neuxml.xmlmap.core.XmlObject` for MODS relatedItem: contains all the
     top-level MODS fields defined by :class:`BaseMods`, plus a type attribute."""
 
     ROOT_NAME = "relatedItem"
-    type = xmlmap.SchemaField("@type", "relatedItemTypeAttributeDefinition")
-    label = xmlmap.StringField("@displayLabel")
+    type = fields.SchemaField("@type", "relatedItemTypeAttributeDefinition")
+    label = fields.StringField("@displayLabel")
 
 
 class MODS(BaseMods):
-    """Top-level :class:`~neuxml.xmlmap.XmlObject` for a MODS metadata record.
+    """Top-level :class:`~neuxml.xmlmap.core.XmlObject` for a MODS metadata record.
     Inherits all standard top-level MODS fields from :class:`BaseMods` and adds
     a mapping for :class:`RelatedItem`.
     """
 
     ROOT_NAME = "mods"
-    related_items = xmlmap.NodeListField("mods:relatedItem", RelatedItem)
+    related_items = fields.NodeListField("mods:relatedItem", RelatedItem)
 
 
 class MODSv34(MODS):
-    """:class:`~neuxml.xmlmap.XmlObject` for MODS version 3.4.  Currently
+    """:class:`~neuxml.xmlmap.core.XmlObject` for MODS version 3.4.  Currently
     consists of all the same fields as :class:`MODS`, but loads the MODS version
     3.4 schema for validation.
     """

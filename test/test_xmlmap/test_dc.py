@@ -14,11 +14,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 import pytest
 import unittest
 
-from neuxml.xmlmap import load_xmlobject_from_string
+from neuxml.xmlmap.core import load_xmlobject_from_string
 from neuxml.xmlmap.dc import DublinCore
 
 

@@ -14,12 +14,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 import unittest
 import os
 
-from neuxml.xmlmap import load_xmlobject_from_file
 from neuxml.xmlmap import premis
+from neuxml.xmlmap.core import load_xmlobject_from_file
 
 
 class TestPremis(unittest.TestCase):

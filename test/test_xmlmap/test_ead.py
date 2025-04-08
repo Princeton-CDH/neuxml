@@ -14,12 +14,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 import unittest
 import os
 
-from neuxml.xmlmap import load_xmlobject_from_file, load_xmlobject_from_string
 from neuxml.xmlmap import eadmap
+from neuxml.xmlmap.core import load_xmlobject_from_file, load_xmlobject_from_string
 
 
 class TestEad(unittest.TestCase):

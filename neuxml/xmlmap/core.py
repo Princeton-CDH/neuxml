@@ -14,7 +14,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 import logging
 import io
 from lxml import etree
@@ -146,7 +145,7 @@ class XmlObjectType(type):
       2. store all of these fields and all of the base classes' fields in a
          ``_fields`` dictionary on the class, and
       3. if any local (non-parent) fields look like self-referential
-         :class:`neuxml.xmlmap.NodeField` objects then patch them up
+         :class:`neuxml.xmlmap.fields.NodeField` objects then patch them up
          to refer to the newly-created :class:`XmlObject`.
 
     """
@@ -302,7 +301,7 @@ class XmlObject(object, metaclass=XmlObjectType):
         your subclass like this::
 
           XSD_SCHEMA = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-          xmlschema = xmlmap.loadSchema(XSD_SCHEMA)
+          xmlschema = xmlmap.core.loadSchema(XSD_SCHEMA)
 
         """
         if self.XSD_SCHEMA:
@@ -612,7 +611,7 @@ def load_xmlobject_from_string(
     """Initialize an XmlObject from a string.
 
     If an xmlclass is specified, construct an instance of that class instead
-    of :class:`~neuxml.xmlmap.XmlObject`. It should be a subclass of XmlObject.
+    of :class:`~neuxml.xmlmap.core.XmlObject`. It should be a subclass of XmlObject.
     The constructor will be passed a single node.
 
     If validation is requested and the specified subclass of :class:`XmlObject`
@@ -621,9 +620,9 @@ def load_xmlobject_from_string(
     validation, and expect a Doctype declaration in the xml content.
 
     :param string: xml content to be loaded, as a string
-    :param xmlclass: subclass of :class:`~neuxml.xmlmap.XmlObject` to initialize
+    :param xmlclass: subclass of :class:`~neuxml.xmlmap.core.XmlObject` to initialize
     :param validate: boolean, enable validation; defaults to false
-    :rtype: instance of :class:`~neuxml.xmlmap.XmlObject` requested
+    :rtype: instance of :class:`~neuxml.xmlmap.core.XmlObject` requested
     """
     parser = _get_xmlparser(xmlclass=xmlclass, validate=validate, resolver=resolver)
     element = etree.fromstring(string, parser)

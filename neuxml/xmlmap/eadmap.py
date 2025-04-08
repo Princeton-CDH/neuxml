@@ -14,10 +14,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 from copy import deepcopy
 
-from neuxml import xmlmap
+from neuxml.xmlmap import core, fields
 
 # xmlmap objects for various sections of an ead
 # organized from smallest/lowest level to highest level
@@ -26,7 +25,7 @@ EAD_NAMESPACE = "urn:isbn:1-931666-22-9"
 XLINK_NAMESPACE = "http://www.w3.org/1999/xlink"
 
 
-class _EadBase(xmlmap.XmlObject):
+class _EadBase(core.XmlObject):
     """Common EAD namespace declarations, for use by all EAD XmlObject instances."""
 
     ROOT_NS = EAD_NAMESPACE
@@ -40,7 +39,7 @@ class _EadBase(xmlmap.XmlObject):
 
     # NOTE: this is not an EAD field, but simplifies using EAD objects with eXist
     # by making exist match-count totals available at any level
-    match_count = xmlmap.IntegerField("count(.//exist:match)")
+    match_count = fields.IntegerField("count(.//exist:match)")
     "Count of exist matches under the current field - for use with EAD and eXist-db"
 
 
@@ -48,27 +47,27 @@ class Note(_EadBase):
     """EAD note."""
 
     ROOT_NAME = "note"
-    content = xmlmap.NodeListField("e:p", xmlmap.XmlObject)  # ?? (to allow formatting)
+    content = fields.NodeListField("e:p", core.XmlObject)  # ?? (to allow formatting)
     "list of paragraphs - `p`"
 
 
 class Section(_EadBase):
     """Generic EAD section.  Currently only has mappings for head, paragraph, and note."""
 
-    head = xmlmap.NodeField("e:head", xmlmap.XmlObject)
+    head = fields.NodeField("e:head", core.XmlObject)
     "heading - `head`"
-    content = xmlmap.NodeListField("e:p", xmlmap.XmlObject)  # ?? (to allow formatting)
+    content = fields.NodeListField("e:p", core.XmlObject)  # ?? (to allow formatting)
     "list of paragraphs - `p`"
-    note = xmlmap.NodeField("e:note", Note)
+    note = fields.NodeField("e:note", Note)
     ":class:`Note`"
 
 
 class Heading(_EadBase):
     """Generic xml object for headings used under `controlaccess`"""
 
-    source = xmlmap.StringField("@source")
+    source = fields.StringField("@source")
     "source vocabulary for controlled term - `@source`"
-    value = xmlmap.StringField(".", normalize=True)
+    value = fields.StringField(".", normalize=True)
     "controlled term text value (content of the heading element)"
 
     def __str__(self):
@@ -83,32 +82,32 @@ class ControlledAccessHeadings(Section):
     Expected node element passed to constructor: `contolaccess`.
     """
 
-    person_name = xmlmap.NodeListField("e:persname", Heading)
+    person_name = fields.NodeListField("e:persname", Heading)
     "person name :class:`Heading` list - `persname`"
-    family_name = xmlmap.NodeListField("e:famname", Heading)
+    family_name = fields.NodeListField("e:famname", Heading)
     "family name :class:`Heading` list  - `famname`"
-    corporate_name = xmlmap.NodeListField("e:corpname", Heading)
+    corporate_name = fields.NodeListField("e:corpname", Heading)
     "corporate name :class:`Heading` list  - `corpname`"
-    subject = xmlmap.NodeListField("e:subject", Heading)
+    subject = fields.NodeListField("e:subject", Heading)
     "subject :class:`Heading` list - `subject`"
-    geographic_name = xmlmap.NodeListField("e:geogname", Heading)
+    geographic_name = fields.NodeListField("e:geogname", Heading)
     "geographic name :class:`Heading` list - `geogname`"
-    genre_form = xmlmap.NodeListField("e:genreform", Heading)
+    genre_form = fields.NodeListField("e:genreform", Heading)
     "genre or form :class:`Heading` list - `genreform`"
-    occupation = xmlmap.NodeListField("e:occupation", Heading)
+    occupation = fields.NodeListField("e:occupation", Heading)
     "occupation :class:`Heading` list - `occupation`"
-    function = xmlmap.NodeListField("e:function", Heading)
+    function = fields.NodeListField("e:function", Heading)
     "function :class:`Heading` list - `function`"
-    title = xmlmap.NodeListField("e:title", Heading)
+    title = fields.NodeListField("e:title", Heading)
     "title :class:`Heading` list - `title`"
     # catch-all to get any of these, in order
-    terms = xmlmap.NodeListField(
+    terms = fields.NodeListField(
         "e:corpname|e:famname|e:function|e:genreform|e:geogname|e:occupation|e:persname|e:subject|e:title",
         Heading,
     )
     "list of :class:`Heading` - any allowed control access terms, in whatever order they appear"
 
-    controlaccess = xmlmap.NodeListField("e:controlaccess", "self")
+    controlaccess = fields.NodeListField("e:controlaccess", "self")
     "list of :class:`ControlledAccessHeadings` - recursive mapping to `controlaccess`"
 
 
@@ -119,9 +118,9 @@ class Container(_EadBase):
     Expected node element passed to constructor: `did/container`.
     """
 
-    type = xmlmap.StringField("@type")
+    type = fields.StringField("@type")
     "type - `@type`"
-    value = xmlmap.StringField(".")
+    value = fields.StringField(".")
     "text value - (contents of the container element)"
 
     def __str__(self):
@@ -135,13 +134,13 @@ class DateField(_EadBase):
     in the text content of the element.
     """
 
-    normalized = xmlmap.StringField("@normal")
+    normalized = fields.StringField("@normal")
     "normalized form of the date - `@normal`"
-    calendar = xmlmap.StringField("@calendar")
+    calendar = fields.StringField("@calendar")
     "calendar (e.g. gregorian) - `@calendar`"
-    era = xmlmap.StringField("@era")
+    era = fields.StringField("@era")
     "era (e.g. ce) - `@era`"
-    value = xmlmap.StringField(".")
+    value = fields.StringField(".")
     "human-readable date - (contents of the date element)"
 
     def __str__(self):
@@ -152,22 +151,22 @@ class Unitid(_EadBase):
     """Unitid element"""
 
     ROOT_NAME = "unitid"
-    identifier = xmlmap.IntegerField("@identifier")
+    identifier = fields.IntegerField("@identifier")
     "machine-readable identifier - `@identifier`"
-    country_code = xmlmap.StringField("@countrycode")
+    country_code = fields.StringField("@countrycode")
     "country code - `@countrycode`"
-    repository_code = xmlmap.StringField("@repositorycode")
+    repository_code = fields.StringField("@repositorycode")
     "repository code - `@repositorycode`"
-    value = xmlmap.StringField(".")
+    value = fields.StringField(".")
     "human-readable unitid - (contents of the element)"
 
 
 class UnitTitle(_EadBase):
     ROOT_NAME = "unittitle"
-    unitdate = xmlmap.NodeField("e:unitdate", DateField)
+    unitdate = fields.NodeField("e:unitdate", DateField)
     "unit date"
 
-    text = xmlmap.StringField("text()")
+    text = fields.StringField("text()")
     "text in this field"
 
     @property
@@ -193,15 +192,15 @@ class DigitalArchivalObject(_EadBase):
     "Digital Archival Object (`dao` element)"
 
     ROOT_NAME = "dao"
-    audience = xmlmap.StringField("@audience")
+    audience = fields.StringField("@audience")
     "audience (internal or external)"
-    id = xmlmap.StringField("@id")
+    id = fields.StringField("@id")
     "identifier"
-    title = xmlmap.StringField("@xlink:title")
+    title = fields.StringField("@xlink:title")
     "title"
-    href = xmlmap.StringField("@xlink:href")
+    href = fields.StringField("@xlink:href")
     "url where the digital archival object can be accessed"
-    show = xmlmap.StringField("@xlink:show")
+    show = fields.StringField("@xlink:show")
     "attribute to determine how the resource should be displayed"
 
 
@@ -209,74 +208,74 @@ class DescriptiveIdentification(_EadBase):
     """Descriptive Information (`did` element) for materials in a component"""
 
     ROOT_NAME = "did"
-    unitid = xmlmap.NodeField("e:unitid", Unitid)
+    unitid = fields.NodeField("e:unitid", Unitid)
     ":class:`Unitid` - `unitid`"
-    unittitle = xmlmap.NodeField("e:unittitle", UnitTitle)
+    unittitle = fields.NodeField("e:unittitle", UnitTitle)
     "unit title - `unittitle`"
-    unitdate = xmlmap.NodeField(".//e:unitdate", DateField)
+    unitdate = fields.NodeField(".//e:unitdate", DateField)
     "unit date - `.//unitdate` can be anywhere under the DescriptiveIdentification"
-    physdesc = xmlmap.StringField("e:physdesc")
+    physdesc = fields.StringField("e:physdesc")
     "physical description - `physdesc`"
-    abstract = xmlmap.NodeField("e:abstract", xmlmap.XmlObject)
+    abstract = fields.NodeField("e:abstract", core.XmlObject)
     "abstract - `abstract`"
-    langmaterial = xmlmap.StringField("e:langmaterial")
+    langmaterial = fields.StringField("e:langmaterial")
     "language of materials - `langmaterial`"
-    origination = xmlmap.StringField("e:origination", normalize=True)
+    origination = fields.StringField("e:origination", normalize=True)
     "origination - `origination`"
-    location = xmlmap.StringField("e:physloc")
+    location = fields.StringField("e:physloc")
     "physical location - `physloc`"
-    container = xmlmap.NodeListField("e:container", Container)
+    container = fields.NodeListField("e:container", Container)
     ":class:`Container` - `container`"
-    dao_list = xmlmap.NodeListField("e:dao", DigitalArchivalObject)
+    dao_list = fields.NodeListField("e:dao", DigitalArchivalObject)
     "list of digital archival object references as :class:`DigitalArchivalObject`"
 
 
 class Component(_EadBase):
     """Generic component `cN` (`c1`-`c12`) element - a subordinate component of the materials"""
 
-    level = xmlmap.StringField("@level")
+    level = fields.StringField("@level")
     "level of the component - `@level`"
-    id = xmlmap.StringField("@id")
+    id = fields.StringField("@id")
     "component id - `@id`"
-    did = xmlmap.NodeField("e:did", DescriptiveIdentification)
+    did = fields.NodeField("e:did", DescriptiveIdentification)
     ":class:`DescriptiveIdentification` - `did`"
     # FIXME: these sections overlap significantly with those in archdesc; share/inherit?
-    use_restriction = xmlmap.NodeField("e:userestrict", Section)
+    use_restriction = fields.NodeField("e:userestrict", Section)
     "usage restrictions :class:`Section` - `userestrict`"
-    alternate_form = xmlmap.NodeField("e:altformavail", Section)
+    alternate_form = fields.NodeField("e:altformavail", Section)
     "alternative form available :class:`Section` - `altformavail`"
-    originals_location = xmlmap.NodeField("e:originalsloc", Section)
+    originals_location = fields.NodeField("e:originalsloc", Section)
     "location of originals :class:`Section` - `originalsloc`"
-    related_material = xmlmap.NodeField("e:relatedmaterial", Section)
+    related_material = fields.NodeField("e:relatedmaterial", Section)
     "related material :class:`Section` - `relatedmaterial`"
-    separated_material = xmlmap.NodeField("e:separatedmaterial", Section)
+    separated_material = fields.NodeField("e:separatedmaterial", Section)
     "separated material :class:`Section` - `separatedmaterial`"
-    acquisition_info = xmlmap.NodeField("e:acqinfo", Section)
+    acquisition_info = fields.NodeField("e:acqinfo", Section)
     "acquistion info :class:`Section` - `acqinfo`"
-    custodial_history = xmlmap.NodeField("e:custodhist", Section)
+    custodial_history = fields.NodeField("e:custodhist", Section)
     "custodial history :class:`Section` - `custodhist`"
-    preferred_citation = xmlmap.NodeField("e:prefercite", Section)
+    preferred_citation = fields.NodeField("e:prefercite", Section)
     "preferred citation :class:`Section` - `prefercite`"
-    biography_history = xmlmap.NodeField("e:bioghist", Section)
+    biography_history = fields.NodeField("e:bioghist", Section)
     "biography or history :class:`Section` - `bioghist`"
-    bibliography = xmlmap.NodeField("e:bibliography", Section)
+    bibliography = fields.NodeField("e:bibliography", Section)
     "bibliography :class:`Section` - `bibliograhy`"
-    scope_content = xmlmap.NodeField("e:scopecontent", Section)
+    scope_content = fields.NodeField("e:scopecontent", Section)
     "scope and content :class:`Section` - `scopecontent`"
-    process_info = xmlmap.NodeField("e:processinfo", Section)
+    process_info = fields.NodeField("e:processinfo", Section)
     "processing infomration :class:`Section` - `processinfo`"
-    arrangement = xmlmap.NodeField("e:arrangement", Section)
+    arrangement = fields.NodeField("e:arrangement", Section)
     "arrangement :class:`Section` - `arrangement`"
-    other = xmlmap.NodeField("e:otherfindaid", Section)
+    other = fields.NodeField("e:otherfindaid", Section)
     "other finding aid :class:`Section` - `otherfindaid`"
-    use_restriction = xmlmap.NodeField("e:userestrict", Section)
+    use_restriction = fields.NodeField("e:userestrict", Section)
     "use restrictions :class:`Section` - `userestrict`"
-    access_restriction = xmlmap.NodeField("e:accessrestrict", Section)
+    access_restriction = fields.NodeField("e:accessrestrict", Section)
     "access restrictions :class:`Section` - `accessrestrict`"
-    dao_list = xmlmap.NodeListField("e:dao", DigitalArchivalObject)
+    dao_list = fields.NodeListField("e:dao", DigitalArchivalObject)
     "list of digital archival object references as :class:`DigitalArchivalObject`"
 
-    c = xmlmap.NodeListField(
+    c = fields.NodeListField(
         "e:c02|e:c03|e:c04|e:c05|e:c06|e:c07|e:c08|e:c09|e:c10|e:c11|e:c12", "self"
     )
     "list of :class:`Component` - recursive mapping to any c-level 2-12; `c02|c03|c04|c05|c06|c07|c08|c09|c10|c11|c12`"
@@ -311,9 +310,9 @@ class SubordinateComponents(Section):
 
     ROOT_NAME = "dsc"
 
-    type = xmlmap.StringField("@type")
+    type = fields.StringField("@type")
     "type of component - `@type`"
-    c = xmlmap.NodeListField("e:c01", Component)
+    c = fields.NodeListField("e:c01", Component)
     "list of :class:`Component` - `c01`; list of c01 elements directly under this section"
 
     def hasSeries(self):
@@ -339,11 +338,11 @@ class Reference(_EadBase):
     """
 
     ROOT_NAME = "ref"
-    type = xmlmap.StringField("@xlink:type")
+    type = fields.StringField("@xlink:type")
     "link type - `xlink:type`"
-    target = xmlmap.StringField("@target")
+    target = fields.StringField("@target")
     "link target"
-    value = xmlmap.NodeField(".", xmlmap.XmlObject)
+    value = fields.NodeField(".", core.XmlObject)
     "text content of the reference"
     # TODO: add mappings for other relevant reference and link attributes
 
@@ -358,7 +357,7 @@ class PointerGroup(_EadBase):
     """
 
     ROOT_NAME = "ptrgrp"
-    ref = xmlmap.NodeListField("e:ref", Reference)
+    ref = fields.NodeListField("e:ref", Reference)
     "list of :class:`Reference` - references"
 
 
@@ -366,12 +365,12 @@ class IndexEntry(_EadBase):
     "Index entry in an archival description index."
 
     ROOT_NAME = "indexentry"
-    name = xmlmap.NodeField(
+    name = fields.NodeField(
         "e:corpname|e:famname|e:function|e:genreform|e:geogname|e:name|e:namegrp|e:occupation|e:persname|e:title|e:subject",
-        xmlmap.XmlObject,
+        core.XmlObject,
     )
     "access element, e.g. name or subject"
-    ptrgroup = xmlmap.NodeField("e:ptrgrp", PointerGroup)
+    ptrgroup = fields.NodeField("e:ptrgrp", PointerGroup)
     ":class:`PointerGroup` - group of references for this index entry"
 
 
@@ -382,10 +381,10 @@ class Index(Section):
     """
 
     ROOT_NAME = "index"
-    entry = xmlmap.NodeListField("e:indexentry", IndexEntry)
+    entry = fields.NodeListField("e:indexentry", IndexEntry)
     "list of :class:`IndexEntry` - `indexentry`; entry in the index"
-    id = xmlmap.StringField("@id")
-    note = xmlmap.NodeField("e:note", Note)
+    id = fields.StringField("@id")
+    note = fields.NodeField("e:note", Note)
     ":class:`Note`"
 
 
@@ -396,53 +395,53 @@ class ArchivalDescription(_EadBase):
     """
 
     ROOT_NAME = "archdesc"
-    did = xmlmap.NodeField("e:did", DescriptiveIdentification)
+    did = fields.NodeField("e:did", DescriptiveIdentification)
     "descriptive identification :class:`DescriptiveIdentification` - `did`"
-    origination = xmlmap.StringField("e:did/e:origination", normalize=True)
+    origination = fields.StringField("e:did/e:origination", normalize=True)
     "origination - `did/origination`"
-    unitid = xmlmap.NodeField("e:did/e:unitid", Unitid)
+    unitid = fields.NodeField("e:did/e:unitid", Unitid)
     ":class:`Unitid` - `did/unitid`"
-    extent = xmlmap.StringListField("e:did/e:physdesc/e:extent")
+    extent = fields.StringListField("e:did/e:physdesc/e:extent")
     "extent from the physical description - `did/physdesc/extent`"
-    langmaterial = xmlmap.StringField("e:did/e:langmaterial")
+    langmaterial = fields.StringField("e:did/e:langmaterial")
     "language of the materials - `did/langmaterial`"
-    location = xmlmap.StringField("e:did/e:physloc")
+    location = fields.StringField("e:did/e:physloc")
     "physical location - `did/physloc`"
-    access_restriction = xmlmap.NodeField("e:accessrestrict", Section)
+    access_restriction = fields.NodeField("e:accessrestrict", Section)
     "access restrictions :class:`Section` - `accessrestrict`"
-    use_restriction = xmlmap.NodeField("e:userestrict", Section)
+    use_restriction = fields.NodeField("e:userestrict", Section)
     "use restrictions :class:`Section` - `userestrict`"
-    alternate_form = xmlmap.NodeField("e:altformavail", Section)
+    alternate_form = fields.NodeField("e:altformavail", Section)
     "alternative form available :class:`Section` - `altformavail`"
-    originals_location = xmlmap.NodeField("e:originalsloc", Section)
+    originals_location = fields.NodeField("e:originalsloc", Section)
     "location of originals :class:`Section` - `originalsloc`"
-    related_material = xmlmap.NodeField("e:relatedmaterial", Section)
+    related_material = fields.NodeField("e:relatedmaterial", Section)
     "related material :class:`Section` - `relatedmaterial`"
-    separated_material = xmlmap.NodeField("e:separatedmaterial", Section)
+    separated_material = fields.NodeField("e:separatedmaterial", Section)
     "separated material :class:`Section` - `separatedmaterial`"
-    acquisition_info = xmlmap.NodeField("e:acqinfo", Section)
+    acquisition_info = fields.NodeField("e:acqinfo", Section)
     "acquistion info :class:`Section` - `acqinfo`"
-    custodial_history = xmlmap.NodeField("e:custodhist", Section)
+    custodial_history = fields.NodeField("e:custodhist", Section)
     "custodial history :class:`Section` - `custodhist`"
-    preferred_citation = xmlmap.NodeField("e:prefercite", Section)
+    preferred_citation = fields.NodeField("e:prefercite", Section)
     "preferred citation :class:`Section` - `prefercite`"
-    biography_history = xmlmap.NodeField("e:bioghist", Section)
+    biography_history = fields.NodeField("e:bioghist", Section)
     "biography or history :class:`Section` - `bioghist`"
-    bibliography = xmlmap.NodeField("e:bibliography", Section)
+    bibliography = fields.NodeField("e:bibliography", Section)
     "bibliography :class:`Section` - `bibliograhy`"
-    scope_content = xmlmap.NodeField("e:scopecontent", Section)
+    scope_content = fields.NodeField("e:scopecontent", Section)
     "scope and content :class:`Section` - `scopecontent`"
-    process_info = xmlmap.NodeField("e:archdesc/e:processinfo", Section)
+    process_info = fields.NodeField("e:archdesc/e:processinfo", Section)
     "processing information :class:`Section` - `processinfo`"
-    arrangement = xmlmap.NodeField("e:arrangement", Section)
+    arrangement = fields.NodeField("e:arrangement", Section)
     "arrangement :class:`Section` - `arrangement`"
-    other = xmlmap.NodeField("e:otherfindaid", Section)
+    other = fields.NodeField("e:otherfindaid", Section)
     "other finding aid :class:`Section` - `otherfindaid`"
-    controlaccess = xmlmap.NodeField("e:controlaccess", ControlledAccessHeadings)
+    controlaccess = fields.NodeField("e:controlaccess", ControlledAccessHeadings)
     ":class:`ControlledAccessHeadings` - `controlaccess`; subject terms, names, etc."
-    index = xmlmap.NodeListField("e:index", Index)
+    index = fields.NodeListField("e:index", Index)
     "list of :class:`Index` - `index`; e.g., index of selected correspondents"
-    dao_list = xmlmap.NodeListField("e:dao", DigitalArchivalObject)
+    dao_list = fields.NodeListField("e:dao", DigitalArchivalObject)
     "list of digital archival object references as :class:`DigitalArchivalObject`"
 
 
@@ -453,7 +452,7 @@ class Address(_EadBase):
     """
 
     ROOT_NAME = "address"
-    lines = xmlmap.StringListField("e:addressline")
+    lines = fields.StringListField("e:addressline")
     "list of lines in an address - `line`"
 
 
@@ -464,11 +463,11 @@ class PublicationStatement(_EadBase):
     """
 
     ROOT_NAME = "publicationstmt"
-    date = xmlmap.NodeField("e:date", DateField)
+    date = fields.NodeField("e:date", DateField)
     ":class:`DateField` - `date`"
-    publisher = xmlmap.StringField("e:publisher")
+    publisher = fields.StringField("e:publisher")
     "publisher - `publisher`"
-    address = xmlmap.NodeField("e:address", Address)
+    address = fields.NodeField("e:address", Address)
     "address of publication/publisher - `address`"
 
 
@@ -478,11 +477,11 @@ class ProfileDescription(_EadBase):
     """
 
     ROOT_NAME = "profiledesc"
-    date = xmlmap.NodeField("e:creation/e:date", DateField)
+    date = fields.NodeField("e:creation/e:date", DateField)
     ":class:`DateField` - `creation/date`"
-    languages = xmlmap.StringListField("e:langusage/e:language")
+    languages = fields.StringListField("e:langusage/e:language")
     "language information - `langusage/language`"
-    language_codes = xmlmap.StringListField("e:langusage/e:language/@langcode")
+    language_codes = fields.StringListField("e:langusage/e:language/@langcode")
     "language codes - `langusage/language/@langcode`"
 
 
@@ -493,7 +492,7 @@ class FileDescription(_EadBase):
     """
 
     ROOT_NAME = "filedesc"
-    publication = xmlmap.NodeField("e:publicationstmt", PublicationStatement)
+    publication = fields.NodeField("e:publicationstmt", PublicationStatement)
     "publication information - `publicationstmt`"
 
 
@@ -504,20 +503,20 @@ class EadId(_EadBase):
     """
 
     ROOT_NAME = "eadid"
-    country = xmlmap.StringField("@countrycode")
+    country = fields.StringField("@countrycode")
     "country code - `@countrycode`"
-    maintenance_agency = xmlmap.StringField("@mainagencycode")
+    maintenance_agency = fields.StringField("@mainagencycode")
     "maintenance agency - `@mainagencycode`"
-    url = xmlmap.StringField("@url")
+    url = fields.StringField("@url")
     "url - `@url`"
-    identifier = xmlmap.StringField("@identifier")
+    identifier = fields.StringField("@identifier")
     "identifier - `@identifier`"
-    value = xmlmap.StringField(".", normalize=True)
+    value = fields.StringField(".", normalize=True)
     "text content of the eadid node"
 
 
 class EncodedArchivalDescription(_EadBase):
-    """:class:`~neuxml.xmlmap.XmlObject` for an Encoded Archival Description
+    """:class:`~neuxml.core.XmlObject` for an Encoded Archival Description
     (EAD) Finding Aid (Schema-based).  All XPaths use the EAD namespace; this
     class can not be used with non-namespaced, DTD-based EAD.
 
@@ -526,35 +525,35 @@ class EncodedArchivalDescription(_EadBase):
 
     XSD_SCHEMA = "http://www.loc.gov/ead/ead.xsd"
 
-    id = xmlmap.StringField("@id")
+    id = fields.StringField("@id")
     "top-level id attribute - `@id`; preferable to use eadid"
-    eadid = xmlmap.NodeField("e:eadheader/e:eadid", EadId)
+    eadid = fields.NodeField("e:eadheader/e:eadid", EadId)
     "ead id :class:`EadId` - `eadheader/eadid`"
     # mappings for fields common to access or display as top-level information
-    title = xmlmap.NodeField(
-        "e:eadheader/e:filedesc/e:titlestmt/e:titleproper", xmlmap.XmlObject
+    title = fields.NodeField(
+        "e:eadheader/e:filedesc/e:titlestmt/e:titleproper", core.XmlObject
     )
     "record title - `eadheader/filedesc/titlestmt/titleproper`"
-    author = xmlmap.StringField("e:eadheader/e:filedesc/e:titlestmt/e:author")
+    author = fields.StringField("e:eadheader/e:filedesc/e:titlestmt/e:author")
     "record author - `eadheader/filedesc/titlestmt/author`"
-    unittitle = xmlmap.NodeField(
+    unittitle = fields.NodeField(
         'e:archdesc[@level="collection"]/e:did/e:unittitle', UnitTitle
     )
     """unit title for the archive - `archdesc[@level="collection"]/did/unittitle`"""
-    physical_desc = xmlmap.StringField(
+    physical_desc = fields.StringField(
         'e:archdesc[@level="collection"]/e:did/e:physdesc'
     )
     """collection level physical description - `archdesc[@level="collection"]/did/physdesc`"""
-    abstract = xmlmap.NodeField(
-        'e:archdesc[@level="collection"]/e:did/e:abstract', xmlmap.XmlObject
+    abstract = fields.NodeField(
+        'e:archdesc[@level="collection"]/e:did/e:abstract', core.XmlObject
     )
     """collection level abstract - `archdesc[@level="collection"]/did/abstract`"""
-    archdesc = xmlmap.NodeField("e:archdesc", ArchivalDescription)
+    archdesc = fields.NodeField("e:archdesc", ArchivalDescription)
     ":class:`ArchivalDescription` - `archdesc`"
     # dsc is under archdesc, but is a major section - mapping at top-level for convenience
-    dsc = xmlmap.NodeField("e:archdesc/e:dsc", SubordinateComponents)
+    dsc = fields.NodeField("e:archdesc/e:dsc", SubordinateComponents)
     ":class:`SubordinateComponents` `archdesc/dsc`; accessible at top-level for convenience"
-    file_desc = xmlmap.NodeField("e:eadheader/e:filedesc", FileDescription)
+    file_desc = fields.NodeField("e:eadheader/e:filedesc", FileDescription)
     ":class:`FileDescription` - `filedesc`"
-    profiledesc = xmlmap.NodeField("e:eadheader/e:profiledesc", ProfileDescription)
+    profiledesc = fields.NodeField("e:eadheader/e:profiledesc", ProfileDescription)
     ":class:`ProfileDescription` - `profiledesc`"

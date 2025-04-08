@@ -20,7 +20,7 @@ from datetime import datetime, date
 import tempfile
 import unittest
 
-import neuxml.xmlmap.core as xmlmap
+from neuxml.xmlmap import core, fields
 
 
 class TestFields(unittest.TestCase):
@@ -56,24 +56,24 @@ class TestFields(unittest.TestCase):
         # parseString wants a url. let's give it a proper one.
         url = "%s#%s.%s" % (__file__, self.__class__.__name__, "FIXTURE_TEXT")
 
-        self.fixture = xmlmap.parseString(self.FIXTURE_TEXT, url)
+        self.fixture = core.parseString(self.FIXTURE_TEXT, url)
 
         self.rel_url = "%s#%s" % (__file__, self.__class__.__name__)
 
     def _empty_fixture(self):
-        return xmlmap.parseString("<root/>", self.rel_url)
+        return core.parseString("<root/>", self.rel_url)
 
     def testInvalidXpath(self):
-        self.assertRaises(Exception, xmlmap.StringField, '["')
+        self.assertRaises(Exception, fields.StringField, '["')
 
     def testNodeField(self):
-        class TestSubobject(xmlmap.XmlObject):
+        class TestSubobject(core.XmlObject):
             ROOT_NAME = "bar"
-            val = xmlmap.StringField("baz")
+            val = fields.StringField("baz")
 
-        class TestObject(xmlmap.XmlObject):
-            child = xmlmap.NodeField("bar[1]", TestSubobject, required=True)
-            missing = xmlmap.NodeField("missing", TestSubobject)
+        class TestObject(core.XmlObject):
+            child = fields.NodeField("bar[1]", TestSubobject, required=True)
+            missing = fields.NodeField("missing", TestSubobject)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.child.val, "42")
@@ -88,8 +88,8 @@ class TestFields(unittest.TestCase):
         self.assertTrue(obj._fields["child"].required)
 
         # test create_foo functionality
-        class CreateTestObject(xmlmap.XmlObject):
-            missing = xmlmap.NodeField("missing", TestSubobject)
+        class CreateTestObject(core.XmlObject):
+            missing = fields.NodeField("missing", TestSubobject)
 
         obj = CreateTestObject(self.fixture)
         self.assertTrue(obj.missing is None)
@@ -101,8 +101,8 @@ class TestFields(unittest.TestCase):
         self.assertEqual(obj.missing, None)
 
         # test DEPRECATED instantiate on get hack
-        class GetTestObject(xmlmap.XmlObject):
-            missing = xmlmap.NodeField(
+        class GetTestObject(core.XmlObject):
+            missing = fields.NodeField(
                 "missing", TestSubobject, instantiate_on_get=True
             )
 
@@ -113,12 +113,12 @@ class TestFields(unittest.TestCase):
         )
 
     def testNodeListField(self):
-        class TestSubobject(xmlmap.XmlObject):
-            val = xmlmap.IntegerField("baz")
+        class TestSubobject(core.XmlObject):
+            val = fields.IntegerField("baz")
 
-        class TestObject(xmlmap.XmlObject):
-            children = xmlmap.NodeListField("bar", TestSubobject)
-            missing = xmlmap.NodeListField("missing", TestSubobject, required=False)
+        class TestObject(core.XmlObject):
+            children = fields.NodeListField("bar", TestSubobject)
+            missing = fields.NodeListField("missing", TestSubobject, required=False)
 
         obj = TestObject(self.fixture)
         child_vals = [child.val for child in obj.children]
@@ -134,19 +134,19 @@ class TestFields(unittest.TestCase):
         self.assertTrue(obj.children.is_empty())
 
     def testStringField(self):
-        class TestObject(xmlmap.XmlObject):
-            val = xmlmap.StringField("bar[1]/baz", required=True)
-            empty = xmlmap.StringField("empty_field", required=False)
-            missing = xmlmap.StringField("missing")
-            missing_ns = xmlmap.StringField("ex:missing")
-            missing_att = xmlmap.StringField("@missing")
-            missing_att_ns = xmlmap.StringField("@ex:missing")
-            sub_missing = xmlmap.StringField("bar[1]/missing")
-            multilevel_missing = xmlmap.StringField("missing_parent/missing_child")
-            mixed = xmlmap.StringField("bar[1]")
-            id = xmlmap.StringField("@id")
-            spacey = xmlmap.StringField("spacey")
-            normal_spacey = xmlmap.StringField("spacey", normalize=True)
+        class TestObject(core.XmlObject):
+            val = fields.StringField("bar[1]/baz", required=True)
+            empty = fields.StringField("empty_field", required=False)
+            missing = fields.StringField("missing")
+            missing_ns = fields.StringField("ex:missing")
+            missing_att = fields.StringField("@missing")
+            missing_att_ns = fields.StringField("@ex:missing")
+            sub_missing = fields.StringField("bar[1]/missing")
+            multilevel_missing = fields.StringField("missing_parent/missing_child")
+            mixed = fields.StringField("bar[1]")
+            id = fields.StringField("@id")
+            spacey = fields.StringField("spacey")
+            normal_spacey = fields.StringField("spacey", normalize=True)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.val, "42")
@@ -247,20 +247,20 @@ class TestFields(unittest.TestCase):
 
     def testTextNode(self):
         # special case for text()
-        class TextObject(xmlmap.XmlObject):
-            text_node = xmlmap.StringField("text()")
-            nested_text = xmlmap.StringField('nest[@type="feather"]/text()')
-            missing_text = xmlmap.StringField('missing[@type="foo"]/bar/text()')
-            m_nested_attr = xmlmap.StringField('missing[@type="foo"]/bar/@label')
-            m_nested_text = xmlmap.StringField('missing[@type="foo"]/baz')
-            nested_child_pred = xmlmap.StringField(
+        class TextObject(core.XmlObject):
+            text_node = fields.StringField("text()")
+            nested_text = fields.StringField('nest[@type="feather"]/text()')
+            missing_text = fields.StringField('missing[@type="foo"]/bar/text()')
+            m_nested_attr = fields.StringField('missing[@type="foo"]/bar/@label')
+            m_nested_text = fields.StringField('missing[@type="foo"]/baz')
+            nested_child_pred = fields.StringField(
                 'missing[@type="foo"][baz="bah"]/txt'
             )
 
         # parseString wants a url. let's give it a proper one.
         url = "%s#%s.%s" % (__file__, self.__class__.__name__, "TEXT_XML_FIXTURES")
         xml = """<text>some text<nest type='feather'>robin</nest></text>"""
-        obj = TextObject(xmlmap.parseString(xml, url))
+        obj = TextObject(core.parseString(xml, url))
 
         self.assertEqual("some text", obj.text_node)
 
@@ -286,10 +286,10 @@ class TestFields(unittest.TestCase):
         self.assertEqual("tra", obj.missing_text)
 
     def testStringListField(self):
-        class TestObject(xmlmap.XmlObject):
-            vals = xmlmap.StringListField("bar/baz", required=True)
-            missing = xmlmap.StringListField("missing")
-            spacey = xmlmap.StringListField("spacey", normalize=True)
+        class TestObject(core.XmlObject):
+            vals = fields.StringListField("bar/baz", required=True)
+            missing = fields.StringListField("missing")
+            spacey = fields.StringListField("spacey", normalize=True)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.vals, ["42", "13"])
@@ -308,11 +308,11 @@ class TestFields(unittest.TestCase):
         self.assertTrue(obj._fields["vals"].required)
 
     def testIntegerField(self):
-        class TestObject(xmlmap.XmlObject):
-            val = xmlmap.IntegerField("bar[2]/baz", required=True)
-            count = xmlmap.IntegerField("count(//bar)")
-            missing = xmlmap.IntegerField("missing")
-            nan = xmlmap.IntegerField("@id")
+        class TestObject(core.XmlObject):
+            val = fields.IntegerField("bar[2]/baz", required=True)
+            count = fields.IntegerField("count(//bar)")
+            missing = fields.IntegerField("missing")
+            nan = fields.IntegerField("@id")
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.val, 13)
@@ -332,9 +332,9 @@ class TestFields(unittest.TestCase):
         self.assertTrue(obj._fields["val"].required)
 
     def testIntegerListField(self):
-        class TestObject(xmlmap.XmlObject):
-            vals = xmlmap.IntegerListField("bar/baz")
-            missing = xmlmap.IntegerListField("missing", required=False)
+        class TestObject(core.XmlObject):
+            vals = fields.IntegerListField("bar/baz")
+            missing = fields.IntegerListField("missing", required=False)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.vals, [42, 13])
@@ -344,11 +344,11 @@ class TestFields(unittest.TestCase):
         self.assertFalse(obj._fields["missing"].required)
 
     def testFloatField(self):
-        class TestObject(xmlmap.XmlObject):
-            val = xmlmap.IntegerField("bar[2]/baz", required=True)
-            count = xmlmap.IntegerField("count(//bar)")
-            missing = xmlmap.IntegerField("missing")
-            nan = xmlmap.IntegerField("@id")
+        class TestObject(core.XmlObject):
+            val = fields.IntegerField("bar[2]/baz", required=True)
+            count = fields.IntegerField("count(//bar)")
+            missing = fields.IntegerField("missing")
+            nan = fields.IntegerField("@id")
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.val, 13.0)
@@ -368,9 +368,9 @@ class TestFields(unittest.TestCase):
         self.assertTrue(obj._fields["val"].required)
 
     def testFloatListField(self):
-        class TestObject(xmlmap.XmlObject):
-            vals = xmlmap.IntegerListField("bar/baz")
-            missing = xmlmap.IntegerListField("missing", required=False)
+        class TestObject(core.XmlObject):
+            vals = fields.IntegerListField("bar/baz")
+            missing = fields.IntegerListField("missing", required=False)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.vals, [42.0, 13.0])
@@ -380,9 +380,9 @@ class TestFields(unittest.TestCase):
         self.assertFalse(obj._fields["missing"].required)
 
     def testItemField(self):
-        class TestObject(xmlmap.XmlObject):
-            letter = xmlmap.ItemField("substring(bar/baz, 1, 1)")
-            missing = xmlmap.ItemField("missing", required=False)
+        class TestObject(core.XmlObject):
+            letter = fields.ItemField("substring(bar/baz, 1, 1)")
+            missing = fields.ItemField("missing", required=False)
 
         obj = TestObject(self.fixture)
         self.assertEqual(obj.letter, "4")
@@ -392,18 +392,18 @@ class TestFields(unittest.TestCase):
         self.assertFalse(obj._fields["missing"].required)
 
     def testBooleanField(self):
-        class TestObject(xmlmap.XmlObject):
-            txt_bool1 = xmlmap.SimpleBooleanField(
+        class TestObject(core.XmlObject):
+            txt_bool1 = fields.SimpleBooleanField(
                 "boolean/text1", "yes", "no", required=False
             )
-            txt_bool2 = xmlmap.SimpleBooleanField("boolean/text2", "yes", "no")
-            num_bool1 = xmlmap.SimpleBooleanField("boolean/num1", 1, 0)
-            num_bool2 = xmlmap.SimpleBooleanField("boolean/num2", 1, 0)
-            opt_elem_bool = xmlmap.SimpleBooleanField("boolean/opt", "yes", None)
-            opt_attr_bool = xmlmap.SimpleBooleanField("boolean/@opt", "yes", None)
+            txt_bool2 = fields.SimpleBooleanField("boolean/text2", "yes", "no")
+            num_bool1 = fields.SimpleBooleanField("boolean/num1", 1, 0)
+            num_bool2 = fields.SimpleBooleanField("boolean/num2", 1, 0)
+            opt_elem_bool = fields.SimpleBooleanField("boolean/opt", "yes", None)
+            opt_attr_bool = fields.SimpleBooleanField("boolean/@opt", "yes", None)
             # xml not present at all should not result in errors
-            missing_bool = xmlmap.SimpleBooleanField("boolean/missing", "yes", None)
-            missing_bool2 = xmlmap.SimpleBooleanField("boolean/missing", "yes", "no")
+            missing_bool = fields.SimpleBooleanField("boolean/missing", "yes", None)
+            missing_bool2 = fields.SimpleBooleanField("boolean/missing", "yes", "no")
 
         # obj = TestObject(self.fixture.documentElement)
         obj = TestObject(self.fixture)
@@ -449,9 +449,9 @@ class TestFields(unittest.TestCase):
         self.assertFalse(obj._fields["txt_bool1"].required)
 
     def testDateTimeField(self):
-        class TestObject(xmlmap.XmlObject):
-            date = xmlmap.DateTimeField("datetime")
-            dates = xmlmap.DateTimeListField("datetime")
+        class TestObject(core.XmlObject):
+            date = fields.DateTimeField("datetime")
+            dates = fields.DateTimeListField("datetime")
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
@@ -473,9 +473,9 @@ class TestFields(unittest.TestCase):
         self.assertEqual(obj.node.xpath("string(datetime)"), today.isoformat())
 
     def testFormattedDateTimeField(self):
-        class TestObject(xmlmap.XmlObject):
-            date = xmlmap.DateTimeField("datetime", format="%Y-%m-%dT%H:%M:%S")
-            dates = xmlmap.DateTimeListField("datetime", format="%Y-%m-%dT%H:%M:%S.%f")
+        class TestObject(core.XmlObject):
+            date = fields.DateTimeField("datetime", format="%Y-%m-%dT%H:%M:%S")
+            dates = fields.DateTimeListField("datetime", format="%Y-%m-%dT%H:%M:%S.%f")
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
@@ -499,9 +499,9 @@ class TestFields(unittest.TestCase):
         )
 
     def testDateField(self):
-        class TestObject(xmlmap.XmlObject):
-            date = xmlmap.DateField("date")
-            dates = xmlmap.DateListField("date", format="%Y/%m/%d")
+        class TestObject(core.XmlObject):
+            date = fields.DateField("date")
+            dates = fields.DateListField("date", format="%Y/%m/%d")
 
         obj = TestObject(self.fixture)
         # fields should be datetime objects
@@ -548,16 +548,16 @@ class TestFields(unittest.TestCase):
 
         valid_xml = "<a><b>some text</b></a>"
 
-        class TestSchemaObject(xmlmap.XmlObject):
+        class TestSchemaObject(core.XmlObject):
             XSD_SCHEMA = FILE.name
-            txt = xmlmap.SchemaField("/a/b", "BType", required=True)
+            txt = fields.SchemaField("/a/b", "BType", required=True)
 
-        valid = xmlmap.load_xmlobject_from_string(valid_xml, TestSchemaObject)
+        valid = core.load_xmlobject_from_string(valid_xml, TestSchemaObject)
         self.assertEqual(
             "some text", valid.txt, "schema field value is accessible as text"
         )
         self.assertTrue(
-            isinstance(valid._fields["txt"], xmlmap.StringField),
+            isinstance(valid._fields["txt"], fields.StringField),
             "txt SchemaField with base string in schema initialized as StringField",
         )
         self.assertEqual(
@@ -572,10 +572,10 @@ class TestFields(unittest.TestCase):
         FILE.close()
 
     def testPredicatedSetting(self):
-        class TestObject(xmlmap.XmlObject):
-            attr_pred = xmlmap.StringField('pred[@a="foo"]')
-            layered_pred = xmlmap.StringField('pred[@a="foo"]/pred[@b="bar"]')
-            nested_pred = xmlmap.StringField('pred[pred[@a="foo"]]/val')
+        class TestObject(core.XmlObject):
+            attr_pred = fields.StringField('pred[@a="foo"]')
+            layered_pred = fields.StringField('pred[@a="foo"]/pred[@b="bar"]')
+            nested_pred = fields.StringField('pred[pred[@a="foo"]]/val')
 
         obj = TestObject(self.fixture)
 
@@ -592,8 +592,8 @@ class TestFields(unittest.TestCase):
 
     def test_delete_constructed_xpath(self):
         # test deleting auto-constructed nodes
-        class TestObject(xmlmap.XmlObject):
-            multilevel_missing = xmlmap.StringField("missing_parent/missing_child")
+        class TestObject(core.XmlObject):
+            multilevel_missing = fields.StringField("missing_parent/missing_child")
 
         # deleting a nested xpath element should delete parent nodes
         obj = TestObject(self._empty_fixture())
@@ -601,14 +601,14 @@ class TestFields(unittest.TestCase):
         del obj.multilevel_missing
         self.assertEqual(0, obj.node.xpath("count(missing_parent)"))
 
-        class PredicateObject(xmlmap.XmlObject):
-            text = xmlmap.StringField('missing[@type="foo"]/bar/text()')
-            nested_attr = xmlmap.StringField(
+        class PredicateObject(core.XmlObject):
+            text = fields.StringField('missing[@type="foo"]/bar/text()')
+            nested_attr = fields.StringField(
                 'missing[@type="foo"]/bar[@type="foobar"]/@label'
             )
-            nested_text = xmlmap.StringField('missing[@type="foo"]/baz')
-            child_pred = xmlmap.StringField('missing[@type="foo"][baz/@type="bah"]/txt')
-            nested_pred = xmlmap.StringField(
+            nested_text = fields.StringField('missing[@type="foo"]/baz')
+            child_pred = fields.StringField('missing[@type="foo"][baz/@type="bah"]/txt')
+            nested_pred = fields.StringField(
                 'foo[@id="a"]/bar[@id="b"]/baz[@id="c"]/qux'
             )
 
@@ -661,18 +661,18 @@ class TestFields(unittest.TestCase):
 
 
 # tests for settable listfields
-class SubList(xmlmap.XmlObject):
+class SubList(core.XmlObject):
     ROOT_NAME = "sub"
-    id = xmlmap.StringField("@id")
-    parts = xmlmap.StringListField("part")
+    id = fields.StringField("@id")
+    parts = fields.StringListField("part")
 
 
-class ListTestObject(xmlmap.XmlObject):
-    str = xmlmap.StringListField("baz")
-    int = xmlmap.IntegerListField("bar")
-    letters = xmlmap.StringListField("l")
-    empty = xmlmap.StringListField("missing")
-    nodes = xmlmap.NodeListField("sub", SubList)
+class ListTestObject(core.XmlObject):
+    str = fields.StringListField("baz")
+    int = fields.IntegerListField("bar")
+    letters = fields.StringListField("l")
+    empty = fields.StringListField("missing")
+    nodes = fields.NodeListField("sub", SubList)
 
 
 class TestNodeList(unittest.TestCase):
@@ -704,7 +704,7 @@ class TestNodeList(unittest.TestCase):
         # parseString wants a url. let's give it a proper one.
         url = "%s#%s.%s" % (__file__, self.__class__.__name__, "FIXTURE_TEXT")
 
-        self.fixture = xmlmap.parseString(self.FIXTURE_TEXT, url)
+        self.fixture = core.parseString(self.FIXTURE_TEXT, url)
         self.obj = ListTestObject(self.fixture)
 
     def test_index_checking(self):

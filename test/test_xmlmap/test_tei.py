@@ -16,12 +16,12 @@
 
 #!/usr/bin/env python
 
-from __future__ import unicode_literals
 import unittest
 from os import path
 
-from neuxml.xmlmap import load_xmlobject_from_file, NodeListField
 from neuxml.xmlmap import teimap
+from neuxml.xmlmap.core import load_xmlobject_from_file
+from neuxml.xmlmap.fields import NodeListField
 
 
 class ExtendedTei(teimap.Tei):
