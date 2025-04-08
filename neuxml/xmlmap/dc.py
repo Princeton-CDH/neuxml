@@ -24,16 +24,20 @@ except ImportError:
 
 from neuxml import xmlmap
 
+
 class _BaseDublinCore(xmlmap.XmlObject):
-    'Base Dublin Core class for common namespace declarations'
-    ROOT_NS = 'http://www.openarchives.org/OAI/2.0/oai_dc/'
-    ROOT_NAMESPACES = { 'oai_dc' : ROOT_NS,
-                        'dc': 'http://purl.org/dc/elements/1.1/'}
+    "Base Dublin Core class for common namespace declarations"
+
+    ROOT_NS = "http://www.openarchives.org/OAI/2.0/oai_dc/"
+    ROOT_NAMESPACES = {"oai_dc": ROOT_NS, "dc": "http://purl.org/dc/elements/1.1/"}
+
 
 class DublinCoreElement(_BaseDublinCore):
-    'Generic Dublin Core element with access to element name and value'
-    name = xmlmap.StringField('local-name(.)')
-    value = xmlmap.StringField('.')
+    "Generic Dublin Core element with access to element name and value"
+
+    name = xmlmap.StringField("local-name(.)")
+    value = xmlmap.StringField(".")
+
 
 class DublinCore(_BaseDublinCore):
     """
@@ -43,83 +47,75 @@ class DublinCore(_BaseDublinCore):
     XmlObject will be created.
     """
 
-    ROOT_NAME = 'dc'
+    ROOT_NAME = "dc"
 
     XSD_SCHEMA = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
 
     contributor = xmlmap.StringField("dc:contributor", required=False)
-    contributor_list = xmlmap.StringListField("dc:contributor",
-                                              verbose_name='Contributors')
+    contributor_list = xmlmap.StringListField(
+        "dc:contributor", verbose_name="Contributors"
+    )
 
     coverage = xmlmap.StringField("dc:coverage", required=False)
-    coverage_list = xmlmap.StringListField("dc:coverage",
-                                           verbose_name='Coverage') #?
+    coverage_list = xmlmap.StringListField("dc:coverage", verbose_name="Coverage")  # ?
 
     creator = xmlmap.StringField("dc:creator", required=False)
-    creator_list = xmlmap.StringListField("dc:creator",
-                                          verbose_name='Creators')
+    creator_list = xmlmap.StringListField("dc:creator", verbose_name="Creators")
 
     date = xmlmap.StringField("dc:date", required=False)
-    date_list = xmlmap.StringListField("dc:date",
-                                       verbose_name='Dates')
+    date_list = xmlmap.StringListField("dc:date", verbose_name="Dates")
 
     description = xmlmap.StringField("dc:description", required=False)
-    description_list = xmlmap.StringListField("dc:description",
-                                              verbose_name='Descriptions')
+    description_list = xmlmap.StringListField(
+        "dc:description", verbose_name="Descriptions"
+    )
 
     format = xmlmap.StringField("dc:format", required=False)
-    format_list = xmlmap.StringListField("dc:format",
-                                         verbose_name='Formats')
+    format_list = xmlmap.StringListField("dc:format", verbose_name="Formats")
 
     identifier = xmlmap.StringField("dc:identifier", required=False)
-    identifier_list = xmlmap.StringListField("dc:identifier",
-                                             verbose_name='Identifiers')
+    identifier_list = xmlmap.StringListField(
+        "dc:identifier", verbose_name="Identifiers"
+    )
 
     language = xmlmap.StringField("dc:language", required=False)
-    language_list = xmlmap.StringListField("dc:language",
-                                           verbose_name='Languages')
+    language_list = xmlmap.StringListField("dc:language", verbose_name="Languages")
 
     publisher = xmlmap.StringField("dc:publisher", required=False)
-    publisher_list = xmlmap.StringListField("dc:publisher",
-                                            verbose_name='Publishers')
+    publisher_list = xmlmap.StringListField("dc:publisher", verbose_name="Publishers")
 
     relation = xmlmap.StringField("dc:relation", required=False)
-    relation_list = xmlmap.StringListField("dc:relation",
-                                           verbose_name='Relations')
+    relation_list = xmlmap.StringListField("dc:relation", verbose_name="Relations")
 
     rights = xmlmap.StringField("dc:rights", required=False)
-    rights_list = xmlmap.StringListField("dc:rights",
-                                         verbose_name='Rights')
+    rights_list = xmlmap.StringListField("dc:rights", verbose_name="Rights")
 
     source = xmlmap.StringField("dc:source", required=False)
-    source_list = xmlmap.StringListField("dc:source",
-                                         verbose_name='Sources')
+    source_list = xmlmap.StringListField("dc:source", verbose_name="Sources")
 
     subject = xmlmap.StringField("dc:subject", required=False)
-    subject_list = xmlmap.StringListField("dc:subject",
-                                          verbose_name='Subjects')
+    subject_list = xmlmap.StringListField("dc:subject", verbose_name="Subjects")
 
     title = xmlmap.StringField("dc:title", required=False)
-    title_list = xmlmap.StringListField("dc:title",
-                                        verbose_name='Titles')
+    title_list = xmlmap.StringListField("dc:title", verbose_name="Titles")
 
     type = xmlmap.StringField("dc:type", required=False)
-    type_list = xmlmap.StringListField("dc:type",
-                                       verbose_name='Types')
+    type_list = xmlmap.StringListField("dc:type", verbose_name="Types")
 
-    elements = xmlmap.NodeListField('dc:*', DublinCoreElement)
-    'list of all DC elements as instances of :class:`DublinCoreElement`'
+    elements = xmlmap.NodeListField("dc:*", DublinCoreElement)
+    "list of all DC elements as instances of :class:`DublinCoreElement`"
 
     # RDF declaration of the Recommended DCMI types
-    DCMI_TYPES_RDF = 'http://dublincore.org/2010/10/11/dctype.rdf'
-    DCMI_TYPE_URI = 'http://purl.org/dc/dcmitype/'
+    DCMI_TYPES_RDF = "http://dublincore.org/2010/10/11/dctype.rdf"
+    DCMI_TYPE_URI = "http://purl.org/dc/dcmitype/"
     if rdflib:
         DCMI_TYPE_URI = rdflib.URIRef(DCMI_TYPE_URI)
 
         _dcmi_types_graph = None
+
         @property
         def dcmi_types_graph(self):
-            'DCMI Types Vocabulary as an :class:`rdflib.Graph`'
+            "DCMI Types Vocabulary as an :class:`rdflib.Graph`"
             # only initialize if requested; then save the result
             if self._dcmi_types_graph is None:
                 self._dcmi_types_graph = rdflib.Graph()
@@ -127,20 +123,29 @@ class DublinCore(_BaseDublinCore):
             return self._dcmi_types_graph
 
         _dcmi_types = None
+
         @property
         def dcmi_types(self):
-            '''DCMI Type Vocabulary (recommended), as documented at
-            http://dublincore.org/documents/dcmi-type-vocabulary/'''
+            """DCMI Type Vocabulary (recommended), as documented at
+            http://dublincore.org/documents/dcmi-type-vocabulary/"""
             if self._dcmi_types is None:
                 # generate a list of DCMI types based on the RDF dctype document
                 self._dcmi_types = []
                 # get all items with rdf:type of rdfs:Clas
-                items = self.dcmi_types_graph.subjects(rdflib.RDF.type, rdflib.RDFS.Class)
+                items = self.dcmi_types_graph.subjects(
+                    rdflib.RDF.type, rdflib.RDFS.Class
+                )
                 for item in items:
                     # check that this item is defined by dcmitype
-                    if (item, rdflib.RDFS.isDefinedBy, self.DCMI_TYPE_URI) in self.dcmi_types_graph:
+                    if (
+                        item,
+                        rdflib.RDFS.isDefinedBy,
+                        self.DCMI_TYPE_URI,
+                    ) in self.dcmi_types_graph:
                         # add the label to the list
-                        self._dcmi_types.append(str(self.dcmi_types_graph.value(item, rdflib.RDFS.label)))
+                        self._dcmi_types.append(
+                            str(self.dcmi_types_graph.value(item, rdflib.RDFS.label))
+                        )
             return self._dcmi_types
     else:
         # no rdflib

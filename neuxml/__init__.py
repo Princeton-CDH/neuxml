@@ -1,4 +1,3 @@
-
 # file neuxml/__init__.py
 #
 #   Copyright 2010,2011 Emory University Libraries
@@ -20,7 +19,7 @@ import os
 from importlib import resources
 from contextlib import ExitStack
 
-__version__ = '0.1.0'
+__version__ = "0.1.0"
 
 # Paths for XML catalog file & directory
 
@@ -29,7 +28,7 @@ __version__ = '0.1.0'
 # in setup.py, which could be run when neuxml isn't fully installed)
 
 #: relative path for schema data directory
-SCHEMA_DATA_DIR = 'schema_data'
+SCHEMA_DATA_DIR = "schema_data"
 
 # use package resources if possible, so this will work from an egg
 # http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources
@@ -38,18 +37,21 @@ if resources.files(__name__).joinpath(SCHEMA_DATA_DIR).is_dir():
     ref = resources.files(__name__) / SCHEMA_DATA_DIR
     XMLCATALOG_DIR = file_manager.enter_context(resources.as_file(ref))
     file_manager = ExitStack()
-    ref = resources.files(__name__) / ('%s/catalog.xml' % SCHEMA_DATA_DIR)
+    ref = resources.files(__name__) / ("%s/catalog.xml" % SCHEMA_DATA_DIR)
     XMLCATALOG_FILE = str(file_manager.enter_context(resources.as_file(ref)))
 else:
-    XMLCATALOG_DIR = os.path.join(os.path.dirname(__file__),
-                                  SCHEMA_DATA_DIR)
-    XMLCATALOG_FILE = os.path.join(XMLCATALOG_DIR, 'catalog.xml')
+    XMLCATALOG_DIR = os.path.join(os.path.dirname(__file__), SCHEMA_DATA_DIR)
+    XMLCATALOG_FILE = os.path.join(XMLCATALOG_DIR, "catalog.xml")
 
 # Add local XML catalog file to the environment variable so
 # it will automatically be used by libxml to resolve URIs.
 # See http://xmlsoft.org/catalog.html for more details.
 # Only add once, even if neuxml is loaded multiple times.
-if XMLCATALOG_FILE not in os.environ.get('XML_CATALOG_FILES', ''):
-    os.environ['XML_CATALOG_FILES'] = ":".join(
-        [path for path in (os.environ.get('XML_CATALOG_FILES'), XMLCATALOG_FILE)
-         if path])
+if XMLCATALOG_FILE not in os.environ.get("XML_CATALOG_FILES", ""):
+    os.environ["XML_CATALOG_FILES"] = ":".join(
+        [
+            path
+            for path in (os.environ.get("XML_CATALOG_FILES"), XMLCATALOG_FILE)
+            if path
+        ]
+    )

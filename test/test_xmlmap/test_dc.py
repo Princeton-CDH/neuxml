@@ -22,7 +22,6 @@ from neuxml.xmlmap import load_xmlobject_from_string
 from neuxml.xmlmap.dc import DublinCore
 
 
-
 class TestDc(unittest.TestCase):
     # massaged dublin core sample from an Emory ETD record (fields added to ensure every DC field is tested)
     FIXTURE = """<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
@@ -67,7 +66,10 @@ class TestDc(unittest.TestCase):
 
     def testFields(self):
         self.assertEqual(self.dc.title, "Feet in the Fire")
-        self.assertEqual(self.dc.title_list[1], "Social Change and Continuity among the Diola of Guinea-Bissau")
+        self.assertEqual(
+            self.dc.title_list[1],
+            "Social Change and Continuity among the Diola of Guinea-Bissau",
+        )
         self.assertEqual(self.dc.creator, "Davidson, Joanna Helen")
         self.assertEqual(self.dc.creator_list[0], "Davidson, Joanna Helen")
         self.assertEqual(self.dc.subject, "Anthropology, Cultural")
@@ -75,7 +77,9 @@ class TestDc(unittest.TestCase):
         self.assertEqual(self.dc.subject_list[4], "Agrarian change")
         self.assertEqual(self.dc.subject_list[-1], "Cultural boundaries")
         self.assertEqual(self.dc.description, "Diola villagers in Guinea-Bissau...")
-        self.assertEqual(self.dc.description_list[0], "Diola villagers in Guinea-Bissau...")
+        self.assertEqual(
+            self.dc.description_list[0], "Diola villagers in Guinea-Bissau..."
+        )
         self.assertEqual(self.dc.contributor, "Knauft, Bruce M")
         self.assertEqual(self.dc.contributor_list[1], "Karp, Ivan")
         self.assertEqual(self.dc.contributor_list[2], "Donham, Donald L. (UC Davis)")
@@ -86,7 +90,9 @@ class TestDc(unittest.TestCase):
         self.assertEqual(self.dc.format, "application/pdf")
         self.assertEqual(self.dc.format_list[0], "application/pdf")
         self.assertEqual(self.dc.identifier, "emory:13q9n")
-        self.assertEqual(self.dc.identifier_list[1], "http://pid.emory.edu/ark:/25593/13q9n")
+        self.assertEqual(
+            self.dc.identifier_list[1], "http://pid.emory.edu/ark:/25593/13q9n"
+        )
         self.assertEqual(self.dc.source, "none")
         self.assertEqual(self.dc.source_list[0], "none")
         self.assertEqual(self.dc.language, "English")
@@ -101,20 +107,24 @@ class TestDc(unittest.TestCase):
         self.assertEqual(self.dc.rights_list[0], "Permission granted by the author.")
 
         # elements should provide access to all DC fields
-        self.assertEqual(self.dc.elements[0].name, 'title')
-        self.assertEqual(self.dc.elements[0].value, 'Feet in the Fire')
-        self.assertEqual(self.dc.elements[8].name, 'subject')
-        self.assertEqual(self.dc.elements[8].value, 'Ethnicity')
-        self.assertEqual(self.dc.elements[-1].name, 'rights')
-        self.assertEqual(self.dc.elements[-1].value, 'Permission granted by the author.')
+        self.assertEqual(self.dc.elements[0].name, "title")
+        self.assertEqual(self.dc.elements[0].value, "Feet in the Fire")
+        self.assertEqual(self.dc.elements[8].name, "subject")
+        self.assertEqual(self.dc.elements[8].value, "Ethnicity")
+        self.assertEqual(self.dc.elements[-1].name, "rights")
+        self.assertEqual(
+            self.dc.elements[-1].value, "Permission granted by the author."
+        )
 
     def testTemplateInit(self):
         dc = DublinCore()
-        dc.title = 'foo'  # if dc namespace is not used it will be cleaned/removed
+        dc.title = "foo"  # if dc namespace is not used it will be cleaned/removed
         dc_xml = dc.serialize()
-        self.assertTrue(b'<oai_dc:dc ' in dc_xml)
+        self.assertTrue(b"<oai_dc:dc " in dc_xml)
         self.assertTrue(b'xmlns:dc="http://purl.org/dc/elements/1.1/"' in dc_xml)
-        self.assertTrue(b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml)
+        self.assertTrue(
+            b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml
+        )
 
     def test_isvalid(self):
         self.assertTrue(self.dc.is_valid())
@@ -132,7 +142,7 @@ class TestDc(unittest.TestCase):
         types = self.dc.dcmi_types
         self.assertTrue(isinstance(types, list))
         # check a few items in the list
-        self.assertTrue('Collection' in types)
-        self.assertTrue('Still Image' in types)
-        self.assertTrue('Event' in types)
-        self.assertTrue('Text' in types)
+        self.assertTrue("Collection" in types)
+        self.assertTrue("Still Image" in types)
+        self.assertTrue("Event" in types)
+        self.assertTrue("Text" in types)

@@ -20,7 +20,6 @@ import unittest
 from neuxml.xmlmap import load_xmlobject_from_string, mods
 
 
-
 class TestMods(unittest.TestCase):
     # tests for MODS XmlObject
 
@@ -92,16 +91,24 @@ class TestMods(unittest.TestCase):
         self.assertTrue(isinstance(self.mods.origin_info, mods.OriginInfo))
         self.assertTrue(isinstance(self.mods.origin_info.created[0], mods.DateCreated))
         self.assertTrue(isinstance(self.mods.origin_info.issued[0], mods.DateIssued))
-        self.assertTrue(isinstance(self.mods.origin_info.captured[0], mods.DateCaptured))
+        self.assertTrue(
+            isinstance(self.mods.origin_info.captured[0], mods.DateCaptured)
+        )
         self.assertTrue(isinstance(self.mods.origin_info.valid[0], mods.DateValid))
-        self.assertTrue(isinstance(self.mods.origin_info.modified[0], mods.DateModified))
-        self.assertTrue(isinstance(self.mods.origin_info.copyright[0], mods.CopyrightDate))
+        self.assertTrue(
+            isinstance(self.mods.origin_info.modified[0], mods.DateModified)
+        )
+        self.assertTrue(
+            isinstance(self.mods.origin_info.copyright[0], mods.CopyrightDate)
+        )
         self.assertTrue(isinstance(self.mods.origin_info.other[0], mods.DateOther))
         self.assertTrue(isinstance(self.mods.identifiers[0], mods.Identifier))
         self.assertTrue(isinstance(self.mods.name, mods.Name))
         self.assertTrue(isinstance(self.mods.name.name_parts[0], mods.NamePart))
         self.assertTrue(isinstance(self.mods.name.roles[0], mods.Role))
-        self.assertTrue(isinstance(self.mods.access_conditions[0], mods.AccessCondition))
+        self.assertTrue(
+            isinstance(self.mods.access_conditions[0], mods.AccessCondition)
+        )
         self.assertTrue(isinstance(self.mods.related_items[0], mods.RelatedItem))
         self.assertTrue(isinstance(self.mods.title_info, mods.TitleInfo))
         self.assertTrue(isinstance(self.mods.title_info_list[1], mods.TitleInfo))
@@ -112,62 +119,64 @@ class TestMods(unittest.TestCase):
         self.assertTrue(isinstance(self.mods.locations[0], mods.Location))
 
     def test_fields(self):
-        self.assertEqual('id1', self.mods.id)
-        self.assertEqual('A simple record', self.mods.title)
-        self.assertEqual('text', self.mods.resource_type)
-        self.assertEqual('a general note', self.mods.note.label)
-        self.assertEqual('general', self.mods.note.type)
-        self.assertEqual(u'remember to...', str(self.mods.note))
-        self.assertEqual('remember to...', self.mods.note.text)
-        self.assertEqual(u'2010-06-17', str(self.mods.origin_info.created[0]))
-        self.assertEqual('2010-06-17', self.mods.origin_info.created[0].date)
-        self.assertEqual('2010-06-18', self.mods.origin_info.issued[0].date)
-        self.assertEqual('2010-06-19', self.mods.origin_info.captured[0].date)
-        self.assertEqual('2010-06-20', self.mods.origin_info.valid[0].date)
-        self.assertEqual('2010-06-21', self.mods.origin_info.modified[0].date)
-        self.assertEqual('2010-06-22', self.mods.origin_info.copyright[0].date)
-        self.assertEqual('2010-06-23', self.mods.origin_info.other[0].date)
-        self.assertEqual('some_type', self.mods.origin_info.other[0].type)
+        self.assertEqual("id1", self.mods.id)
+        self.assertEqual("A simple record", self.mods.title)
+        self.assertEqual("text", self.mods.resource_type)
+        self.assertEqual("a general note", self.mods.note.label)
+        self.assertEqual("general", self.mods.note.type)
+        self.assertEqual("remember to...", str(self.mods.note))
+        self.assertEqual("remember to...", self.mods.note.text)
+        self.assertEqual("2010-06-17", str(self.mods.origin_info.created[0]))
+        self.assertEqual("2010-06-17", self.mods.origin_info.created[0].date)
+        self.assertEqual("2010-06-18", self.mods.origin_info.issued[0].date)
+        self.assertEqual("2010-06-19", self.mods.origin_info.captured[0].date)
+        self.assertEqual("2010-06-20", self.mods.origin_info.valid[0].date)
+        self.assertEqual("2010-06-21", self.mods.origin_info.modified[0].date)
+        self.assertEqual("2010-06-22", self.mods.origin_info.copyright[0].date)
+        self.assertEqual("2010-06-23", self.mods.origin_info.other[0].date)
+        self.assertEqual("some_type", self.mods.origin_info.other[0].type)
         self.assertEqual(True, self.mods.origin_info.created[0].key_date)
-        self.assertEqual('Little, Brown', self.mods.origin_info.publisher)
-        self.assertEqual(u'http://so.me/uri', self.mods.identifiers[0].text)
-        self.assertEqual(u'uri', self.mods.identifiers[0].type)
-        self.assertEqual(u'Dawson choir recordings', self.mods.abstract.text)
+        self.assertEqual("Little, Brown", self.mods.origin_info.publisher)
+        self.assertEqual("http://so.me/uri", self.mods.identifiers[0].text)
+        self.assertEqual("uri", self.mods.identifiers[0].type)
+        self.assertEqual("Dawson choir recordings", self.mods.abstract.text)
         # name fields
-        self.assertEqual(u'personal', self.mods.name.type)
-        self.assertEqual(u'naf', self.mods.name.authority)
-        self.assertEqual(u'n82032703', self.mods.name.id)
-        self.assertEqual(u'Dawson, William Levi', self.mods.name.name_parts[0].text)
-        self.assertEqual(u'1899-1990', self.mods.name.name_parts[1].text)
-        self.assertEqual(u'date', self.mods.name.name_parts[1].type)
-        self.assertEqual(u'William Levi Dawson (1899-1990)', self.mods.name.display_form)
-        self.assertEqual(u'Tuskegee', self.mods.name.affiliation)
-        self.assertEqual(u'text', self.mods.name.roles[0].type)
-        self.assertEqual(u'marcrelator', self.mods.name.roles[0].authority)
-        self.assertEqual(u'Composer', self.mods.name.roles[0].text)
+        self.assertEqual("personal", self.mods.name.type)
+        self.assertEqual("naf", self.mods.name.authority)
+        self.assertEqual("n82032703", self.mods.name.id)
+        self.assertEqual("Dawson, William Levi", self.mods.name.name_parts[0].text)
+        self.assertEqual("1899-1990", self.mods.name.name_parts[1].text)
+        self.assertEqual("date", self.mods.name.name_parts[1].type)
+        self.assertEqual("William Levi Dawson (1899-1990)", self.mods.name.display_form)
+        self.assertEqual("Tuskegee", self.mods.name.affiliation)
+        self.assertEqual("text", self.mods.name.roles[0].type)
+        self.assertEqual("marcrelator", self.mods.name.roles[0].authority)
+        self.assertEqual("Composer", self.mods.name.roles[0].text)
         # access condition
-        self.assertEqual(u'restrictions on access', self.mods.access_conditions[0].type)
-        self.assertEqual(u'Restricted', self.mods.access_conditions[0].text)
+        self.assertEqual("restrictions on access", self.mods.access_conditions[0].type)
+        self.assertEqual("Restricted", self.mods.access_conditions[0].text)
         # related item
-        self.assertEqual(u'host', self.mods.related_items[0].type)
-        self.assertEqual(u'Emory University Archives', self.mods.related_items[0].title)
-        self.assertEqual(u'local_sourcecoll_id', self.mods.related_items[0].identifiers[0].type)
-        self.assertEqual(u'eua', self.mods.related_items[0].identifiers[0].text)
+        self.assertEqual("host", self.mods.related_items[0].type)
+        self.assertEqual("Emory University Archives", self.mods.related_items[0].title)
+        self.assertEqual(
+            "local_sourcecoll_id", self.mods.related_items[0].identifiers[0].type
+        )
+        self.assertEqual("eua", self.mods.related_items[0].identifiers[0].text)
         # titleInfo subfields
-        self.assertEqual('A simple record', self.mods.title_info.title)
-        self.assertEqual(' (for test purposes)', self.mods.title_info.subtitle)
-        self.assertEqual('alternative', self.mods.title_info_list[1].type)
-        self.assertEqual('First line', self.mods.title_info_list[1].label)
-        self.assertEqual('Alternative title', self.mods.title_info_list[1].title)
+        self.assertEqual("A simple record", self.mods.title_info.title)
+        self.assertEqual(" (for test purposes)", self.mods.title_info.subtitle)
+        self.assertEqual("alternative", self.mods.title_info_list[1].type)
+        self.assertEqual("First line", self.mods.title_info_list[1].label)
+        self.assertEqual("Alternative title", self.mods.title_info_list[1].title)
         # part
-        self.assertEqual('volume', self.mods.parts[0].details[0].type)
-        self.assertEqual('II', self.mods.parts[0].details[0].number)
-        self.assertEqual('pages', self.mods.parts[0].extent.unit)
-        self.assertEqual('5', self.mods.parts[0].extent.start)
-        self.assertEqual('23', self.mods.parts[0].extent.end)
+        self.assertEqual("volume", self.mods.parts[0].details[0].type)
+        self.assertEqual("II", self.mods.parts[0].details[0].number)
+        self.assertEqual("pages", self.mods.parts[0].extent.unit)
+        self.assertEqual("5", self.mods.parts[0].extent.start)
+        self.assertEqual("23", self.mods.parts[0].extent.end)
         # location
-        self.assertEqual('http://so.me/other/uri', self.mods.locations[0].url)
-        self.assertEqual('Atlanta', self.mods.locations[0].physical)
+        self.assertEqual("http://so.me/other/uri", self.mods.locations[0].url)
+        self.assertEqual("Atlanta", self.mods.locations[0].physical)
 
     def test_create_mods(self):
         # test creating MODS from scratch - ensure sub-xmlobject definitions are correct
@@ -175,56 +184,91 @@ class TestMods(unittest.TestCase):
         mymods = mods.MODS()
         mymods.create_title_info()
         # titleInfo subfields
-        mymods.title_info.non_sort = 'A '
-        mymods.title_info.title = 'Record'
-        mymods.title_info.subtitle = ': for testing'
-        mymods.title_info.part_number = '1'
-        mymods.title_info.part_name = 'first installment'
-        mymods.title_info_list.append(mods.TitleInfo(non_sort='An ', title='Alternative Title', subtitle=': for testing',
-                                            part_number = '1', part_name='first installment', label='First line'))
-        mymods.resource_type = 'text'
+        mymods.title_info.non_sort = "A "
+        mymods.title_info.title = "Record"
+        mymods.title_info.subtitle = ": for testing"
+        mymods.title_info.part_number = "1"
+        mymods.title_info.part_name = "first installment"
+        mymods.title_info_list.append(
+            mods.TitleInfo(
+                non_sort="An ",
+                title="Alternative Title",
+                subtitle=": for testing",
+                part_number="1",
+                part_name="first installment",
+                label="First line",
+            )
+        )
+        mymods.resource_type = "text"
         mymods.create_name()
-        mymods.name.type = 'personal'
-        mymods.name.authority = 'local'
-        mymods.name.name_parts.extend([mods.NamePart(type='family', text='Schmoe'),
-                                    mods.NamePart(type='given', text='Joe')])
-        mymods.name.roles.append(mods.Role(type='text', authority='local',
-                                        text='Test Subject'))
+        mymods.name.type = "personal"
+        mymods.name.authority = "local"
+        mymods.name.name_parts.extend(
+            [
+                mods.NamePart(type="family", text="Schmoe"),
+                mods.NamePart(type="given", text="Joe"),
+            ]
+        )
+        mymods.name.roles.append(
+            mods.Role(type="text", authority="local", text="Test Subject")
+        )
         mymods.create_abstract()
-        mymods.abstract.text = 'A testing record with made up content.'
+        mymods.abstract.text = "A testing record with made up content."
         mymods.create_note()
-        mymods.note.type = 'general'
-        mymods.note.text = 'general note'
+        mymods.note.type = "general"
+        mymods.note.text = "general note"
         mymods.create_origin_info()
-        mymods.origin_info.created.append(mods.DateCreated(date='2001-10-02'))
-        mymods.origin_info.issued.append(mods.DateIssued(date='2001-12-01'))
+        mymods.origin_info.created.append(mods.DateCreated(date="2001-10-02"))
+        mymods.origin_info.issued.append(mods.DateIssued(date="2001-12-01"))
         mymods.create_record_info()
-        mymods.record_info.record_id = 'id:1'
-        mymods.identifiers.extend([mods.Identifier(type='uri', text='http://ur.l'),
-                                 mods.Identifier(type='local', text='332')])
-        mymods.access_conditions.extend([mods.AccessCondition(type='restriction', text='unavailable'),
-                                       mods.AccessCondition(type='use', text='Tuesdays only')])
-        mymods.related_items.extend([mods.RelatedItem(type='host', title='EU Archives'),
-                                   mods.RelatedItem(type='isReferencedBy', title='Finding Aid')])
-        mymods.subjects.extend([mods.Subject(authority='keyword', topic='automated testing'),
-                                mods.Subject(authority='keyword', topic='test records')])
+        mymods.record_info.record_id = "id:1"
+        mymods.identifiers.extend(
+            [
+                mods.Identifier(type="uri", text="http://ur.l"),
+                mods.Identifier(type="local", text="332"),
+            ]
+        )
+        mymods.access_conditions.extend(
+            [
+                mods.AccessCondition(type="restriction", text="unavailable"),
+                mods.AccessCondition(type="use", text="Tuesdays only"),
+            ]
+        )
+        mymods.related_items.extend(
+            [
+                mods.RelatedItem(type="host", title="EU Archives"),
+                mods.RelatedItem(type="isReferencedBy", title="Finding Aid"),
+            ]
+        )
+        mymods.subjects.extend(
+            [
+                mods.Subject(authority="keyword", topic="automated testing"),
+                mods.Subject(authority="keyword", topic="test records"),
+            ]
+        )
         mymods.parts.append(mods.Part())
-        mymods.parts[0].details.extend([mods.PartDetail(type='volume', number='90'),
-                                        mods.PartDetail(type='issue', number='2')])
+        mymods.parts[0].details.extend(
+            [
+                mods.PartDetail(type="volume", number="90"),
+                mods.PartDetail(type="issue", number="2"),
+            ]
+        )
         mymods.parts[0].create_extent()
-        mymods.parts[0].extent.unit = 'pages'
-        mymods.parts[0].extent.start = '339'
-        mymods.parts[0].extent.end = '361'
+        mymods.parts[0].extent.unit = "pages"
+        mymods.parts[0].extent.start = "339"
+        mymods.parts[0].extent.end = "361"
         xml = mymods.serialize(pretty=True)
-        self.assertTrue(b'<mods:mods ' in xml)
+        self.assertTrue(b"<mods:mods " in xml)
         self.assertTrue(b'xmlns:mods="http://www.loc.gov/mods/v3"' in xml)
 
-        self.assertTrue(mymods.is_valid(), "MODS created from scratch should be schema-valid")
+        self.assertTrue(
+            mymods.is_valid(), "MODS created from scratch should be schema-valid"
+        )
 
     def test_isvalid(self):
         # if additions to MODS test fixture cause validation errors, uncomment the next 2 lines to debug
-        #self.mods.is_valid()
-        #print self.mods.validation_errors()
+        # self.mods.is_valid()
+        # print self.mods.validation_errors()
         self.assertTrue(self.mods.is_valid())
         invalid_mods = load_xmlobject_from_string(self.invalid_xml, mods.MODS)
         self.assertFalse(invalid_mods.is_valid())
@@ -236,7 +280,7 @@ class TestModsTypedNote(unittest.TestCase):
     def setUp(self):
         super(TestModsTypedNote, self).setUp()
         self.note = mods.TypedNote()
-        self.note.type = 'general'
+        self.note.type = "general"
 
     def test_is_empty(self):
         # initial note object should be considered empty (type only)
@@ -249,7 +293,7 @@ class TestModsTypedNote(unittest.TestCase):
 
     def test_is_empty_text(self):
         # set text value
-        self.note.text = 'here is some general info'
+        self.note.text = "here is some general info"
         self.assertFalse(self.note.is_empty())
 
 
@@ -271,7 +315,7 @@ class TestModsDate(unittest.TestCase):
 
     def test_is_empty_date_value(self):
         # set date value
-        self.date.date = '1066'
+        self.date.date = "1066"
         self.assertFalse(self.date.is_empty())
 
 
@@ -293,18 +337,17 @@ class TestModsOriginInfo(unittest.TestCase):
         self.assertTrue(self.origin_info.is_empty())
 
     def test_is_empty_date_values(self):
-        self.origin_info.created.append(mods.DateCreated(date='300'))
+        self.origin_info.created.append(mods.DateCreated(date="300"))
         self.assertFalse(self.origin_info.is_empty())
-        self.origin_info.issued.append(mods.DateIssued(date='450'))
+        self.origin_info.issued.append(mods.DateIssued(date="450"))
         self.assertFalse(self.origin_info.is_empty())
 
     def test_not_empty_with_publisher(self):
-        self.origin_info.publisher = 'MacMillan'
+        self.origin_info.publisher = "MacMillan"
         self.assertFalse(self.origin_info.is_empty())
 
 
 class TestModsPart(unittest.TestCase):
-
     def setUp(self):
         super(TestModsPart, self).setUp()
         self.part = mods.Part()
@@ -318,12 +361,11 @@ class TestModsPart(unittest.TestCase):
         self.assertTrue(self.part.is_empty())
 
         # type value - not empty
-        self.part.type = 'something'
+        self.part.type = "something"
         self.assertFalse(self.part.is_empty())
 
 
 class TestTitleInfo(unittest.TestCase):
-
     def setUp(self):
         super(TestTitleInfo, self).setUp()
         self.titleinfo = mods.TitleInfo()
@@ -333,9 +375,9 @@ class TestTitleInfo(unittest.TestCase):
         self.assertTrue(self.titleinfo.is_empty())
 
         # with empty field - still empty
-        self.titleinfo.title = ''
+        self.titleinfo.title = ""
         self.assertTrue(self.titleinfo.is_empty())
 
         # actual value - not empty
-        self.titleinfo.title = 'This a Test'
+        self.titleinfo.title = "This a Test"
         self.assertFalse(self.titleinfo.is_empty())

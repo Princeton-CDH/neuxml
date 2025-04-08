@@ -35,7 +35,3 @@ the following names:
    nodes to Python integers
 
 """
-
-
-from neuxml.xmlmap.core import *
-from neuxml.xmlmap.fields import *
