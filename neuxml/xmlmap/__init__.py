@@ -20,18 +20,18 @@ This package facilitates access to XML data using common Pythonic idioms. XML
 nodes map to Python attributes using XPath expressions.
 
 For developer convenience this package is divided into submodules. Users
-should import the names directly from neuxml.xmlmap. This package exports
+should import the names from submodules. This package exports
 the following names:
- * XmlObject -- a base class for XML-Python mapping objects
- * parseUri and parseString -- parse a URI or string into an xml node with
+ * core.XmlObject -- a base class for XML-Python mapping objects
+ * core.parseUri and core.parseString -- parse a URI or string into an xml node with
    XPath methods that xmlmap depends on
- * load_xmlobject_from_string and load_xmlobject_from_file -- parse a string
+ * core.load_xmlobject_from_string and core.load_xmlobject_from_file -- parse a string
    or file directly into an XmlObject
- * NodeField and NodeListField -- field classes for mapping relative
+ * fields.NodeField and fields.NodeListField -- field classes for mapping relative
    xml nodes to other XmlObjects
- * StringField and StringListField -- field classes for mapping xml
+ * fields.StringField and fields.StringListField -- field classes for mapping xml
    nodes to Python strings
- * IntegerField and IntegerListField -- field classes for mapping xml
+ * fields.IntegerField and fields.IntegerListField -- field classes for mapping xml
    nodes to Python integers
 
 """
