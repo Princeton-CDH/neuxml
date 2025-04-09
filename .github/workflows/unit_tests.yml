@@ -39,6 +39,9 @@ jobs:
           pip install -e '.[dev]'
           pip install codecov
 
+      - name: Generate PLY lextab and parsetab artifacts
+        run: python -c "import neuxml.xpath.core"
+
       - name: Run pytest
         run: pytest --cov=neuxml --cov-report=xml
 
