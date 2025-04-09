@@ -88,7 +88,7 @@ def is_valid(path):
     )
 
 
-def main():
+def main(arg_list=None):
     """Handle command line arguments and run migration functions"""
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -97,7 +97,7 @@ def main():
         help="The path to the root of a project using eulxml",
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(arg_list)
 
     # migrate every valid python file in project path and subdirectories
     for filepath in args.project_path.glob("**/*.py"):
