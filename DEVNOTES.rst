@@ -89,10 +89,10 @@ to this style:
 
 .. code-block:: python
 
-    from neuxml import xmlmap
+    from neuxml.xmlmap import core, fields
 
-    xmlmap.core.XmlObject
-    xmlmap.fields.Field
+    core.XmlObject
+    fields.Field
 
-Submodule or class imports are also acceptable (e.g. ``from neuxml.xmlmap.core
-import XmlObject``).
+Class imports are also acceptable (e.g. ``from neuxml.xmlmap.core import
+XmlObject``).
