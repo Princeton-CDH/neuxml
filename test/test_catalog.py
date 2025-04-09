@@ -41,7 +41,7 @@ def mocked_requests_get(*args, **kwargs):
             self.status_code = status_code
 
         def iter_content(self, chunk_size):
-            with open("neuxml/schema_data/fixtures/mods-3-4.xsd", "rb") as file:
+            with open("test/fixtures/mods-3-4.xsd", "rb") as file:
                 while True:
                     chunk = file.read(chunk_size)
                     if not chunk:
