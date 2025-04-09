@@ -118,7 +118,9 @@ t_NCNAME = NCNAME_REGEX
 
 
 def t_LITERAL(t):
-    r""" "[^"]*"|'[^']*'"""
+    # fmt: off
+    r""""[^"]*"|'[^']*'"""
+    # fmt: on
     t.value = t.value[1:-1]
     return t
 
