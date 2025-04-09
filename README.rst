@@ -9,7 +9,7 @@ neuxml
 .. image:: https://img.shields.io/github/license/Princeton-CDH/neuxml.svg
   :alt: License
 
-.. image:: https://img.shields.io/pypi/pyversions/viapy
+.. image:: https://img.shields.io/pypi/pyversions/neuxml
   :alt: PyPI - Python Version
 
 .. image:: https://img.shields.io/pypi/dm/neuxml.svg
