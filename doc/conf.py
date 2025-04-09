@@ -1,6 +1,6 @@
-# eulcore documentation build configuration file
+# Sphinx documentation build configuration file
 
-import eulxml
+import neuxml
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
@@ -10,19 +10,18 @@ html_static_path = ['_static']
 source_suffix = '.rst'
 master_doc = 'index'
 
-project = 'eulxml'
-copyright = '2011, Emory University Libraries'
-version = '%d.%d' % eulxml.__version_info__[:2]
-release = eulxml.__version__
-#modindex_common_prefix = ['eulxml.', 'eulxml.django.']
-modindex_common_prefix = ['eulxml.']
+project = 'neuxml'
+copyright = '2025, Center for Digital Humanities at Princeton'
+version = '%d.%d' % neuxml.__version_info__[:2]
+release = neuxml.__version__
+modindex_common_prefix = ['neuxml.']
 
 html_theme = 'alabaster'
 html_style = 'style.css'
 html_theme_options = {
     # 'logo': 'logo.png',
-    'github_user': 'emory-libraries',
-    'github_repo': 'eulfedora',
+    'github_user': 'Princeton-CDH',
+    'github_repo': 'neuxml',
     # 'travis_button': True,  # enable when we get travis-ci set up
     'description': 'Python library to read and write structured XML'
     # 'analytics_id':
@@ -39,15 +38,13 @@ pygments_style = 'sphinx'
 
 # html_style = 'default.css'
 #html_static_path = ['static']
-htmlhelp_basename = 'eulxmldoc'
+htmlhelp_basename = 'neuxmldoc'
 
 latex_documents = [
-  ('index', 'eulxml.tex', 'EULxml Documentation',
-   'Emory University Libraries', 'manual'),
+  ('index', 'neuxml.tex', 'neuxml Documentation', 'manual'),
 ]
 
-# configuration for intersphinx: refer to the Python standard library, django, eulfedora
+# configuration for intersphinx: refer to the Python standard library
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'django': ('http://django.readthedocs.org/en/latest/', None),
 }

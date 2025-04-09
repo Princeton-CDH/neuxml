@@ -16,14 +16,11 @@
 
 from __future__ import unicode_literals
 import unittest
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
 import os
+import pytest
 
-from eulxml.xmlmap import load_xmlobject_from_file
-from eulxml.xmlmap import premis
+from neuxml.xmlmap import load_xmlobject_from_file
+from neuxml.xmlmap import premis
 
 
 
@@ -37,10 +34,10 @@ class TestPremis(unittest.TestCase):
         self.premis = load_xmlobject_from_file(self.FIXTURE_FILE, premis.Premis)
 
     def test_init(self):
-        self.assert_(isinstance(self.premis, premis.Premis))
-        self.assert_(isinstance(self.premis.object, premis.Object))
-        self.assert_(self.premis.events)  # list should be non-empty
-        self.assert_(isinstance(self.premis.events[0], premis.Event))
+        self.assertTrue(isinstance(self.premis, premis.Premis))
+        self.assertTrue(isinstance(self.premis.object, premis.Object))
+        self.assertTrue(self.premis.events)  # list should be non-empty
+        self.assertTrue(isinstance(self.premis.events[0], premis.Event))
 
         self.assertTrue(self.premis.is_valid())
 
@@ -62,7 +59,6 @@ class TestPremis(unittest.TestCase):
         self.assertEqual('hdl', ev.object_type)
         self.assertEqual('loc.music/gottlieb.09601', ev.object_id)
 
-    
     def test_create_valid_premis(self):
         # test creating a premis xml object from scratch - should be valid
         pr = premis.Premis()
@@ -80,7 +76,7 @@ class TestPremis(unittest.TestCase):
         ev.detail = 'python unittest'
         ev.outcome = 'successful'
         ev.agent_type = 'code'
-        ev.agent_id = 'eulxml'
+        ev.agent_id = 'neuxml'
         # event can be schema-validated by itself
         self.assertTrue(ev.schema_valid())
         pr.events.append(ev)

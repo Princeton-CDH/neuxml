@@ -1,7 +1,7 @@
-:mod:`eulxml.xmlmap.mods` - Metadata Object Description Schema (MODS)
+:mod:`neuxml.xmlmap.mods` - Metadata Object Description Schema (MODS)
 =====================================================================
 
-.. module:: eulxml.xmlmap.mods
+.. module:: neuxml.xmlmap.mods
 
 General Information
 -------------------

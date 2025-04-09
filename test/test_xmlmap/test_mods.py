@@ -16,14 +16,8 @@
 
 from __future__ import unicode_literals
 import unittest
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
-import os
 
-from eulxml.utils.compat import u
-from eulxml.xmlmap import load_xmlobject_from_string, mods
+from neuxml.xmlmap import load_xmlobject_from_string, mods
 
 
 
@@ -93,29 +87,29 @@ class TestMods(unittest.TestCase):
         self.mods = load_xmlobject_from_string(self.FIXTURE, mods.MODS)
 
     def test_init_types(self):
-        self.assert_(isinstance(self.mods, mods.MODS))
-        self.assert_(isinstance(self.mods.note, mods.Note))
-        self.assert_(isinstance(self.mods.origin_info, mods.OriginInfo))
-        self.assert_(isinstance(self.mods.origin_info.created[0], mods.DateCreated))
-        self.assert_(isinstance(self.mods.origin_info.issued[0], mods.DateIssued))
-        self.assert_(isinstance(self.mods.origin_info.captured[0], mods.DateCaptured))
-        self.assert_(isinstance(self.mods.origin_info.valid[0], mods.DateValid))
-        self.assert_(isinstance(self.mods.origin_info.modified[0], mods.DateModified))
-        self.assert_(isinstance(self.mods.origin_info.copyright[0], mods.CopyrightDate))
-        self.assert_(isinstance(self.mods.origin_info.other[0], mods.DateOther))
-        self.assert_(isinstance(self.mods.identifiers[0], mods.Identifier))
-        self.assert_(isinstance(self.mods.name, mods.Name))
-        self.assert_(isinstance(self.mods.name.name_parts[0], mods.NamePart))
-        self.assert_(isinstance(self.mods.name.roles[0], mods.Role))
-        self.assert_(isinstance(self.mods.access_conditions[0], mods.AccessCondition))
-        self.assert_(isinstance(self.mods.related_items[0], mods.RelatedItem))
-        self.assert_(isinstance(self.mods.title_info, mods.TitleInfo))
-        self.assert_(isinstance(self.mods.title_info_list[1], mods.TitleInfo))
-        self.assert_(isinstance(self.mods.abstract, mods.Abstract))
-        self.assert_(isinstance(self.mods.parts[0], mods.Part))
-        self.assert_(isinstance(self.mods.parts[0].details[0], mods.PartDetail))
-        self.assert_(isinstance(self.mods.parts[0].extent, mods.PartExtent))
-        self.assert_(isinstance(self.mods.locations[0], mods.Location))
+        self.assertTrue(isinstance(self.mods, mods.MODS))
+        self.assertTrue(isinstance(self.mods.note, mods.Note))
+        self.assertTrue(isinstance(self.mods.origin_info, mods.OriginInfo))
+        self.assertTrue(isinstance(self.mods.origin_info.created[0], mods.DateCreated))
+        self.assertTrue(isinstance(self.mods.origin_info.issued[0], mods.DateIssued))
+        self.assertTrue(isinstance(self.mods.origin_info.captured[0], mods.DateCaptured))
+        self.assertTrue(isinstance(self.mods.origin_info.valid[0], mods.DateValid))
+        self.assertTrue(isinstance(self.mods.origin_info.modified[0], mods.DateModified))
+        self.assertTrue(isinstance(self.mods.origin_info.copyright[0], mods.CopyrightDate))
+        self.assertTrue(isinstance(self.mods.origin_info.other[0], mods.DateOther))
+        self.assertTrue(isinstance(self.mods.identifiers[0], mods.Identifier))
+        self.assertTrue(isinstance(self.mods.name, mods.Name))
+        self.assertTrue(isinstance(self.mods.name.name_parts[0], mods.NamePart))
+        self.assertTrue(isinstance(self.mods.name.roles[0], mods.Role))
+        self.assertTrue(isinstance(self.mods.access_conditions[0], mods.AccessCondition))
+        self.assertTrue(isinstance(self.mods.related_items[0], mods.RelatedItem))
+        self.assertTrue(isinstance(self.mods.title_info, mods.TitleInfo))
+        self.assertTrue(isinstance(self.mods.title_info_list[1], mods.TitleInfo))
+        self.assertTrue(isinstance(self.mods.abstract, mods.Abstract))
+        self.assertTrue(isinstance(self.mods.parts[0], mods.Part))
+        self.assertTrue(isinstance(self.mods.parts[0].details[0], mods.PartDetail))
+        self.assertTrue(isinstance(self.mods.parts[0].extent, mods.PartExtent))
+        self.assertTrue(isinstance(self.mods.locations[0], mods.Location))
 
     def test_fields(self):
         self.assertEqual('id1', self.mods.id)
@@ -123,9 +117,9 @@ class TestMods(unittest.TestCase):
         self.assertEqual('text', self.mods.resource_type)
         self.assertEqual('a general note', self.mods.note.label)
         self.assertEqual('general', self.mods.note.type)
-        self.assertEqual(u'remember to...', u(self.mods.note))
+        self.assertEqual(u'remember to...', str(self.mods.note))
         self.assertEqual('remember to...', self.mods.note.text)
-        self.assertEqual(u'2010-06-17', u(self.mods.origin_info.created[0]))
+        self.assertEqual(u'2010-06-17', str(self.mods.origin_info.created[0]))
         self.assertEqual('2010-06-17', self.mods.origin_info.created[0].date)
         self.assertEqual('2010-06-18', self.mods.origin_info.issued[0].date)
         self.assertEqual('2010-06-19', self.mods.origin_info.captured[0].date)
@@ -222,8 +216,8 @@ class TestMods(unittest.TestCase):
         mymods.parts[0].extent.start = '339'
         mymods.parts[0].extent.end = '361'
         xml = mymods.serialize(pretty=True)
-        self.assert_(b'<mods:mods ' in xml)
-        self.assert_(b'xmlns:mods="http://www.loc.gov/mods/v3"' in xml)
+        self.assertTrue(b'<mods:mods ' in xml)
+        self.assertTrue(b'xmlns:mods="http://www.loc.gov/mods/v3"' in xml)
 
         self.assertTrue(mymods.is_valid(), "MODS created from scratch should be schema-valid")
 

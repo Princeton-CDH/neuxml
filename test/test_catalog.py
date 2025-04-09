@@ -21,17 +21,12 @@ from __future__ import unicode_literals
 import os
 import unittest
 import tempfile
-try:
-    from unittest import skipIf
-except ImportError:
-    from unittest2 import skipIf
 import glob
 import shutil
 from datetime import date
-import requests
-from eulxml import __version__
+import neuxml
 from lxml import etree
-from eulxml.catalog import download_schema, generate_catalog, XSD_SCHEMAS
+from neuxml.catalog import download_schema, refresh_catalog
 
 
 
@@ -40,8 +35,8 @@ class TestGenerateSchema(unittest.TestCase):
     def setUp(self):
         self.correct_schema = 'http://www.loc.gov/standards/mods/v3/mods-3-4.xsd'
         self.wrong_schema = 'http://www.loc.gov/standards/mods/v3/mods34.xsd'
-        self.comment = 'Downloaded by eulxml %s on %s' % \
-              (__version__, date.today().isoformat())
+        self.comment = 'Downloaded by neuxml %s on %s' % \
+              (neuxml.__version__, date.today().isoformat())
         # parseString wants a url. let's give it a proper one.
         self.path = tempfile.mkdtemp()
 
@@ -69,14 +64,14 @@ class TestGenerateSchema(unittest.TestCase):
 
         # Does comment exist?
         schema_string_no_comment = etree.tostring(tree)
-        self.assertFalse(b'by eulxml' in schema_string_no_comment)
+        self.assertFalse(b'by neuxml' in schema_string_no_comment)
 
 
         #Add comment and check if it is there now
         download_schema(self.correct_schema, schema_path, comment=self.comment)
         tree = etree.parse(schema_path)
         schema_string_with_comment = etree.tostring(tree)
-        self.assertTrue(b'by eulxml' in schema_string_with_comment)
+        self.assertTrue(b'by neuxml' in schema_string_with_comment)
 
         #check if all files were downloaded
         self.assertEqual(1, len(glob.glob(''.join([self.path, '/*.xsd']))))
@@ -91,7 +86,7 @@ class TestGenerateSchema(unittest.TestCase):
         catalog_file = os.path.join(self.path, 'catalog.xml')
         filename = os.path.basename(self.correct_schema)
         #generate empty catalog xml object
-        catalog = generate_catalog(xsd_schemas=[self.correct_schema], xmlcatalog_dir=self.path, xmlcatalog_file=catalog_file)
+        catalog = refresh_catalog(xsd_schemas=[self.correct_schema], xmlcatalog_dir=self.path, xmlcatalog_file=catalog_file)
 
         #check if catalog was generated
         check_catalog = len(glob.glob(''.join([self.path, '/catalog.xml'])))

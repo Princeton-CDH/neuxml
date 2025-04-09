@@ -3,13 +3,13 @@ dist
 *.egg-info
 *.pyc
 test-results
-eulxml/xpath/lextab.py
-eulxml/xpath/parsetab.py
-eulxml/schema_data
+neuxml/xpath/lextab.py
+neuxml/xpath/parsetab.py
 .tox
 .eggs
 .coverage
 .cache
 coverage.xml
 nosetests.xml
-
+venv*
+.DS_Store

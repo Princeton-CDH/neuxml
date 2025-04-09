@@ -15,15 +15,11 @@
 #   limitations under the License.
 
 from __future__ import unicode_literals
+import pytest
 import unittest
-try:
-  from unittest import skipIf
-except ImportError:
-  from unittest2 import skipIf
-import os
 
-from eulxml.xmlmap import load_xmlobject_from_string
-from eulxml.xmlmap.dc import DublinCore
+from neuxml.xmlmap import load_xmlobject_from_string
+from neuxml.xmlmap.dc import DublinCore
 
 
 
@@ -67,7 +63,7 @@ class TestDc(unittest.TestCase):
         self.dc = load_xmlobject_from_string(self.FIXTURE, DublinCore)
 
     def testInit(self):
-        self.assert_(isinstance(self.dc, DublinCore))
+        self.assertTrue(isinstance(self.dc, DublinCore))
 
     def testFields(self):
         self.assertEqual(self.dc.title, "Feet in the Fire")
@@ -116,9 +112,9 @@ class TestDc(unittest.TestCase):
         dc = DublinCore()
         dc.title = 'foo'  # if dc namespace is not used it will be cleaned/removed
         dc_xml = dc.serialize()
-        self.assert_(b'<oai_dc:dc ' in dc_xml)
-        self.assert_(b'xmlns:dc="http://purl.org/dc/elements/1.1/"' in dc_xml)
-        self.assert_(b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml)
+        self.assertTrue(b'<oai_dc:dc ' in dc_xml)
+        self.assertTrue(b'xmlns:dc="http://purl.org/dc/elements/1.1/"' in dc_xml)
+        self.assertTrue(b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml)
 
     def test_isvalid(self):
         self.assertTrue(self.dc.is_valid())
@@ -131,11 +127,12 @@ class TestDc(unittest.TestCase):
         invalid_dc = load_xmlobject_from_string(invalid, DublinCore)
         self.assertFalse(invalid_dc.is_valid())
 
+    @pytest.mark.skip(reason="request to real server by RDFLib")
     def test_dcmitypes(self):
         types = self.dc.dcmi_types
-        self.assert_(isinstance(types, list))
+        self.assertTrue(isinstance(types, list))
         # check a few items in the list
-        self.assert_('Collection' in types)
-        self.assert_('Still Image' in types)
-        self.assert_('Event' in types)
-        self.assert_('Text' in types)
+        self.assertTrue('Collection' in types)
+        self.assertTrue('Still Image' in types)
+        self.assertTrue('Event' in types)
+        self.assertTrue('Text' in types)
