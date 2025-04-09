@@ -37,7 +37,7 @@ We recommend using pip to install the officially released versions from PyPI:
 pip install neuxml
 ```
 
-It is also possible to install directly version from GitHub. Use a branch or tag name,
+It is also possible to install directly from GitHub. Use a branch or tag name,
 e.g. `@develop` or `@1.0` to install a specific tagged version or branch.
 
 ```console
