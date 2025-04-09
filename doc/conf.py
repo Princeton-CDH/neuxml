@@ -22,7 +22,6 @@ html_theme_options = {
     # 'logo': 'logo.png',
     "github_user": "Princeton-CDH",
     "github_repo": "neuxml",
-    # 'travis_button': True,  # enable when we get travis-ci set up
     "description": "Python library to read and write structured XML",
     # 'analytics_id':
 }
