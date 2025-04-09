@@ -81,18 +81,6 @@ def fix_xmlmap(code):
     return code
 
 
-"""Handle command line args"""
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "project_path",
-    type=pathlib.Path,
-    help="The path to the root of a project using eulxml",
-)
-
-args = parser.parse_args()
-
-
 def is_valid(path):
     """consider hidden files/folders and venv site-packages invalid for migration"""
     return not any(
@@ -100,12 +88,27 @@ def is_valid(path):
     )
 
 
-# migrate every valid python file in project path and subdirectories
-for filepath in args.project_path.glob("**/*.py"):
-    if is_valid(filepath):
-        try:
-            code = filepath.read_text(encoding="utf-8")
-            migrated_code = fix_xmlmap(re.sub("eulxml", "neuxml", code))
-            filepath.write_text(migrated_code, encoding="utf-8")
-        except Exception as e:
-            print(f"Failed to process {filepath}: {e}")
+def main():
+    """Handle command line arguments and run migration functions"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "project_path",
+        type=pathlib.Path,
+        help="The path to the root of a project using eulxml",
+    )
+
+    args = parser.parse_args()
+
+    # migrate every valid python file in project path and subdirectories
+    for filepath in args.project_path.glob("**/*.py"):
+        if is_valid(filepath):
+            try:
+                code = filepath.read_text(encoding="utf-8")
+                migrated_code = fix_xmlmap(re.sub("eulxml", "neuxml", code))
+                filepath.write_text(migrated_code, encoding="utf-8")
+            except Exception as e:
+                print(f"Failed to process {filepath}: {e}")
+
+
+if __name__ == "__main__":
+    main()

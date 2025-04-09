@@ -37,6 +37,9 @@ dev = [
     "pre-commit",
 ]
 
+[project.scripts]
+migrate-eulxml = "neuxml.utils.migrate_eulxml:main"
+
 [project.urls]
 Repository = "https://github.com/Princeton-CDH/neuxml"
 Changelog = "https://github.com/Princeton-CDH/neuxml/blob/main/CHANGELOG.rst"
