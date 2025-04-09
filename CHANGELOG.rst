@@ -1,7 +1,7 @@
 Change & Version Information
 ============================
 
-0.1.0
+1.0.0
 -----
 
 Initial release of `neuxml.` This is a hard fork of `eulxml <https://github.com/emory-libraries/eulxml>`_
