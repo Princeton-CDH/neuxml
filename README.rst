@@ -59,3 +59,8 @@ Developer instructions
 ======================
 
 For development instructions and notes, see ``DEVNOTES.rst``.
+
+Migration from ``eulxml``
+=========================
+
+If migrating from a previous ``eulxml`` installation, see ``MIGRATION.rst``.
