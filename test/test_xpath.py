@@ -18,13 +18,13 @@
 
 import unittest
 
-from neuxml import xpath
-from neuxml.xpath import ast, serialize
+from neuxml.xpath import ast
+from neuxml.xpath.core import parse, serialize
 
 
 class ParseTest(unittest.TestCase):
     def test_nametest_step(self):
-        xp = xpath.parse("""author""")
+        xp = parse("""author""")
         self.assertTrue(isinstance(xp, ast.Step))
         self.assertTrue(xp.axis is None)  # or should this be 'child', the default?
         self.assertTrue(isinstance(xp.node_test, ast.NameTest))
@@ -33,20 +33,20 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(0, len(xp.predicates))
 
     def test_nodetype_step(self):
-        xp = xpath.parse("""text()""")
+        xp = parse("""text()""")
         self.assertTrue(isinstance(xp, ast.Step))
         self.assertTrue(isinstance(xp.node_test, ast.NodeType))
         self.assertEqual("text", xp.node_test.name)
 
     def test_axis(self):
-        xp = xpath.parse("""ancestor::lib:book""")
+        xp = parse("""ancestor::lib:book""")
         self.assertTrue(isinstance(xp, ast.Step))
         self.assertEqual("ancestor", xp.axis)
         self.assertEqual("lib", xp.node_test.prefix)
         self.assertEqual("book", xp.node_test.name)
 
     def test_relative_path(self):
-        xp = xpath.parse("""book//author/first-name""")
+        xp = parse("""book//author/first-name""")
         self.assertTrue(isinstance(xp, ast.BinaryExpression))
         self.assertTrue(isinstance(xp.left, ast.BinaryExpression))
         self.assertEqual("book", xp.left.left.node_test.name)
@@ -56,19 +56,19 @@ class ParseTest(unittest.TestCase):
         self.assertEqual("first-name", xp.right.node_test.name)
 
     def test_absolute_path(self):
-        xp = xpath.parse("""/book//author""")
+        xp = parse("""/book//author""")
         self.assertTrue(isinstance(xp, ast.AbsolutePath))
         self.assertEqual("/", xp.op)
         self.assertEqual("book", xp.relative.left.node_test.name)
 
     def test_step_predicate(self):
-        xp = xpath.parse("""book[author]""")
+        xp = parse("""book[author]""")
         self.assertEqual("book", xp.node_test.name)
         self.assertEqual(1, len(xp.predicates))
         self.assertEqual("author", xp.predicates[0].node_test.name)
 
     def test_function(self):
-        xp = xpath.parse("""author[position() = 1]""")
+        xp = parse("""author[position() = 1]""")
         self.assertTrue(isinstance(xp.predicates[0], ast.BinaryExpression))
         self.assertEqual("=", xp.predicates[0].op)
         self.assertTrue(isinstance(xp.predicates[0].left, ast.FunctionCall))
@@ -77,7 +77,7 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(1, xp.predicates[0].right)
 
     def test_variable(self):
-        xp = xpath.parse("""title[substring-after(text(), $pre:separator) = "world"]""")
+        xp = parse("""title[substring-after(text(), $pre:separator) = "world"]""")
         self.assertEqual("title", xp.node_test.name)
         self.assertTrue(isinstance(xp.predicates[0], ast.BinaryExpression))
         self.assertEqual("=", xp.predicates[0].op)
@@ -93,7 +93,7 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(("pre", "separator"), xp.predicates[0].left.args[1].name)
 
     def test_predicated_expression(self):
-        xp = xpath.parse("""(book or article)[author/last-name = "Jones"]""")
+        xp = parse("""(book or article)[author/last-name = "Jones"]""")
         self.assertTrue(isinstance(xp, ast.PredicatedExpression))
         self.assertTrue(isinstance(xp.base, ast.BinaryExpression))
         self.assertEqual("book", xp.base.left.node_test.name)
@@ -110,7 +110,7 @@ class ParseTest(unittest.TestCase):
     def test_lex_exceptions(self):
         # http://www.w3.org/TR/xpath/#exprlex describes several unusual
         # lexing rules. Verify them here.
-        xp = xpath.parse("""***""")
+        xp = parse("""***""")
         self.assertTrue(isinstance(xp, ast.BinaryExpression))
         self.assertEqual("*", xp.op)
         self.assertTrue(isinstance(xp.left, ast.Step))
@@ -120,7 +120,7 @@ class ParseTest(unittest.TestCase):
         self.assertTrue(isinstance(xp.right.node_test, ast.NameTest))
         self.assertEqual("*", xp.right.node_test.name)
 
-        xp = xpath.parse("""div div div""")
+        xp = parse("""div div div""")
         self.assertTrue(isinstance(xp, ast.BinaryExpression))
         self.assertEqual("div", xp.op)
         self.assertTrue(isinstance(xp.left, ast.Step))
@@ -130,12 +130,12 @@ class ParseTest(unittest.TestCase):
         self.assertTrue(isinstance(xp.right.node_test, ast.NameTest))
         self.assertEqual("div", xp.right.node_test.name)
 
-        xp = xpath.parse("""div:div""")
+        xp = parse("""div:div""")
         self.assertTrue(isinstance(xp, ast.Step))
         self.assertEqual("div", xp.node_test.prefix)
         self.assertEqual("div", xp.node_test.name)
 
-        xp = xpath.parse("""node/node()""")
+        xp = parse("""node/node()""")
         self.assertTrue(isinstance(xp, ast.BinaryExpression))
         self.assertEqual("/", xp.op)
         self.assertTrue(isinstance(xp.left, ast.Step))
@@ -145,14 +145,14 @@ class ParseTest(unittest.TestCase):
         self.assertTrue(isinstance(xp.right.node_test, ast.NodeType))
         self.assertEqual("node", xp.right.node_test.name)
 
-        xp = xpath.parse("""boolean(boolean)""")
+        xp = parse("""boolean(boolean)""")
         self.assertTrue(isinstance(xp, ast.FunctionCall))
         self.assertEqual("boolean", xp.name)
         self.assertEqual(1, len(xp.args))
         self.assertTrue(isinstance(xp.args[0], ast.Step))
         self.assertEqual("boolean", xp.args[0].node_test.name)
 
-        xp = xpath.parse("""parent::parent/parent:parent""")
+        xp = parse("""parent::parent/parent:parent""")
         self.assertEqual("parent", xp.left.axis)
         self.assertEqual("parent", xp.left.node_test.name)
         self.assertEqual("parent", xp.right.node_test.prefix)
@@ -160,13 +160,13 @@ class ParseTest(unittest.TestCase):
 
     def test_syntax_error(self):
         # try to parse invalid xpath and make sure we get an exception
-        self.assertRaises(RuntimeError, xpath.parse, """bogus-(""")
-        self.assertRaises(RuntimeError, xpath.parse, """/bogus-(""")
+        self.assertRaises(RuntimeError, parse, """bogus-(""")
+        self.assertRaises(RuntimeError, parse, """/bogus-(""")
 
 
 class TestSerializeRoundTrip(unittest.TestCase):
     def round_trip(self, xpath_str):
-        xp = xpath.parse(xpath_str)
+        xp = parse(xpath_str)
         self.assertEqual(xpath_str, serialize(xp))
 
     def test_nametest(self):
