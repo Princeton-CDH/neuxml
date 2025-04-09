@@ -2,49 +2,48 @@
 
 import neuxml
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx"]
 
-templates_path = ['templates']
-exclude_trees = ['build']
-html_static_path = ['_static']
-source_suffix = '.rst'
-master_doc = 'index'
+templates_path = ["templates"]
+exclude_trees = ["build"]
+html_static_path = ["_static"]
+source_suffix = ".rst"
+master_doc = "index"
 
-project = 'neuxml'
-copyright = '2025, Center for Digital Humanities at Princeton'
-version = '%d.%d' % neuxml.__version_info__[:2]
+project = "neuxml"
+copyright = "2025, Center for Digital Humanities at Princeton"
+version = "%d.%d" % neuxml.__version_info__[:2]
 release = neuxml.__version__
-modindex_common_prefix = ['neuxml.']
+modindex_common_prefix = ["neuxml."]
 
-html_theme = 'alabaster'
-html_style = 'style.css'
+html_theme = "alabaster"
+html_style = "style.css"
 html_theme_options = {
     # 'logo': 'logo.png',
-    'github_user': 'Princeton-CDH',
-    'github_repo': 'neuxml',
+    "github_user": "Princeton-CDH",
+    "github_repo": "neuxml",
     # 'travis_button': True,  # enable when we get travis-ci set up
-    'description': 'Python library to read and write structured XML'
+    "description": "Python library to read and write structured XML",
     # 'analytics_id':
 }
 
 
 html_sidebars = {
-    '**': ['about.html', 'navigation.html',
-          'searchbox.html', 'sidebar_footer.html'],
+    "**": ["about.html", "navigation.html", "searchbox.html", "sidebar_footer.html"],
 }
 
 
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # html_style = 'default.css'
-#html_static_path = ['static']
-htmlhelp_basename = 'neuxmldoc'
+# html_static_path = ['static']
+htmlhelp_basename = "neuxmldoc"
 
 latex_documents = [
-  ('index', 'neuxml.tex', 'neuxml Documentation', 'manual'),
+    ("index", "neuxml.tex", "neuxml Documentation", "manual"),
 ]
 
 # configuration for intersphinx: refer to the Python standard library
 intersphinx_mapping = {
-    'python': ('http://docs.python.org/', None),
+    "python": ("http://docs.python.org/", None),
 }

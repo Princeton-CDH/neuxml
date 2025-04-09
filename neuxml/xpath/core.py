@@ -24,17 +24,15 @@ works.
 Note that most client applications will import htese objects from
 neuxml.xpath, not directly from here."""
 
-from __future__ import unicode_literals
 import os
 import re
 from ply import lex, yacc
 import tempfile
 
-from neuxml.xpath import lexrules
-from neuxml.xpath import parserules
+from neuxml.xpath import lexrules, parserules
 from neuxml.xpath.ast import serialize
 
-__all__ = ['lexer', 'parser', 'parse', 'serialize']
+__all__ = ["lexer", "parser", "parse", "serialize"]
 
 # build the lexer. This will generate a lextab.py in the neuxml.xpath
 # directory. Unfortunately, xpath requires some wonky lexing.
@@ -57,39 +55,51 @@ __all__ = ['lexer', 'parser', 'parse', 'serialize']
 # it. If you can find a prettier solution to the problem then I welcome a
 # fix.
 
-OPERATOR_FORCERS = set([
-    # @, ::, (, [
-    'ABBREV_AXIS_AT', 'AXIS_SEP', 'OPEN_PAREN', 'OPEN_BRACKET',
-    # Operators: OperatorName
-    'AND_OP', 'OR_OP', 'MOD_OP', 'DIV_OP', 'MULT_OP',
-    # Operators: MultiplyOperator
-    'PATH_SEP',
-    # Operators: /, //, |, +, -
-    'ABBREV_PATH_SEP', 'UNION_OP', 'PLUS_OP', 'MINUS_OP',
-    # Operators: =. !=, <, <=, >, >=
-    'EQUAL_OP', 'REL_OP',
+OPERATOR_FORCERS = set(
+    [
+        # @, ::, (, [
+        "ABBREV_AXIS_AT",
+        "AXIS_SEP",
+        "OPEN_PAREN",
+        "OPEN_BRACKET",
+        # Operators: OperatorName
+        "AND_OP",
+        "OR_OP",
+        "MOD_OP",
+        "DIV_OP",
+        "MULT_OP",
+        # Operators: MultiplyOperator
+        "PATH_SEP",
+        # Operators: /, //, |, +, -
+        "ABBREV_PATH_SEP",
+        "UNION_OP",
+        "PLUS_OP",
+        "MINUS_OP",
+        # Operators: =. !=, <, <=, >, >=
+        "EQUAL_OP",
+        "REL_OP",
+        # Also need to add : . Official XPath lexing rules are in terms of
+        # QNames, but we produce QNames in the parse layer. We need to include :
+        # here to force foo:div to be a single step, otherwise that last div
+        # would be interpreted as an operator (where standard xpath would just
+        # call it part of the qname)
+        "COLON",
+    ]
+)
 
-    # Also need to add : . Official XPath lexing rules are in terms of
-    # QNames, but we produce QNames in the parse layer. We need to include :
-    # here to force foo:div to be a single step, otherwise that last div
-    # would be interpreted as an operator (where standard xpath would just
-    # call it part of the qname)
-    'COLON',
-])
-
-NODE_TYPES = set(['comment', 'text', 'processing-instruction', 'node'])
+NODE_TYPES = set(["comment", "text", "processing-instruction", "node"])
 
 
 class LexerWrapper(lex.Lexer):
     def token(self):
         tok = lex.Lexer.token(self)
         if tok is not None:
-            if tok.type == 'STAR_OP':
+            if tok.type == "STAR_OP":
                 if self.last is not None and self.last.type not in OPERATOR_FORCERS:
                     # first half of point 1
-                    tok.type = 'MULT_OP'
+                    tok.type = "MULT_OP"
 
-            if tok.type == 'NCNAME':
+            if tok.type == "NCNAME":
                 if self.last is not None and self.last.type not in OPERATOR_FORCERS:
                     # second half of point 1
                     operator = lexrules.operator_names.get(tok.value, None)
@@ -98,15 +108,15 @@ class LexerWrapper(lex.Lexer):
                 else:
                     next = self.peek()
                     if next is not None:
-                        if next.type == 'OPEN_PAREN':
+                        if next.type == "OPEN_PAREN":
                             # point 2
                             if tok.value in NODE_TYPES:
-                                tok.type = 'NODETYPE'
+                                tok.type = "NODETYPE"
                             else:
-                                tok.type = 'FUNCNAME'
-                        elif next.type == 'AXIS_SEP':
+                                tok.type = "FUNCNAME"
+                        elif next.type == "AXIS_SEP":
                             # point 3
-                            tok.type = 'AXISNAME'
+                            tok.type = "AXISNAME"
 
         self.last = tok
         return tok
@@ -115,16 +125,17 @@ class LexerWrapper(lex.Lexer):
         clone = self.clone()
         return clone.token()
 
+
 # try to build the lexer with cached lex table generation. this will fail if
 # the user doesn't have write perms on the source directory. in that case,
 # try again without lex table generation.
 lexdir = os.path.dirname(lexrules.__file__)
 lexer = None
 try:
-    lexer = lex.lex(module=lexrules, optimize=1, outputdir=lexdir,
-        reflags=re.UNICODE)
+    lexer = lex.lex(module=lexrules, optimize=1, outputdir=lexdir, reflags=re.UNICODE)
 except IOError as e:
     import errno
+
     if e.errno != errno.EACCES:
         raise
 if lexer is None:
@@ -141,13 +152,13 @@ lexer.last = None
 parsedir = os.path.dirname(parserules.__file__)
 # By default, store generated parse files with the code
 # If we don't have write permission, put them in the configured tempdir
-if (not os.access(parsedir, os.W_OK)):
+if not os.access(parsedir, os.W_OK):
     parsedir = tempfile.gettempdir()
 parser = yacc.yacc(module=parserules, outputdir=parsedir, debug=0)
 
 
 def parse(xpath):
-    '''Parse an xpath.'''
+    """Parse an xpath."""
     # Expose the parse method of the constructed parser,
     # but explicitly specify the lexer created here,
     # since otherwise parse will use the most-recently created lexer.
@@ -155,10 +166,10 @@ def parse(xpath):
 
 
 def ptokens(s):
-    '''Lex a string as XPath tokens, and print each token as it is lexed.
+    """Lex a string as XPath tokens, and print each token as it is lexed.
     This is used primarily for debugging. You probably don't want this
-    function.'''
+    function."""
 
     lexer.input(s)
     for tok in lexer:
-            print(tok)
+        print(tok)

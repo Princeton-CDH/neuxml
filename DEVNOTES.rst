@@ -59,24 +59,3 @@ in that module, and store the schemas and catalog file in the subdirectory
 
 To specify other remote schema URLs and catalog locations, use the provided
 keyword arguments ``xsd_schemas``, ``xmlcatalog_dir``, and ``xmlcatalog_file``.
-
-Migration from ``eulxml``
--------------------------
-
-After updating your project's dependencies to point at the new package name,
-you can run this one-line shell script to find and replace every instance of
-``eulxml`` with ``neuxml`` in all ``.py`` files in the current working
-directory and subdirectories.
-
-On MacOS:
-
-.. code-block:: shell
-
-   find . -name '*.py' -print0 | xargs -0 sed -i '' -e 's/eulxml/neuxml/g'
-
-
-Or on other Unix-based operating systems:
-
-.. code-block:: shell
-
-   find . -name '*.py' -print0 | xargs -0 sed -i 's/eulxml/neuxml/g'

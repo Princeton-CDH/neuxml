@@ -34,7 +34,11 @@ dev = [
     "pytest-socket",
     "tox",
     "requests",
+    "pre-commit",
 ]
+
+[project.scripts]
+migrate-eulxml = "neuxml.utils.migrate_eulxml:main"
 
 [project.urls]
 Repository = "https://github.com/Princeton-CDH/neuxml"

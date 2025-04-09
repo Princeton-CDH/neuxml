@@ -17,7 +17,6 @@
 
 #!/usr/bin/env python
 
-from __future__ import unicode_literals
 import os
 import unittest
 import tempfile
@@ -29,14 +28,16 @@ from lxml import etree
 from neuxml.catalog import download_schema, refresh_catalog
 
 
-
 class TestGenerateSchema(unittest.TestCase):
     """:class:`TestGenerateSchema` class for Catalog testing"""
+
     def setUp(self):
-        self.correct_schema = 'http://www.loc.gov/standards/mods/v3/mods-3-4.xsd'
-        self.wrong_schema = 'http://www.loc.gov/standards/mods/v3/mods34.xsd'
-        self.comment = 'Downloaded by neuxml %s on %s' % \
-              (neuxml.__version__, date.today().isoformat())
+        self.correct_schema = "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
+        self.wrong_schema = "http://www.loc.gov/standards/mods/v3/mods34.xsd"
+        self.comment = "Downloaded by neuxml %s on %s" % (
+            neuxml.__version__,
+            date.today().isoformat(),
+        )
         # parseString wants a url. let's give it a proper one.
         self.path = tempfile.mkdtemp()
 
@@ -45,58 +46,61 @@ class TestGenerateSchema(unittest.TestCase):
             shutil.rmtree(self.path)
 
     def test_download_xml_schemas(self):
-        """Check if xsd schemas exist and download fresh copies """
+        """Check if xsd schemas exist and download fresh copies"""
         filename = os.path.basename(self.correct_schema)
         schema_path = os.path.join(self.path, filename)
-        #do files already exist
-        check_xsds = len(glob.glob(''.join([self.path, '*.xsd'])))
+        # do files already exist
+        check_xsds = len(glob.glob("".join([self.path, "*.xsd"])))
         self.assertEqual(0, check_xsds)
 
-        #downloading the wrong schema
+        # downloading the wrong schema
         response_wrong = download_schema(self.wrong_schema, schema_path, comment=None)
         self.assertFalse(response_wrong)
 
-        #downloading the right schemas
-        response_correct = download_schema(self.correct_schema, schema_path, comment=None)
+        # downloading the right schemas
+        response_correct = download_schema(
+            self.correct_schema, schema_path, comment=None
+        )
         self.assertTrue(response_correct)
 
         tree = etree.parse(schema_path)
 
         # Does comment exist?
         schema_string_no_comment = etree.tostring(tree)
-        self.assertFalse(b'by neuxml' in schema_string_no_comment)
+        self.assertFalse(b"by neuxml" in schema_string_no_comment)
 
-
-        #Add comment and check if it is there now
+        # Add comment and check if it is there now
         download_schema(self.correct_schema, schema_path, comment=self.comment)
         tree = etree.parse(schema_path)
         schema_string_with_comment = etree.tostring(tree)
-        self.assertTrue(b'by neuxml' in schema_string_with_comment)
+        self.assertTrue(b"by neuxml" in schema_string_with_comment)
 
-        #check if all files were downloaded
-        self.assertEqual(1, len(glob.glob(''.join([self.path, '/*.xsd']))))
-
+        # check if all files were downloaded
+        self.assertEqual(1, len(glob.glob("".join([self.path, "/*.xsd"]))))
 
     def test_generate_xml_catalog(self):
-        """Check if the catalog exists and import xml files into data files """
+        """Check if the catalog exists and import xml files into data files"""
 
-        #check if catalog already exists
-        check_catalog = len(glob.glob(''.join([self.path, '/catalog.xml'])))
+        # check if catalog already exists
+        check_catalog = len(glob.glob("".join([self.path, "/catalog.xml"])))
         self.assertEqual(0, check_catalog)
-        catalog_file = os.path.join(self.path, 'catalog.xml')
+        catalog_file = os.path.join(self.path, "catalog.xml")
         filename = os.path.basename(self.correct_schema)
-        #generate empty catalog xml object
-        catalog = refresh_catalog(xsd_schemas=[self.correct_schema], xmlcatalog_dir=self.path, xmlcatalog_file=catalog_file)
+        # generate empty catalog xml object
+        catalog = refresh_catalog(
+            xsd_schemas=[self.correct_schema],
+            xmlcatalog_dir=self.path,
+            xmlcatalog_file=catalog_file,
+        )
 
-        #check if catalog was generated
-        check_catalog = len(glob.glob(''.join([self.path, '/catalog.xml'])))
+        # check if catalog was generated
+        check_catalog = len(glob.glob("".join([self.path, "/catalog.xml"])))
         self.assertEqual(1, check_catalog)
 
-
-        #check elements of generated catalog
-        self.assertEqual('catalog', catalog.ROOT_NAME)
-        self.assertEqual('urn:oasis:names:tc:entity:xmlns:xml:catalog', catalog.ROOT_NS)
-        self.assertEqual({'c': catalog.ROOT_NS}, catalog.ROOT_NAMESPACES)
+        # check elements of generated catalog
+        self.assertEqual("catalog", catalog.ROOT_NAME)
+        self.assertEqual("urn:oasis:names:tc:entity:xmlns:xml:catalog", catalog.ROOT_NS)
+        self.assertEqual({"c": catalog.ROOT_NS}, catalog.ROOT_NAMESPACES)
         self.assertEqual(1, len(catalog.uri_list))
 
         # check correct name attribute
@@ -106,4 +110,3 @@ class TestGenerateSchema(unittest.TestCase):
 
         # check how many uris we have in catalog
         self.assertEqual(len(catalog.uri_list), 1)
-

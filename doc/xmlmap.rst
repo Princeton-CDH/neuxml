@@ -44,18 +44,18 @@ Python integer and the second ``<baz>`` as a string value. We also want to
 access all of them (there may be lots on another ``<foo>``) as a big list of
 integers. We can create an object to map these fields like this::
 
-   from neuxml import xmlmap
+   from neuxml.xmlmap import core, fields
 
-   class Foo(xmlmap.XmlObject):
-       first_baz = xmlmap.IntegerField('bar[1]/baz')
-       second_baz = xmlmap.StringField('bar[2]/baz')
-       qux = xmlmap.StringListField('qux')
+   class Foo(core.XmlObject):
+       first_baz = fields.IntegerField('bar[1]/baz')
+       second_baz = fields.StringField('bar[2]/baz')
+       qux = fields.StringListField('qux')
    
 :attr:`first_baz`, :attr:`second_baz`, and :attr:`all_baz` here are
 attributes of the :class:`Foo` object. We can access them in later code like
 this::
 
-   >>> foo = xmlmap.load_xmlobject_from_file(foo_path, xmlclass=Foo)
+   >>> foo = xmlmap.core.load_xmlobject_from_file(foo_path, xmlclass=Foo)
    >>> foo.first_baz
    42
    >>> foo.second_baz
@@ -82,7 +82,7 @@ Concepts
 --------
 
 :mod:`~neuxml.xmlmap` simplifies access to XML data in Python. Programs
-can define new :class:`~neuxml.xmlmap.XmlObject` subclasses representing a
+can define new :class:`~neuxml.xmlmap.core.XmlObject` subclasses representing a
 type of XML node with predictable structure. Members of these classes can be
 regular methods and values like in regular Python classes, but they can also be
 special :ref:`field <xmlmap-field>` objects that associate XPath expressions
@@ -128,7 +128,7 @@ whole collection of them.
 Field objects are typically created as part of an :class:`XmlObject`
 definition and accessed with standard Python object attribute syntax. If a
 :class:`Foo` class defines a :attr:`bar` attribute as an
-:mod:`~neuxml.xmlmap` field object, then an object will reference it simply
+:mod:`~neuxml.xmlmap.fields` field object, then an object will reference it simply
 as ``foo.bar``.
 
 .. automodule:: neuxml.xmlmap.fields
@@ -138,12 +138,12 @@ as ``foo.bar``.
 Other facilities
 ----------------
 
-.. autofunction:: neuxml.xmlmap.load_xmlobject_from_string
+.. autofunction:: neuxml.xmlmap.core.load_xmlobject_from_string
 
-.. autofunction:: neuxml.xmlmap.load_xmlobject_from_file
+.. autofunction:: neuxml.xmlmap.core.load_xmlobject_from_file
 
-.. autofunction:: neuxml.xmlmap.parseString
+.. autofunction:: neuxml.xmlmap.core.parseString
 
-.. autofunction:: neuxml.xmlmap.parseUri
+.. autofunction:: neuxml.xmlmap.core.parseUri
 
-.. autofunction:: neuxml.xmlmap.loadSchema(uri, base_uri=None)
+.. autofunction:: neuxml.xmlmap.core.loadSchema(uri, base_uri=None)

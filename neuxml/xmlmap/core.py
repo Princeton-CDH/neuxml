@@ -14,20 +14,25 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import unicode_literals
 import logging
 import io
 from lxml import etree
 from lxml.builder import ElementMaker
 
-from neuxml.xmlmap.fields import Field
+from neuxml.xmlmap.fields import Field, SchemaField, StringField, StringListField
 
 
 logger = logging.getLogger(__name__)
 
-__all__ = ['XmlObject', 'parseUri', 'parseString', 'loadSchema',
-    'load_xmlobject_from_string', 'load_xmlobject_from_file',
-    'load_xslt']
+__all__ = [
+    "XmlObject",
+    "parseUri",
+    "parseString",
+    "loadSchema",
+    "load_xmlobject_from_string",
+    "load_xmlobject_from_file",
+    "load_xslt",
+]
 
 # NB: When parsing XML in this module, we explicitly create a new parser
 #   each time. Without this, lxml 2.2.7 uses a global default parser. When
@@ -45,7 +50,6 @@ __all__ = ['XmlObject', 'parseUri', 'parseString', 'loadSchema',
 #   https://bugs.launchpad.net/lxml/+bug/673205
 
 
-
 def parseUri(stream, uri=None):
     """Read an XML document from a URI, and return a :mod:`lxml.etree`
     document."""
@@ -57,6 +61,7 @@ def parseString(string, uri=None):
     :mod:`lxml.etree` document. String cannot be a Unicode string.
     Base_uri should be provided for the calculation of relative URIs."""
     return etree.fromstring(string, parser=_get_xmlparser(), base_url=uri)
+
 
 # internal cache for loaded schemas, so we only load each schema once
 _loaded_schemas = {}
@@ -73,27 +78,28 @@ def loadSchema(uri, base_uri=None):
 
     error_uri = uri
     if base_uri is not None:
-        error_uri += ' (base URI %s)' % base_uri
-
+        error_uri += " (base URI %s)" % base_uri
 
     try:
-        logger.debug('Loading schema %s' % uri)
-        _loaded_schemas[uri] = etree.XMLSchema(etree.parse(uri,
-                                                            parser=_get_xmlparser(),
-                                                            base_url=base_uri))
+        logger.debug("Loading schema %s" % uri)
+        _loaded_schemas[uri] = etree.XMLSchema(
+            etree.parse(uri, parser=_get_xmlparser(), base_url=base_uri)
+        )
         return _loaded_schemas[uri]
     except IOError as io_err:
         # add a little more detail to the error message - but should still be an IO error
-        raise IOError('Failed to load schema %s : %s' % (error_uri, io_err))
+        raise IOError("Failed to load schema %s : %s" % (error_uri, io_err))
     except etree.XMLSchemaParseError as parse_err:
         # re-raise as a schema parse error, but ensure includes details about schema being loaded
-        raise etree.XMLSchemaParseError('Failed to parse schema %s -- %s' % (error_uri, parse_err))
+        raise etree.XMLSchemaParseError(
+            "Failed to parse schema %s -- %s" % (error_uri, parse_err)
+        )
 
 
 def load_xslt(filename=None, xsl=None):
-    '''Load and compile an XSLT document (specified by filename or string)
+    """Load and compile an XSLT document (specified by filename or string)
     for repeated use in transforming XML.
-    '''
+    """
     parser = _get_xmlparser()
     if filename is not None:
         xslt_doc = etree.parse(filename, parser=parser)
@@ -104,7 +110,7 @@ def load_xslt(filename=None, xsl=None):
 
 
 def _http_uri(uri):
-    return uri.startswith('http:') or uri.startswith('https:')
+    return uri.startswith("http:") or uri.startswith("https:")
 
 
 class _FieldDescriptor(object):
@@ -126,7 +132,6 @@ class _FieldDescriptor(object):
 
 
 class XmlObjectType(type):
-
     """
     A metaclass for :class:`XmlObject`.
 
@@ -140,7 +145,7 @@ class XmlObjectType(type):
       2. store all of these fields and all of the base classes' fields in a
          ``_fields`` dictionary on the class, and
       3. if any local (non-parent) fields look like self-referential
-         :class:`neuxml.xmlmap.NodeField` objects then patch them up
+         :class:`neuxml.xmlmap.fields.NodeField` objects then patch them up
          to refer to the newly-created :class:`XmlObject`.
 
     """
@@ -155,10 +160,10 @@ class XmlObjectType(type):
         # from *their* parents (because they were built from XmlObjectType),
         # we don't have to recurse.
         for base in bases:
-            base_fields = getattr(base, '_fields', None)
+            base_fields = getattr(base, "_fields", None)
             if base_fields:
                 fields.update(base_fields)
-            base_xsd = getattr(base, 'XSD_SCHEMA', None)
+            base_xsd = getattr(base, "XSD_SCHEMA", None)
 
         schema_obj = None
 
@@ -168,16 +173,19 @@ class XmlObjectType(type):
             if isinstance(attr_val, Field):
                 if isinstance(attr_val, SchemaField):
                     # special case: schema field will look at the schema and return appropriate field type
-                    if 'XSD_SCHEMA' in defined_attrs or base_xsd:
+                    if "XSD_SCHEMA" in defined_attrs or base_xsd:
                         # load schema_obj the first time we need it
                         if schema_obj is None:
                             # if xsd schema is directly defined, use that
-                            if 'XSD_SCHEMA' in defined_attrs:
-                                schema_obj = load_xmlobject_from_file(defined_attrs['XSD_SCHEMA'],
-                                                                      XsdSchema)
+                            if "XSD_SCHEMA" in defined_attrs:
+                                schema_obj = load_xmlobject_from_file(
+                                    defined_attrs["XSD_SCHEMA"], XsdSchema
+                                )
                             # otherwise, use nearest parent xsd
                             else:
-                                schema_obj = load_xmlobject_from_file(base_xsd, XsdSchema)
+                                schema_obj = load_xmlobject_from_file(
+                                    base_xsd, XsdSchema
+                                )
 
                         attr_val = attr_val.get_field(schema_obj)
                 field = attr_val
@@ -186,29 +194,29 @@ class XmlObjectType(type):
 
                 # collect self-referential NodeFields so that we can resolve
                 # them once we've created the new class
-                node_class = getattr(field, 'node_class', None)
+                node_class = getattr(field, "node_class", None)
                 if isinstance(node_class, str):
-                    if node_class in ('self', name):
+                    if node_class in ("self", name):
                         recursive_fields.append(field)
                     else:
-                        msg = ('Class %s has field %s with node_class %s, ' +
-                               'but the only supported class names are ' +
-                               '"self" and %s.') % (name, attr_val,
-                                                    repr(node_class),
-                                                    repr(name))
+                        msg = (
+                            "Class %s has field %s with node_class %s, "
+                            + "but the only supported class names are "
+                            + '"self" and %s.'
+                        ) % (name, attr_val, repr(node_class), repr(name))
                         raise ValueError(msg)
 
                 # if a field 'foo' has a 'create_for_node' method, then add
                 # a 'create_foo' method to call it. generally this isn't
                 # helpful, but NodeField uses it.
-                if hasattr(attr_val, 'create_for_node'):
-                    create_method_name = 'create_' + attr_name
+                if hasattr(attr_val, "create_for_node"):
+                    create_method_name = "create_" + attr_name
                     create_method = cls._make_create_field(create_method_name, attr_val)
                     use_attrs[create_method_name] = create_method
 
             else:
                 use_attrs[attr_name] = attr_val
-        use_attrs['_fields'] = fields
+        use_attrs["_fields"] = fields
 
         super_new = super(XmlObjectType, cls).__new__
         new_class = super_new(cls, name, bases, use_attrs)
@@ -216,7 +224,7 @@ class XmlObjectType(type):
         # patch self-referential NodeFields (collected above) with the
         # newly-created class
         for field in recursive_fields:
-            assert field.node_class in ('self', name)
+            assert field.node_class in ("self", name)
             field.node_class = new_class
 
         return new_class
@@ -225,12 +233,12 @@ class XmlObjectType(type):
     def _make_create_field(field_name, field):
         def create_field(xmlobject):
             field.create_for_node(xmlobject.node, xmlobject.context)
+
         create_field.__name__ = str(field_name)
         return create_field
 
 
 class XmlObject(object, metaclass=XmlObjectType):
-
     """
     A Python object wrapped around an XML node.
 
@@ -278,9 +286,9 @@ class XmlObject(object, metaclass=XmlObjectType):
     """
 
     schema_validate = True
-    '''Override for schema validation; if a schema must be defined for
+    """Override for schema validation; if a schema must be defined for
      the use of :class:`xmlmap.fields.SchemaField` for a sub-xmlobject
-     that should not be validated, set to False.'''
+     that should not be validated, set to False."""
 
     @property
     def xmlschema(self):
@@ -293,7 +301,7 @@ class XmlObject(object, metaclass=XmlObjectType):
         your subclass like this::
 
           XSD_SCHEMA = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-          xmlschema = xmlmap.loadSchema(XSD_SCHEMA)
+          xmlschema = xmlmap.core.loadSchema(XSD_SCHEMA)
 
         """
         if self.XSD_SCHEMA:
@@ -308,22 +316,23 @@ class XmlObject(object, metaclass=XmlObjectType):
         self.node = node
         # FIXME: context probably needs work
         # get namespaces from current node OR its parent (in case of an lxml 'smart' string)
-        if hasattr(node, 'nsmap'):
+        if hasattr(node, "nsmap"):
             nsmap = node.nsmap
-        elif hasattr(node, 'getParent'):
+        elif hasattr(node, "getParent"):
             nsmap = node.nsmap
         else:
             nsmap = {}
 
         # xpath has no notion of a default namespace - omit any namespace with no prefix
-        self.context = {'namespaces': dict([(prefix, ns) for prefix, ns
-                                            in nsmap.items() if prefix])}
+        self.context = {
+            "namespaces": dict([(prefix, ns) for prefix, ns in nsmap.items() if prefix])
+        }
 
         if context is not None:
             self.context.update(context)
-        if hasattr(self, 'ROOT_NAMESPACES'):
+        if hasattr(self, "ROOT_NAMESPACES"):
             # also include any root namespaces to guarantee that expected prefixes are available
-            self.context['namespaces'].update(self.ROOT_NAMESPACES)
+            self.context["namespaces"].update(self.ROOT_NAMESPACES)
 
         for field, value in kwargs.items():
             # TODO (maybe): handle setting/creating list fields
@@ -331,10 +340,10 @@ class XmlObject(object, metaclass=XmlObjectType):
 
     def _build_root_element(self):
         opts = {}
-        if hasattr(self, 'ROOT_NS'):
-            opts['namespace'] = self.ROOT_NS
-        if hasattr(self, 'ROOT_NAMESPACES'):
-            opts['nsmap'] = self.ROOT_NAMESPACES
+        if hasattr(self, "ROOT_NS"):
+            opts["namespace"] = self.ROOT_NS
+        if hasattr(self, "ROOT_NAMESPACES"):
+            opts["nsmap"] = self.ROOT_NAMESPACES
 
         E = ElementMaker(**opts)
         root = E(self.ROOT_NAME)
@@ -421,14 +430,14 @@ class XmlObject(object, metaclass=XmlObjectType):
     def __string__(self):
         if isinstance(self.node, str):
             return self.node
-        return str(self).encode('ascii', 'xmlcharrefreplace')
+        return str(self).encode("ascii", "xmlcharrefreplace")
 
     def __eq__(self, other):
         # consider two xmlobjects equal if they are pointing to the same xml node
-        if hasattr(other, 'node') and self.node == other.node:
+        if hasattr(other, "node") and self.node == other.node:
             return True
         # consider two xmlobjects equal if they serialize the same
-        if hasattr(other, 'serialize') and self.serialize() == other.serialize():
+        if hasattr(other, "serialize") and self.serialize() == other.serialize():
             return True
         # NOTE: does not address "equivalent" xml, which is potentially very complex
         return False
@@ -457,8 +466,9 @@ class XmlObject(object, metaclass=XmlObjectType):
         :param pretty: pretty-print the XML output; boolean, defaults to False
         :rtype: stream passed in or an instance of :class:`cStringIO.StringIO`
         """
-        return self._serialize(self.node.getroottree(), stream=stream, pretty=pretty,
-                                xml_declaration=True)
+        return self._serialize(
+            self.node.getroottree(), stream=stream, pretty=pretty, xml_declaration=True
+        )
 
     def _serialize(self, node, stream=None, pretty=False, xml_declaration=False):
         # actual logic of xml serialization
@@ -469,8 +479,14 @@ class XmlObject(object, metaclass=XmlObjectType):
             string_mode = False
 
         # NOTE: etree c14n doesn't seem to like fedora info: URIs
-        stream.write(etree.tostring(node, encoding='UTF-8', pretty_print=pretty,
-                                    xml_declaration=xml_declaration))
+        stream.write(
+            etree.tostring(
+                node,
+                encoding="UTF-8",
+                pretty_print=pretty,
+                xml_declaration=xml_declaration,
+            )
+        )
 
         if string_mode:
             data = stream.getvalue()
@@ -519,7 +535,7 @@ class XmlObject(object, metaclass=XmlObjectType):
             # any public method to clear the validation log.
             return self.xmlschema.validate(self.node)
         else:
-            raise Exception('No XSD schema is defined, cannot validate document')
+            raise Exception("No XSD schema is defined, cannot validate document")
 
     def schema_validation_errors(self):
         """
@@ -532,16 +548,19 @@ class XmlObject(object, metaclass=XmlObjectType):
         if self.xmlschema is not None:
             return self.xmlschema.error_log
         else:
-            raise Exception('No XSD schema is defined, cannot return validation errors')
+            raise Exception("No XSD schema is defined, cannot return validation errors")
 
     def is_empty(self):
         """
         Returns True if the root node contains no child elements, no
         attributes, and no text. Returns False if any are present.
         """
-        return len(self.node) == 0 and len(self.node.attrib) == 0 \
-            and not self.node.text and not self.node.tail  # regular text or text after a node
-
+        return (
+            len(self.node) == 0
+            and len(self.node.attrib) == 0
+            and not self.node.text
+            and not self.node.tail
+        )  # regular text or text after a node
 
 
 """ April 2016. Removing Urllib2Resolver so we can support
@@ -555,18 +574,18 @@ def _get_xmlparser(xmlclass=XmlObject, validate=False, resolver=None):
     Otherwise, uses DTD validation. Switched resolver to None to skip validation.
     """
     if validate:
-        if hasattr(xmlclass, 'XSD_SCHEMA') and xmlclass.XSD_SCHEMA is not None:
+        if hasattr(xmlclass, "XSD_SCHEMA") and xmlclass.XSD_SCHEMA is not None:
             # If the schema has already been loaded, use that.
             # (since we accessing the *class*, accessing 'xmlschema' returns a property,
             # not the initialized schema object we actually want).
-            xmlschema = getattr(xmlclass, '_xmlschema', None)
+            xmlschema = getattr(xmlclass, "_xmlschema", None)
             # otherwise, load the schema
             if xmlschema is None:
                 xmlschema = loadSchema(xmlclass.XSD_SCHEMA)
-            opts = {'schema': xmlschema}
+            opts = {"schema": xmlschema}
         else:
             # if configured XmlObject does not have a schema defined, assume DTD validation
-            opts = {'dtd_validation': True}
+            opts = {"dtd_validation": True}
     else:
         # If validation is not requested, then the parsing should fail
         # only for well-formedness issues.
@@ -586,12 +605,13 @@ def _get_xmlparser(xmlclass=XmlObject, validate=False, resolver=None):
     return parser
 
 
-def load_xmlobject_from_string(string, xmlclass=XmlObject, validate=False,
-        resolver=None):
+def load_xmlobject_from_string(
+    string, xmlclass=XmlObject, validate=False, resolver=None
+):
     """Initialize an XmlObject from a string.
 
     If an xmlclass is specified, construct an instance of that class instead
-    of :class:`~neuxml.xmlmap.XmlObject`. It should be a subclass of XmlObject.
+    of :class:`~neuxml.xmlmap.core.XmlObject`. It should be a subclass of XmlObject.
     The constructor will be passed a single node.
 
     If validation is requested and the specified subclass of :class:`XmlObject`
@@ -600,17 +620,18 @@ def load_xmlobject_from_string(string, xmlclass=XmlObject, validate=False,
     validation, and expect a Doctype declaration in the xml content.
 
     :param string: xml content to be loaded, as a string
-    :param xmlclass: subclass of :class:`~neuxml.xmlmap.XmlObject` to initialize
+    :param xmlclass: subclass of :class:`~neuxml.xmlmap.core.XmlObject` to initialize
     :param validate: boolean, enable validation; defaults to false
-    :rtype: instance of :class:`~neuxml.xmlmap.XmlObject` requested
+    :rtype: instance of :class:`~neuxml.xmlmap.core.XmlObject` requested
     """
     parser = _get_xmlparser(xmlclass=xmlclass, validate=validate, resolver=resolver)
     element = etree.fromstring(string, parser)
     return xmlclass(element)
 
 
-def load_xmlobject_from_file(filename, xmlclass=XmlObject, validate=False,
-        resolver=None):
+def load_xmlobject_from_file(
+    filename, xmlclass=XmlObject, validate=False, resolver=None
+):
     """Initialize an XmlObject from a file.
 
     See :meth:`load_xmlobject_from_string` for more details; behaves exactly the
@@ -627,35 +648,33 @@ def load_xmlobject_from_file(filename, xmlclass=XmlObject, validate=False,
     tree = etree.parse(filename, parser)
     return xmlclass(tree.getroot())
 
-from neuxml.xmlmap.fields import *
-# Import these for backward compatibility. Should consider deprecating these
-# and asking new code to pull them from descriptor
-
 
 # XSD schema xmlobjects - used in XmlObjectType to process SchemaFields
 # FIXME: where should these actually go? depends on both XmlObject and fields
 
 
 class XsdType(XmlObject):
-    ROOT_NAME = 'simpleType'
-    name = StringField('@name')
-    base = StringField('xs:restriction/@base')
-    restricted_values = StringListField('xs:restriction/xs:enumeration/@value')
+    ROOT_NAME = "simpleType"
+    name = StringField("@name")
+    base = StringField("xs:restriction/@base")
+    restricted_values = StringListField("xs:restriction/xs:enumeration/@value")
 
     def base_type(self):
         # for now, only supports simple types - eventually, may want logic to
         # traverse extended types to get to base XSD type
-        if ':' in self.base:    # for now, ignore prefix (could be xsd, xs, etc. - how to know which?)
-            prefix, basetype = self.base.split(':')
+        if (
+            ":" in self.base
+        ):  # for now, ignore prefix (could be xsd, xs, etc. - how to know which?)
+            prefix, basetype = self.base.split(":")
         else:
             basetype = self.base
         return basetype
 
 
 class XsdSchema(XmlObject):
-    ROOT_NAME = 'schema'
-    ROOT_NS = 'http://www.w3.org/2001/XMLSchema'
-    ROOT_NAMESPACES = {'xs': ROOT_NS}
+    ROOT_NAME = "schema"
+    ROOT_NS = "http://www.w3.org/2001/XMLSchema"
+    ROOT_NAMESPACES = {"xs": ROOT_NS}
 
     def get_type(self, name=None, xpath=None):
         if xpath is None:
@@ -667,6 +686,8 @@ class XsdSchema(XmlObject):
         if len(result) == 0:
             raise Exception("No Schema type definition found for xpath '%s'" % xpath)
         elif len(result) > 1:
-            raise Exception("Too many schema type definitions found for xpath '%s' (found %d)" \
-                        % (xpath, len(result)))
+            raise Exception(
+                "Too many schema type definitions found for xpath '%s' (found %d)"
+                % (xpath, len(result))
+            )
         return XsdType(result[0], context=self.context)  # pass in namespaces

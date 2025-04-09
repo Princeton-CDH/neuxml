@@ -1,5 +1,5 @@
 # file neuxml/xpath/__init__.py
-# 
+#
 #   Copyright 2010,2011 Emory University Libraries
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,5 +31,3 @@ This module exports two key functions, :func:`parse` and :func:`serialize`.
 
 This module does not support evaluating XPath expressions.
 """
-
-from neuxml.xpath.core import parse, serialize
