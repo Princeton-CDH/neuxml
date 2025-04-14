@@ -1,0 +1,5 @@
+[run]
+omit =
+    # omit generated PLY files from coverage
+    lextab.py
+    parsetab.py
