@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-'''
+"""
 Logic for downloading local copies of schemas and generating an
 `XML catalog <http://lxml.de/resolvers.html#xml-catalogs>`_ for use in
 resolving schemas locally instead of downloading them every time validation
@@ -26,7 +26,7 @@ in packaged releases of neuxml.
 
 For more information about setting up and testing XML catalogs, see the
 `libxml2 documentation <http://xmlsoft.org/catalog.html>`_.
-'''
+"""
 
 import os
 import logging
@@ -35,7 +35,7 @@ from lxml import etree
 import sys
 
 import neuxml
-from neuxml import xmlmap
+from neuxml.xmlmap import core, fields
 
 # requests is an optional dependency, handle gracefully if not present
 try:
@@ -47,23 +47,24 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 # message to display if requests is not available
-req_requests_msg = 'Please install requests to download schemas ' + \
-                   '(pip install requests)\n'
+req_requests_msg = (
+    "Please install requests to download schemas " + "(pip install requests)\n"
+)
 
 
 XSD_SCHEMAS = [
-    'http://www.loc.gov/standards/mods/mods.xsd',
-    'http://www.loc.gov/standards/mods/v3/mods-3-4.xsd',
-    'http://www.loc.gov/standards/xlink/xlink.xsd',
-    'http://www.loc.gov/standards/premis/premis.xsd',
-    'http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd',
-    'http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd',
-    'https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd',
-    'http://www.loc.gov/ead/ead.xsd',
-    'http://www.loc.gov/mods/xml.xsd',
-    'http://www.w3.org/2001/xml.xsd',
-    'http://www.w3.org/2001/03/xml.xsd',
-    'http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd',
+    "http://www.loc.gov/standards/mods/mods.xsd",
+    "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd",
+    "http://www.loc.gov/standards/xlink/xlink.xsd",
+    "http://www.loc.gov/standards/premis/premis.xsd",
+    "http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd",
+    "http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd",
+    "https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd",
+    "http://www.loc.gov/ead/ead.xsd",
+    "http://www.loc.gov/mods/xml.xsd",
+    "http://www.w3.org/2001/xml.xsd",
+    "http://www.w3.org/2001/03/xml.xsd",
+    "http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd",
 ]
 # Deprecated URLs. Current schema lives on Github at https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs.
 # 'http://www.archives.ncdcr.gov/mail-account.xsd',
@@ -72,23 +73,26 @@ XSD_SCHEMAS = [
 # Returns a 403 on programmatic requests:
 # 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
 
-class Uri(xmlmap.XmlObject):
-    """:class:`xmlmap.XmlObject` class for Catalog URIs"""
-    ROOT_NAME = 'uri'
+
+class Uri(core.XmlObject):
+    """:class:`core.XmlObject` class for Catalog URIs"""
+
+    ROOT_NAME = "uri"
     ROOT_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
     #: name, i.e. schema URI
-    name = xmlmap.StringField('@name')
+    name = fields.StringField("@name")
     #: uri, i.e. path to load the schema locally
-    uri = xmlmap.StringField('@uri')
+    uri = fields.StringField("@uri")
 
 
-class Catalog(xmlmap.XmlObject):
-    """:class:`xmlmap.XmlObject` class to for generating XML Catalogs"""
-    ROOT_NAME = 'catalog'
+class Catalog(core.XmlObject):
+    """:class:`core.XmlObject` class to for generating XML Catalogs"""
+
+    ROOT_NAME = "catalog"
     ROOT_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
-    ROOT_NAMESPACES = {'c': ROOT_NS}
+    ROOT_NAMESPACES = {"c": ROOT_NS}
     #: list of uris, as instance of :class:`Uri`
-    uri_list = xmlmap.NodeListField('c:uri', Uri)
+    uri_list = fields.NodeListField("c:uri", Uri)
 
 
 def download_schema(uri, path, comment=None):
@@ -109,27 +113,29 @@ def download_schema(uri, path, comment=None):
     # short-hand name of the schema, based on uri
     schema = os.path.basename(uri)
     try:
-
         req = requests.get(uri, stream=True)
         req.raise_for_status()
-        with open(path, 'wb') as schema_download:
+        with open(path, "wb") as schema_download:
             for chunk in req.iter_content(chunk_size=1024):
-                if chunk: # filter out keep-alive new chunks
+                if chunk:  # filter out keep-alive new chunks
                     schema_download.write(chunk)
         # if a comment is specified, add it to the locally saved schema
         if comment is not None:
             tree = etree.parse(path)
             tree.getroot().append(etree.Comment(comment))
-            with open(path, 'wb') as xml_catalog:
-                xml_catalog.write(etree.tostring(tree, pretty_print=True,
-                    xml_declaration=True, encoding="UTF-8"))
-            logger.debug('Downloaded schema %s', schema)
+            with open(path, "wb") as xml_catalog:
+                xml_catalog.write(
+                    etree.tostring(
+                        tree, pretty_print=True, xml_declaration=True, encoding="UTF-8"
+                    )
+                )
+            logger.debug("Downloaded schema %s", schema)
 
         return True
 
     except requests.exceptions.HTTPError as err:
-        msg = 'Failed to download schema %s' % schema
-        msg += '(error codes %s)' % err.response.status_code
+        msg = "Failed to download schema %s" % schema
+        msg += "(error codes %s)" % err.response.status_code
         logger.warn(msg)
 
         return False
@@ -175,8 +181,10 @@ def refresh_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None)
     catalog = Catalog()
 
     # comment string to be added to locally-saved schemas
-    comment = 'Downloaded by neuxml %s on %s' % \
-        (neuxml.__version__, date.today().isoformat())
+    comment = "Downloaded by neuxml %s on %s" % (
+        neuxml.__version__,
+        date.today().isoformat(),
+    )
 
     for schema_uri in xsd_schemas:
         filename = os.path.basename(schema_uri)
@@ -191,6 +199,6 @@ def refresh_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None)
 
     # if we have any uris in our catalog, write it out
     if catalog.uri_list:
-        with open(xmlcatalog_file, 'wb') as xml_catalog:
+        with open(xmlcatalog_file, "wb") as xml_catalog:
             catalog.serializeDocument(xml_catalog, pretty=True)
     return catalog

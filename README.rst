@@ -65,3 +65,8 @@ Technical documentation
 
 For instructions on developer setup, unit testing, XML catalog file management,
 and migrating from `eulxml`, refer to ``DEVNOTES.rst``.
+
+Migration from ``eulxml``
+=========================
+
+If migrating from a previous ``eulxml`` installation, see ``MIGRATION.rst``.
