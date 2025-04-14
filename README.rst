@@ -2,60 +2,71 @@
 neuxml
 ======
 
-**package**
-  .. image:: https://img.shields.io/pypi/v/neuxml.svg
-    :target: https://pypi.python.org/pypi/neuxml
-    :alt: PyPI
+.. image:: https://img.shields.io/pypi/v/neuxml.svg
+  :target: https://pypi.python.org/pypi/neuxml
+  :alt: PyPI
 
-  .. image:: https://img.shields.io/github/license/Princeton-CDH/neuxml.svg
-    :alt: License
+.. image:: https://img.shields.io/github/license/Princeton-CDH/neuxml.svg
+  :alt: License
 
-  .. image:: https://img.shields.io/pypi/dm/neuxml.svg
-    :alt: PyPI downloads
+.. image:: https://img.shields.io/pypi/pyversions/neuxml
+  :alt: PyPI - Python Version
 
-neuxml is a `Python <http://www.python.org/>`_ module that provides
-utilities and classes for interacting with XML that allow the
-definition of re-usable XML objects that can be accessed, updated and
-created as standard Python types.
+.. image:: https://img.shields.io/pypi/dm/neuxml.svg
+  :alt: PyPI downloads
 
-**neuxml.xpath** provides functions and classes for parsing XPath
-expressions using `PLY <http://www.dabeaz.com/ply/>`_.
+`neuxml` is a Python library that provides utilities and classes for
+object-oriented access to XML. `neuxml` makes it possible to define reusable
+python classes to access, update, and create XML content as standard Python types.
 
-**neuxml.xmlmap** makes it easier to map XML to Python objects in a
-nicer, more pythonic and object-oriented way than typical DOM access
-usually provides.  XML can be read, modified, and even created from
-scratch (in cases where the configured XPath is simple enough to
-determine the nodes that should be constructed).
+**neuxml.xmlmap** makes it possible to map XML content to Python objects in a
+pythonic and object-oriented way, which is easier to use than typical DOM access.
+With the `neuxml.xmlmap.core.XmlObject` class, XML can be read, modified, and even
+created from scratch in some cases, as long as the configured XPath can
+be used to construct new nodes.
 
-Dependencies
+Object-oriented access depends on **neuxml.xpath**, which provides functions and
+classes for parsing XPath expressions using `PLY <http://www.dabeaz.com/ply/>`_.
+
+Installation
 ============
 
-**neuxml** depends on `PLY <http://www.dabeaz.com/ply/>`_ and `lxml
-<http://lxml.de/>`_.
+We recommend using pip to install the officially released versions from PyPI:
 
+```console
+pip install neuxml
+```
 
-Contact Information
-===================
+It is also possible to install directly from GitHub. Use a branch or tag name,
+e.g. `@develop` or `@1.0` to install a specific tagged version or branch.
 
-**eulxml** was created by the `Center for Digital Humanities at Princeton <https://cdh.princeton.edu/>`_.
-
-cdhdevteam@princeton.edu
-
+```console
+pip install git+https://github.com/Princeton-CDH/neuxml.git@develop#egg=neuxml
+```
 
 License
 =======
+
 **neuxml** is distributed under the Apache 2.0 License.
 
 
 Development History
 ===================
 
-This codebase was forked from a package called **eulxml**, originally developed
-by Emory University Libraries. To see and interact with the full development
-history of **eulxml**, see `eulxml <https://github.com/emory-libraries/eulxml>`_.
+`neuxml` is a hard fork of `eulxml <https://github.com/emory-libraries/eulxml>`_,
+which was originally developed by Emory University Libraries from 2011-2016.
+`neuxml` has been updated for compatibility with current versions of Python
+and drops the support for Django form integration. The full development history
+for the `eulxml` package is available at the original repository:  https://github.com/emory-libraries/eulxml
 
 
-Developer instructions
-======================
+Technical documentation
+=======================
 
-For development instructions and notes, see ``DEVNOTES.rst``.
+For instructions on developer setup, unit testing, XML catalog file management,
+and migrating from `eulxml`, refer to ``DEVNOTES.rst``.
+
+Migration from ``eulxml``
+=========================
+
+If migrating from a previous ``eulxml`` installation, see ``MIGRATION.rst``.

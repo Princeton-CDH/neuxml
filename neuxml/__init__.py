@@ -19,7 +19,7 @@ import os
 from importlib import resources
 from contextlib import ExitStack
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 # Paths for XML catalog file & directory
 
