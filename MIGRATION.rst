@@ -4,7 +4,7 @@ Migration from ``eulxml``
 A convenience script called ``migrate-eulxml`` has been included in order
 to migrate your project from ``eulxml`` to ``neuxml``, which will replace
 any usage of the package name in all ``.py`` files in the passed directory
-and subdirectories. After upgrading to Python 3.12+ and installing the
+and subdirectories. After upgrading to Python 3.10+ and installing the
 updated package, you can run the script::
 
     migrate-eulxml /path/to/your/project

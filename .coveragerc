@@ -1,4 +1,5 @@
 [run]
+source = neuxml
 omit =
     # omit generated PLY files from coverage
     lextab.py
