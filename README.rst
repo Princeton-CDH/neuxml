@@ -33,16 +33,15 @@ Installation
 
 We recommend using pip to install the officially released versions from PyPI:
 
-```console
-pip install neuxml
-```
+.. code-block:: shell
+  pip install neuxml
 
 It is also possible to install directly from GitHub. Use a branch or tag name,
 e.g. `@develop` or `@1.0` to install a specific tagged version or branch.
 
-```console
-pip install git+https://github.com/Princeton-CDH/neuxml.git@develop#egg=neuxml
-```
+.. code-block:: shell
+  pip install git+https://github.com/Princeton-CDH/neuxml.git@develop#egg=neuxml
+
 
 License
 =======
