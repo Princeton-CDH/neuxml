@@ -1,7 +1,6 @@
 [run]
 source = neuxml
-
-[report]
 omit =
-    */python?.?/*
-    */site-packages/nose/*
+    # omit generated PLY files from coverage
+    lextab.py
+    parsetab.py

@@ -26,7 +26,7 @@ To run all unit tests::
     pytest
 
     # for continuous integration
-    pytest --cov=./ --cov-report=xml
+    pytest --cov=neuxml --cov-report=xml
 
 To run unit tests for a specific module, use syntax like this::
 
