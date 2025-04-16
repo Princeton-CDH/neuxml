@@ -49,3 +49,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Princeton-CDH/neuxml
+        # prevent uploading coverage for every python version
+        if: matrix.python == 3.12
