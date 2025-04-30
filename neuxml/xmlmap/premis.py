@@ -22,7 +22,7 @@ preservation metadata.
 -----
 """
 
-from neuxml.xmlmap import core, fields
+from neuxml import xmlmap
 
 PREMIS_NAMESPACE = "info:lc/xmlns/premis-v2"
 "authoritative namespace for PREMIS"
@@ -30,7 +30,7 @@ PREMIS_SCHEMA = "http://www.loc.gov/standards/premis/v2/premis-v2-1.xsd"
 "authoritative schema location for PREMIS"
 
 
-class BasePremis(core.XmlObject):
+class BasePremis(xmlmap.XmlObject):
     """Base PREMIS class with namespace declaration common to all PREMIS
     XmlObjects.
 
@@ -38,7 +38,7 @@ class BasePremis(core.XmlObject):
 
        This class is intended mostly for internal use, but could be
        useful when extending or adding additional PREMIS
-       :class:`~neuxml.xmlmap.core.XmlObject` classes.  The
+       :class:`~neuxml.xmlmap.XmlObject` classes.  The
        :attr:`PREMIS_NAMESPACE` is mapped to the prefix **p**.
     """
 
@@ -65,14 +65,14 @@ class PremisRoot(BasePremis):
 
 
 class Object(PremisRoot):
-    """Preliminary :class:`~neuxml.xmlmap.core.XmlObject` for a PREMIS
+    """Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     object.
 
     Curently only includes the minimal required fields.
     """
 
     ROOT_NAME = "object"
-    type = fields.StringField("@xsi:type")  # file, representation, bitstream
+    type = xmlmap.StringField("@xsi:type")  # file, representation, bitstream
     """type of object (e.g., file, representation, bitstream).
 
     .. Note::
@@ -82,14 +82,14 @@ class Object(PremisRoot):
         obj = premis.Object()
         obj.type = "p:file"
     """
-    id_type = fields.StringField("p:objectIdentifier/p:objectIdentifierType")
+    id_type = xmlmap.StringField("p:objectIdentifier/p:objectIdentifierType")
     "identifier type (`objectIdentifier/objectIdentifierType`)"
-    id = fields.StringField("p:objectIdentifier/p:objectIdentifierValue")
+    id = xmlmap.StringField("p:objectIdentifier/p:objectIdentifierValue")
     "identifier value (`objectIdentifier/objectIdentifierValue`)"
 
 
 class Event(PremisRoot):
-    """Preliminary :class:`~neuxml.xmlmap.core.XmlObject` for a PREMIS
+    """Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     event.
 
     .. Note::
@@ -103,17 +103,17 @@ class Event(PremisRoot):
     """
 
     ROOT_NAME = "event"
-    type = fields.StringField("p:eventType")
+    type = xmlmap.StringField("p:eventType")
     "event type  (``eventType``)"
-    id_type = fields.StringField("p:eventIdentifier/p:eventIdentifierType")
+    id_type = xmlmap.StringField("p:eventIdentifier/p:eventIdentifierType")
     "identifier type (`eventIdentifier/eventIdentifierType`)"
-    id = fields.StringField("p:eventIdentifier/p:eventIdentifierValue")
+    id = xmlmap.StringField("p:eventIdentifier/p:eventIdentifierValue")
     "identifier value (`eventIdentifier/eventIdentifierValue`)"
-    date = fields.StringField("p:eventDateTime")
+    date = xmlmap.StringField("p:eventDateTime")
     "date/time for the event (`eventDateTime`)"
-    detail = fields.StringField("p:eventDetail", required=False)
+    detail = xmlmap.StringField("p:eventDetail", required=False)
     "event detail (`eventDetail`)"
-    outcome = fields.StringField(
+    outcome = xmlmap.StringField(
         "p:eventOutcomeInformation/p:eventOutcome", required=False
     )
     """outcome of the event (`eventOutcomeInformation/eventOutcome`).
@@ -125,24 +125,24 @@ class Event(PremisRoot):
     # leaving out outcome detail for now...
 
     # agent (optional, could be repeated)
-    agent_type = fields.StringField(
+    agent_type = xmlmap.StringField(
         "p:linkingAgentIdentifier/p:linkingAgentIdentifierType"
     )
-    agent_id = fields.StringField(
+    agent_id = xmlmap.StringField(
         "p:linkingAgentIdentifier/p:linkingAgentIdentifierValue"
     )
 
     # object (optional, could be repeated)
-    object_type = fields.StringField(
+    object_type = xmlmap.StringField(
         "p:linkingObjectIdentifier/p:linkingObjectIdentifierType"
     )
-    object_id = fields.StringField(
+    object_id = xmlmap.StringField(
         "p:linkingObjectIdentifier/p:linkingObjectIdentifierValue"
     )
 
 
 class Premis(PremisRoot):
-    """Preliminary :class:`~neuxml.xmlmap.core.XmlObject` for a PREMIS
+    """Preliminary :class:`~neuxml.xmlmap.XmlObject` for a PREMIS
     container element that can contain any of the other top-level
     PREMIS elements.
 
@@ -152,12 +152,12 @@ class Premis(PremisRoot):
 
     ROOT_NAME = "premis"
 
-    version = fields.StringField("@version")
+    version = xmlmap.StringField("@version")
     """Version of PREMIS in use; by default, new instances of
     :class:`Premis` will be initialized with a version of 2.1"""
-    object = fields.NodeField("p:object", Object)
+    object = xmlmap.NodeField("p:object", Object)
     "a single PREMIS :class:`object`"
-    events = fields.NodeListField("p:event", Event)
+    events = xmlmap.NodeListField("p:event", Event)
     "list of PREMIS events, as instances of :class:`Event`"
 
     def __init__(self, *args, **kwargs):

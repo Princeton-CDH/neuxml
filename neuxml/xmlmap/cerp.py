@@ -20,7 +20,7 @@ import email
 import logging
 import os
 
-from neuxml.xmlmap import core, fields
+from neuxml import xmlmap
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 # Current schema : https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd
 
 
-class _BaseCerp(core.XmlObject):
+class _BaseCerp(xmlmap.XmlObject):
     "Common CERP namespace declarations"
 
     ROOT_NS = "https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs"
@@ -38,8 +38,8 @@ class _BaseCerp(core.XmlObject):
 
 class Parameter(_BaseCerp):
     ROOT_NAME = "Parameter"
-    name = fields.StringField("xm:Name")
-    value = fields.StringField("xm:Value")
+    name = xmlmap.StringField("xm:Name")
+    value = xmlmap.StringField("xm:Value")
 
     def __str__(self):
         return "%s=%s" % (self.name, self.value)
@@ -50,9 +50,9 @@ class Parameter(_BaseCerp):
 
 class Header(_BaseCerp):
     ROOT_NAME = "Header"
-    name = fields.StringField("xm:Name")
-    value = fields.StringField("xm:Value")
-    comments = fields.StringListField("xm:Comments")
+    name = xmlmap.StringField("xm:Name")
+    value = xmlmap.StringField("xm:Value")
+    comments = xmlmap.StringListField("xm:Comments")
 
     def __str__(self):
         return "%s: %s" % (self.name, self.value)
@@ -64,25 +64,25 @@ class Header(_BaseCerp):
 class _BaseBody(_BaseCerp):
     """Common email header elements"""
 
-    content_type_list = fields.StringListField("xm:ContentType")
-    charset_list = fields.StringListField("xm:Charset")
-    content_name_list = fields.StringListField("xm:ContentName")
-    content_type_comments_list = fields.StringListField("xm:ContentTypeComments")
-    content_type_param_list = fields.NodeListField("xm:ContentTypeParam", Parameter)
-    transfer_encoding_list = fields.StringListField("xm:TransferEncoding")
-    transfer_encoding_comments_list = fields.StringListField(
+    content_type_list = xmlmap.StringListField("xm:ContentType")
+    charset_list = xmlmap.StringListField("xm:Charset")
+    content_name_list = xmlmap.StringListField("xm:ContentName")
+    content_type_comments_list = xmlmap.StringListField("xm:ContentTypeComments")
+    content_type_param_list = xmlmap.NodeListField("xm:ContentTypeParam", Parameter)
+    transfer_encoding_list = xmlmap.StringListField("xm:TransferEncoding")
+    transfer_encoding_comments_list = xmlmap.StringListField(
         "xm:TransferEncodingComments"
     )
-    content_id_list = fields.StringListField("xm:ContentId")
-    content_id_comments_list = fields.StringListField("xm:ContentIdComments")
-    description_list = fields.StringListField("xm:Description")
-    description_comments_list = fields.StringListField("xm:DescriptionComments")
-    disposition_list = fields.StringListField("xm:Disposition")
-    disposition_file_name_list = fields.StringListField("xm:DispositionFileName")
-    disposition_comments_list = fields.StringListField("xm:DispositionComments")
+    content_id_list = xmlmap.StringListField("xm:ContentId")
+    content_id_comments_list = xmlmap.StringListField("xm:ContentIdComments")
+    description_list = xmlmap.StringListField("xm:Description")
+    description_comments_list = xmlmap.StringListField("xm:DescriptionComments")
+    disposition_list = xmlmap.StringListField("xm:Disposition")
+    disposition_file_name_list = xmlmap.StringListField("xm:DispositionFileName")
+    disposition_comments_list = xmlmap.StringListField("xm:DispositionComments")
 
-    disposition_params = fields.NodeListField("xm:DispositionParams", Parameter)
-    other_mime_headers = fields.NodeListField("xm:OtherMimeHeader", Header)
+    disposition_params = xmlmap.NodeListField("xm:DispositionParams", Parameter)
+    other_mime_headers = xmlmap.NodeListField("xm:OtherMimeHeader", Header)
 
 
 class Hash(_BaseCerp):
@@ -98,8 +98,8 @@ class Hash(_BaseCerp):
         "RIPEMD160",
     ]
 
-    value = fields.StringField("xm:Value")
-    function = fields.StringField("xm:Function", choices=HASH_FUNCTION_CHOICES)
+    value = xmlmap.StringField("xm:Value")
+    function = xmlmap.StringField("xm:Function", choices=HASH_FUNCTION_CHOICES)
 
     def __str__(self):
         return self.value
@@ -113,16 +113,16 @@ class _BaseExternal(_BaseCerp):
 
     EOL_CHOICES = ["CR", "LF", "CRLF"]
 
-    rel_path = fields.StringField("xm:RelPath")
-    eol = fields.StringField("xm:Eol", choices=EOL_CHOICES)
-    hash = fields.NodeField("xm:Hash", Hash)
+    rel_path = xmlmap.StringField("xm:RelPath")
+    eol = xmlmap.StringField("xm:Eol", choices=EOL_CHOICES)
+    hash = xmlmap.NodeField("xm:Hash", Hash)
 
 
 class _BaseContent(_BaseCerp):
     """Common content encoding elements"""
 
-    charset_list = fields.StringListField("xm:CharSet")
-    transfer_encoding_list = fields.StringListField("xm:TransferEncoding")
+    charset_list = xmlmap.StringListField("xm:CharSet")
+    transfer_encoding_list = xmlmap.StringListField("xm:TransferEncoding")
 
 
 #
@@ -132,21 +132,21 @@ class _BaseContent(_BaseCerp):
 
 class BodyContent(_BaseContent):
     ROOT_NAME = "BodyContent"
-    content = fields.StringField("xm:Content")
+    content = xmlmap.StringField("xm:Content")
 
 
 class ExtBodyContent(_BaseExternal, _BaseContent):
     ROOT_NAME = "ExtBodyContent"
-    local_id = fields.IntegerField("xm:LocalId")
-    xml_wrapped = fields.SimpleBooleanField("xm:XMLWrapped", true="1", false="0")
+    local_id = xmlmap.IntegerField("xm:LocalId")
+    xml_wrapped = xmlmap.SimpleBooleanField("xm:XMLWrapped", true="1", false="0")
 
 
 class SingleBody(_BaseBody):
     ROOT_NAME = "SingleBody"
 
-    body_content = fields.NodeField("xm:BodyContent", BodyContent)
-    ext_body_content = fields.NodeField("xm:ExtBodyContent", ExtBodyContent)
-    child_message = fields.NodeField(
+    body_content = xmlmap.NodeField("xm:BodyContent", BodyContent)
+    ext_body_content = xmlmap.NodeField("xm:ExtBodyContent", ExtBodyContent)
+    child_message = xmlmap.NodeField(
         "xm:ChildMessage", None
     )  # this will be fixed below
 
@@ -154,16 +154,16 @@ class SingleBody(_BaseBody):
     def content(self):
         return self.body_content or self.ext_body_content or self.child_message
 
-    phantom_body = fields.StringField("xm:PhantomBody")
+    phantom_body = xmlmap.StringField("xm:PhantomBody")
 
 
 class MultiBody(_BaseCerp):
     ROOT_NAME = "MultiBody"
-    preamble = fields.StringField("xm:Preamble")
-    epilogue = fields.StringField("xm:Epilogue")
+    preamble = xmlmap.StringField("xm:Preamble")
+    epilogue = xmlmap.StringField("xm:Epilogue")
 
-    single_body = fields.NodeField("xm:SingleBody", SingleBody)
-    multi_body = fields.NodeField("xm:MultiBody", "self")
+    single_body = xmlmap.NodeField("xm:SingleBody", SingleBody)
+    multi_body = xmlmap.NodeField("xm:MultiBody", "self")
 
     @property
     def body(self):
@@ -172,8 +172,8 @@ class MultiBody(_BaseCerp):
 
 class Incomplete(_BaseCerp):
     ROOT_NAME = "Incomplete"
-    error_type = fields.StringField("xm:ErrorType")
-    error_location = fields.StringField("xm:ErrorLocation")
+    error_type = xmlmap.StringField("xm:ErrorType")
+    error_location = xmlmap.StringField("xm:ErrorLocation")
 
     def __repr__(self):
         return "<%s %s>" % (self.__class__.__name__, self.error_type)
@@ -182,36 +182,36 @@ class Incomplete(_BaseCerp):
 class _BaseMessage(_BaseCerp):
     """Common message elements"""
 
-    local_id = fields.IntegerField("xm:LocalId")
-    message_id = fields.StringField("xm:MessageId")
-    message_id_supplied = fields.SimpleBooleanField(
+    local_id = xmlmap.IntegerField("xm:LocalId")
+    message_id = xmlmap.StringField("xm:MessageId")
+    message_id_supplied = xmlmap.SimpleBooleanField(
         "xm:MessageId/@Supplied", true="1", false=None
     )
-    mime_version = fields.StringField("xm:MimeVersion")
-    orig_date_list = fields.StringListField("xm:OrigDate")  # FIXME: really datetime
-    # NOTE: neuxml.fields.DateTimeField supports specifying format,
+    mime_version = xmlmap.StringField("xm:MimeVersion")
+    orig_date_list = xmlmap.StringListField("xm:OrigDate")  # FIXME: really datetime
+    # NOTE: neuxml.xmlmap.DateTimeField supports specifying format,
     # but we might need additional work since %z only works with
     # strftime, not strptime
-    from_list = fields.StringListField("xm:From")
-    sender_list = fields.StringListField("xm:Sender")
-    to_list = fields.StringListField("xm:To")
-    cc_list = fields.StringListField("xm:Cc")
-    bcc_list = fields.StringListField("xm:Bcc")
-    in_reply_to_list = fields.StringListField("xm:InReplyTo")
-    references_list = fields.StringListField("xm:References")
-    subject_list = fields.StringListField("xm:Subject")
-    comments_list = fields.StringListField("xm:Comments")
-    keywords_list = fields.StringListField("xm:Keywords")
-    headers = fields.NodeListField("xm:Header", Header)
+    from_list = xmlmap.StringListField("xm:From")
+    sender_list = xmlmap.StringListField("xm:Sender")
+    to_list = xmlmap.StringListField("xm:To")
+    cc_list = xmlmap.StringListField("xm:Cc")
+    bcc_list = xmlmap.StringListField("xm:Bcc")
+    in_reply_to_list = xmlmap.StringListField("xm:InReplyTo")
+    references_list = xmlmap.StringListField("xm:References")
+    subject_list = xmlmap.StringListField("xm:Subject")
+    comments_list = xmlmap.StringListField("xm:Comments")
+    keywords_list = xmlmap.StringListField("xm:Keywords")
+    headers = xmlmap.NodeListField("xm:Header", Header)
 
-    single_body = fields.NodeField("xm:SingleBody", SingleBody)
-    multi_body = fields.NodeField("xm:MultiBody", MultiBody)
+    single_body = xmlmap.NodeField("xm:SingleBody", SingleBody)
+    multi_body = xmlmap.NodeField("xm:MultiBody", MultiBody)
 
     @property
     def body(self):
         return self.single_body or self.multi_body
 
-    incomplete_list = fields.NodeField("xm:Incomplete", Incomplete)
+    incomplete_list = xmlmap.NodeField("xm:Incomplete", Incomplete)
 
     def __repr__(self):
         return "<%s %s>" % (
@@ -225,7 +225,7 @@ class Message(_BaseMessage, _BaseExternal):
 
     ROOT_NAME = "Message"
     STATUS_FLAG_CHOICES = ["Seen", "Answered", "Flagged", "Deleted", "Draft", "Recent"]
-    status_flags = fields.StringListField("xm:StatusFlag", choices=STATUS_FLAG_CHOICES)
+    status_flags = xmlmap.StringListField("xm:StatusFlag", choices=STATUS_FLAG_CHOICES)
 
     @classmethod
     def from_email_message(cls, message, local_id=None):
@@ -332,7 +332,7 @@ class ChildMessage(_BaseMessage):
 
 
 # Patch-up from above. FIXME: This is necessary because of recursive
-# NodeFields. neuxml.fields.NodeField doesn't currently support these
+# NodeFields. neuxml.xmlmap.NodeField doesn't currently support these
 SingleBody.child_message.node_class = ChildMessage
 
 #
@@ -351,10 +351,10 @@ class Folder(_BaseCerp):
 
     ROOT_NAME = "Folder"
 
-    name = fields.StringField("xm:Name")
-    messages = fields.NodeListField("xm:Message", Message)
-    subfolders = fields.NodeListField("xm:Folder", "self")
-    mboxes = fields.NodeListField("xm:Mbox", Mbox)
+    name = xmlmap.StringField("xm:Name")
+    messages = xmlmap.NodeListField("xm:Message", Message)
+    subfolders = xmlmap.NodeListField("xm:Folder", "self")
+    mboxes = xmlmap.NodeListField("xm:Mbox", Mbox)
 
     def __repr__(self):
         return "<%s %s>" % (self.__class__.__name__, self.name)
@@ -370,9 +370,9 @@ class ReferencesAccount(_BaseCerp):
         "SeeInstead",
     ]
 
-    href = fields.StringField("xm:Href")
-    email_address = fields.StringField("xm:EmailAddress")
-    reference_type = fields.StringField("xm:RefType", choices=REF_TYPE_CHOICES)
+    href = xmlmap.StringField("xm:Href")
+    email_address = xmlmap.StringField("xm:EmailAddress")
+    reference_type = xmlmap.StringField("xm:RefType", choices=REF_TYPE_CHOICES)
 
 
 class Account(_BaseCerp):
@@ -382,12 +382,12 @@ class Account(_BaseCerp):
     ROOT_NAME = "Account"
     XSD_SCHEMA = "https://raw.githubusercontent.com/StateArchivesOfNorthCarolina/tomes-eaxs/master/versions/1/eaxs_schema_v1.xsd"
 
-    email_address = fields.StringField("xm:EmailAddress")
-    global_id = fields.StringField("xm:GlobalId")
-    references_accounts = fields.NodeListField(
+    email_address = xmlmap.StringField("xm:EmailAddress")
+    global_id = xmlmap.StringField("xm:GlobalId")
+    references_accounts = xmlmap.NodeListField(
         "xm:ReferencesAccount", ReferencesAccount
     )
-    folders = fields.NodeListField("xm:Folder", Folder)
+    folders = xmlmap.NodeListField("xm:Folder", Folder)
 
     def __repr__(self):
         return "<%s %s>" % (

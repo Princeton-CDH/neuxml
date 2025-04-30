@@ -7,7 +7,7 @@ from pytest_socket import disable_socket
 from unittest.mock import patch
 
 import neuxml.schema_data
-from neuxml.xmlmap import core
+from neuxml import xmlmap
 
 
 def pytest_runtest_setup():
@@ -41,7 +41,7 @@ def mock_loadSchema():
     if the URL does not appear in the local file mapping."""
 
     # store the real function to call on files and filepaths
-    loadSchema = core.loadSchema
+    loadSchema = xmlmap.loadSchema
 
     # xml catalog as a dict
     xml_catalog = get_xmlcatalog_dict()
@@ -58,6 +58,6 @@ def mock_loadSchema():
         # call real function on the local file
         return loadSchema(xml_catalog[uri], *args, **kwargs)
 
-    with patch.object(core, "loadSchema", side_effect=mock_load_url):
+    with patch.object(xmlmap, "loadSchema", side_effect=mock_load_url):
         # after side effect, unapply patch
         yield

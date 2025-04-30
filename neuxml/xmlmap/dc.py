@@ -20,10 +20,10 @@ except ImportError:
     # use rdflib if it's available, but it's ok if it's not
     rdflib = None
 
-from neuxml.xmlmap import core, fields
+from neuxml import xmlmap
 
 
-class _BaseDublinCore(core.XmlObject):
+class _BaseDublinCore(xmlmap.XmlObject):
     "Base Dublin Core class for common namespace declarations"
 
     ROOT_NS = "http://www.openarchives.org/OAI/2.0/oai_dc/"
@@ -33,8 +33,8 @@ class _BaseDublinCore(core.XmlObject):
 class DublinCoreElement(_BaseDublinCore):
     "Generic Dublin Core element with access to element name and value"
 
-    name = fields.StringField("local-name(.)")
-    value = fields.StringField(".")
+    name = xmlmap.StringField("local-name(.)")
+    value = xmlmap.StringField(".")
 
 
 class DublinCore(_BaseDublinCore):
@@ -49,58 +49,58 @@ class DublinCore(_BaseDublinCore):
 
     XSD_SCHEMA = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
 
-    contributor = fields.StringField("dc:contributor", required=False)
-    contributor_list = fields.StringListField(
+    contributor = xmlmap.StringField("dc:contributor", required=False)
+    contributor_list = xmlmap.StringListField(
         "dc:contributor", verbose_name="Contributors"
     )
 
-    coverage = fields.StringField("dc:coverage", required=False)
-    coverage_list = fields.StringListField("dc:coverage", verbose_name="Coverage")  # ?
+    coverage = xmlmap.StringField("dc:coverage", required=False)
+    coverage_list = xmlmap.StringListField("dc:coverage", verbose_name="Coverage")  # ?
 
-    creator = fields.StringField("dc:creator", required=False)
-    creator_list = fields.StringListField("dc:creator", verbose_name="Creators")
+    creator = xmlmap.StringField("dc:creator", required=False)
+    creator_list = xmlmap.StringListField("dc:creator", verbose_name="Creators")
 
-    date = fields.StringField("dc:date", required=False)
-    date_list = fields.StringListField("dc:date", verbose_name="Dates")
+    date = xmlmap.StringField("dc:date", required=False)
+    date_list = xmlmap.StringListField("dc:date", verbose_name="Dates")
 
-    description = fields.StringField("dc:description", required=False)
-    description_list = fields.StringListField(
+    description = xmlmap.StringField("dc:description", required=False)
+    description_list = xmlmap.StringListField(
         "dc:description", verbose_name="Descriptions"
     )
 
-    format = fields.StringField("dc:format", required=False)
-    format_list = fields.StringListField("dc:format", verbose_name="Formats")
+    format = xmlmap.StringField("dc:format", required=False)
+    format_list = xmlmap.StringListField("dc:format", verbose_name="Formats")
 
-    identifier = fields.StringField("dc:identifier", required=False)
-    identifier_list = fields.StringListField(
+    identifier = xmlmap.StringField("dc:identifier", required=False)
+    identifier_list = xmlmap.StringListField(
         "dc:identifier", verbose_name="Identifiers"
     )
 
-    language = fields.StringField("dc:language", required=False)
-    language_list = fields.StringListField("dc:language", verbose_name="Languages")
+    language = xmlmap.StringField("dc:language", required=False)
+    language_list = xmlmap.StringListField("dc:language", verbose_name="Languages")
 
-    publisher = fields.StringField("dc:publisher", required=False)
-    publisher_list = fields.StringListField("dc:publisher", verbose_name="Publishers")
+    publisher = xmlmap.StringField("dc:publisher", required=False)
+    publisher_list = xmlmap.StringListField("dc:publisher", verbose_name="Publishers")
 
-    relation = fields.StringField("dc:relation", required=False)
-    relation_list = fields.StringListField("dc:relation", verbose_name="Relations")
+    relation = xmlmap.StringField("dc:relation", required=False)
+    relation_list = xmlmap.StringListField("dc:relation", verbose_name="Relations")
 
-    rights = fields.StringField("dc:rights", required=False)
-    rights_list = fields.StringListField("dc:rights", verbose_name="Rights")
+    rights = xmlmap.StringField("dc:rights", required=False)
+    rights_list = xmlmap.StringListField("dc:rights", verbose_name="Rights")
 
-    source = fields.StringField("dc:source", required=False)
-    source_list = fields.StringListField("dc:source", verbose_name="Sources")
+    source = xmlmap.StringField("dc:source", required=False)
+    source_list = xmlmap.StringListField("dc:source", verbose_name="Sources")
 
-    subject = fields.StringField("dc:subject", required=False)
-    subject_list = fields.StringListField("dc:subject", verbose_name="Subjects")
+    subject = xmlmap.StringField("dc:subject", required=False)
+    subject_list = xmlmap.StringListField("dc:subject", verbose_name="Subjects")
 
-    title = fields.StringField("dc:title", required=False)
-    title_list = fields.StringListField("dc:title", verbose_name="Titles")
+    title = xmlmap.StringField("dc:title", required=False)
+    title_list = xmlmap.StringListField("dc:title", verbose_name="Titles")
 
-    type = fields.StringField("dc:type", required=False)
-    type_list = fields.StringListField("dc:type", verbose_name="Types")
+    type = xmlmap.StringField("dc:type", required=False)
+    type_list = xmlmap.StringListField("dc:type", verbose_name="Types")
 
-    elements = fields.NodeListField("dc:*", DublinCoreElement)
+    elements = xmlmap.NodeListField("dc:*", DublinCoreElement)
     "list of all DC elements as instances of :class:`DublinCoreElement`"
 
     # RDF declaration of the Recommended DCMI types

@@ -35,7 +35,7 @@ from lxml import etree
 import sys
 
 import neuxml
-from neuxml.xmlmap import core, fields
+from neuxml import xmlmap
 
 # requests is an optional dependency, handle gracefully if not present
 try:
@@ -74,25 +74,25 @@ XSD_SCHEMAS = [
 # 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
 
 
-class Uri(core.XmlObject):
-    """:class:`core.XmlObject` class for Catalog URIs"""
+class Uri(xmlmap.XmlObject):
+    """:class:`xmlmap.XmlObject` class for Catalog URIs"""
 
     ROOT_NAME = "uri"
     ROOT_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
     #: name, i.e. schema URI
-    name = fields.StringField("@name")
+    name = xmlmap.StringField("@name")
     #: uri, i.e. path to load the schema locally
-    uri = fields.StringField("@uri")
+    uri = xmlmap.StringField("@uri")
 
 
-class Catalog(core.XmlObject):
-    """:class:`core.XmlObject` class to for generating XML Catalogs"""
+class Catalog(xmlmap.XmlObject):
+    """:class:`xmlmap.XmlObject` class to for generating XML Catalogs"""
 
     ROOT_NAME = "catalog"
     ROOT_NS = "urn:oasis:names:tc:entity:xmlns:xml:catalog"
     ROOT_NAMESPACES = {"c": ROOT_NS}
     #: list of uris, as instance of :class:`Uri`
-    uri_list = fields.NodeListField("c:uri", Uri)
+    uri_list = xmlmap.NodeListField("c:uri", Uri)
 
 
 def download_schema(uri, path, comment=None):
