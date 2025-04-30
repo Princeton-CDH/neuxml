@@ -706,7 +706,7 @@ class NodeList(object):
     Supports the methods that Python documentation indicates should be provided
     by Mutable sequences, with the exceptions of reverse and sort; in the
     particular case of :class:`NodeListField`, it is unclear how a list of
-    :class:`~neuxml.xmlmap.core.XmlObject` should be sorted, or whether or not such
+    :class:`~neuxml.xmlmap.XmlObject` should be sorted, or whether or not such
     a thing would be useful or meaningful for XML content.
 
     When a new element is appended to a :class:`~neuxml.xmlmap.fields.NodeList`,
@@ -731,7 +731,7 @@ class NodeList(object):
         return self.node.xpath(self.xpath, **self.context)
 
     def is_empty(self):
-        """Parallel to :meth:`neuxml.xmlmap.core.XmlObject.is_empty`.  A
+        """Parallel to :meth:`neuxml.xmlmap.XmlObject.is_empty`.  A
         NodeList is considered to be empty if every element in the
         list is empty."""
         return all(n.is_empty() for n in self)
@@ -1137,15 +1137,15 @@ class DateListField(Field):
 
 class NodeField(Field):
     """Map an XPath expression to a single
-    :class:`~neuxml.xmlmap.core.XmlObject` subclass instance. If the XPath
+    :class:`~neuxml.xmlmap.XmlObject` subclass instance. If the XPath
     expression evaluates to an empty NodeList, a NodeField evaluates
     to `None`.
 
     Normally a ``NodeField``'s ``node_class`` is a class. As a special
     exception, it may be the string ``"self"``, in which case it recursively
-    refers to objects of its containing :class:`~neuxml.xmlmap.core.XmlObject` class.
+    refers to objects of its containing :class:`~neuxml.xmlmap.XmlObject` class.
 
-    If an :class:`~neuxml.xmlmap.core.XmlObject` contains a NodeField named
+    If an :class:`~neuxml.xmlmap.XmlObject` contains a NodeField named
     ``foo``, then the object will automatically have a
     ``create_foo()`` method in addition to its ``foo`` property. Code
     can call this ``create_foo()`` method to create the child element
@@ -1181,13 +1181,13 @@ class NodeField(Field):
 
 class NodeListField(Field):
     """Map an XPath expression to a list of
-    :class:`~neuxml.xmlmap.core.XmlObject` subclass instances. If the XPath
+    :class:`~neuxml.xmlmap.XmlObject` subclass instances. If the XPath
     expression evalues to an empty NodeList, a NodeListField evaluates
     to an empty list.
 
     Normally a ``NodeListField``'s ``node_class`` is a class. As a special
     exception, it may be the string ``"self"``, in which case it recursively
-    refers to objects of its containing :class:`~neuxml.xmlmap.core.XmlObject` class.
+    refers to objects of its containing :class:`~neuxml.xmlmap.XmlObject` class.
 
     Actual return type is :class:`~neuxml.xmlmap.fields.NodeList`, which can be
     treated like a regular Python list, and includes set and delete functionality.
@@ -1235,7 +1235,7 @@ class SchemaField(Field):
     ``resourceTypeDefinition`` is a simple type with an enumeration of
     values, so you could add something like this::
 
-        resource_type  = xmlmap.fields.SchemaField("mods:typeOfResource", "resourceTypeDefinition")
+        resource_type  = xmlmap.SchemaField("mods:typeOfResource", "resourceTypeDefinition")
 
 
 
