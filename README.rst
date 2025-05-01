@@ -21,7 +21,7 @@ python classes to access, update, and create XML content as standard Python type
 
 **neuxml.xmlmap** makes it possible to map XML content to Python objects in a
 pythonic and object-oriented way, which is easier to use than typical DOM access.
-With the `neuxml.xmlmap.core.XmlObject` class, XML can be read, modified, and even
+With the `neuxml.xmlmap.XmlObject` class, XML can be read, modified, and even
 created from scratch in some cases, as long as the configured XPath can
 be used to construct new nodes.
 

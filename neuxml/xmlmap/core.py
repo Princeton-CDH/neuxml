@@ -301,7 +301,7 @@ class XmlObject(object, metaclass=XmlObjectType):
         your subclass like this::
 
           XSD_SCHEMA = "http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
-          xmlschema = xmlmap.core.loadSchema(XSD_SCHEMA)
+          xmlschema = xmlmap.loadSchema(XSD_SCHEMA)
 
         """
         if self.XSD_SCHEMA:

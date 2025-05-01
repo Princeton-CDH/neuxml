@@ -20,18 +20,70 @@ This package facilitates access to XML data using common Pythonic idioms. XML
 nodes map to Python attributes using XPath expressions.
 
 For developer convenience this package is divided into submodules. Users
-should import the names from submodules. This package exports
+should import the names directly from neuxml.xmlmap. This package exports
 the following names:
- * core.XmlObject -- a base class for XML-Python mapping objects
- * core.parseUri and core.parseString -- parse a URI or string into an xml node with
+ * XmlObject -- a base class for XML-Python mapping objects
+ * parseUri and parseString -- parse a URI or string into an xml node with
    XPath methods that xmlmap depends on
- * core.load_xmlobject_from_string and core.load_xmlobject_from_file -- parse a string
+ * load_xmlobject_from_string and load_xmlobject_from_file -- parse a string
    or file directly into an XmlObject
- * fields.NodeField and fields.NodeListField -- field classes for mapping relative
+ * NodeField and NodeListField -- field classes for mapping relative
    xml nodes to other XmlObjects
- * fields.StringField and fields.StringListField -- field classes for mapping xml
+ * StringField and StringListField -- field classes for mapping xml
    nodes to Python strings
- * fields.IntegerField and fields.IntegerListField -- field classes for mapping xml
+ * IntegerField and IntegerListField -- field classes for mapping xml
    nodes to Python integers
 
 """
+
+from neuxml.xmlmap.core import (
+    XmlObject,
+    parseUri,
+    parseString,
+    loadSchema,
+    load_xmlobject_from_string,
+    load_xmlobject_from_file,
+    load_xslt,
+)
+from neuxml.xmlmap.fields import (
+    StringField,
+    StringListField,
+    IntegerField,
+    IntegerListField,
+    NodeField,
+    NodeListField,
+    ItemField,
+    SimpleBooleanField,
+    DateTimeField,
+    DateTimeListField,
+    DateField,
+    DateListField,
+    SchemaField,
+    FloatField,
+    FloatListField,
+)
+
+__all__ = [
+    "XmlObject",
+    "parseUri",
+    "parseString",
+    "loadSchema",
+    "load_xmlobject_from_string",
+    "load_xmlobject_from_file",
+    "load_xslt",
+    "StringField",
+    "StringListField",
+    "IntegerField",
+    "IntegerListField",
+    "NodeField",
+    "NodeListField",
+    "ItemField",
+    "SimpleBooleanField",
+    "DateTimeField",
+    "DateTimeListField",
+    "DateField",
+    "DateListField",
+    "SchemaField",
+    "FloatField",
+    "FloatListField",
+]
