@@ -1,5 +1,6 @@
 # file test_xmlmap/test_mods.py
 #
+#   Copyright 2025 Center for Digital Humanities, Princeton University
 #   Copyright 2011 Emory University Libraries
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
