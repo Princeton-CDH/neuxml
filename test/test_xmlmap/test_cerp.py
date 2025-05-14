@@ -1,7 +1,7 @@
 # file test_xmlmap/test_cerp.py
 #
 #   Copyright 2025 Center for Digital Humanities, Princeton University
-#   Copyright 2011 Emory University Libraries
+#   Copyright 2011 Emory University Libraries (eulxml)
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
