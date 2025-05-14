@@ -42,6 +42,7 @@ def main(arg_list=None):
         path = Path(filename)
         if (
             not path.is_file()  # skip non-files
+            or ".github" in path.parts  # skip github workflows
             or path.name in ["lextab.py", "parsetab.py"]  # skip generated PLY files
             or "schema_data" in path.parts  # skip schema_data/* (xml from elsewhere)
             # skip test fixtures
