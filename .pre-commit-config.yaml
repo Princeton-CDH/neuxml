@@ -17,3 +17,6 @@ repos:
         name: check-copyright
         entry: python scripts/add_copyright.py --check
         language: python
+        # add_copyright.py only supports these for now; update list and script
+        # if more filetypes should be checked for copyright notices
+        types_or: ["python", "toml", "yaml"]
