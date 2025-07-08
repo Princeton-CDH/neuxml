@@ -21,9 +21,9 @@ Logic for downloading local copies of schemas and generating an
 resolving schemas locally instead of downloading them every time validation
 is required.
 
-Catalog generation is available via the setup.py custom command xmlcatalog,
-and a generated catalog and corresponding schema files should be included
-in packaged releases of neuxml.
+Catalog generation is available via the script `neuxml-refresh-catalog`;
+a catalog and corresponding schema files for supported formats is
+included in packaged releases of neuxml.
 
 For more information about setting up and testing XML catalogs, see the
 `libxml2 documentation <http://xmlsoft.org/catalog.html>`_.
@@ -66,6 +66,8 @@ XSD_SCHEMAS = [
     "http://www.w3.org/2001/xml.xsd",
     "http://www.w3.org/2001/03/xml.xsd",
     "http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd",
+    "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+    "http://dublincore.org/schemas/xmls/simpledc20021212.xsd",
 ]
 # Deprecated URLs. Current schema lives on Github at https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs.
 # 'http://www.archives.ncdcr.gov/mail-account.xsd',
@@ -155,7 +157,7 @@ def refresh_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None)
 
     .. Note::
 
-        Currently this method overwites any existing schema and catalog
+        Currently this method overwrites any existing schema and catalog
         files, without checking if they are present or need to be
         updated.
 

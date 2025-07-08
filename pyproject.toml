@@ -29,7 +29,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Text Processing :: Markup :: XML",
 ]
-dependencies = ["ply>=3.8", "lxml>=3.4", "rdflib>=3.0"]
+dependencies = ["ply>=3.8", "lxml>=6.0", "rdflib>=3.0"]
 
 [project.optional-dependencies]
 dev = [
@@ -45,6 +45,9 @@ dev = [
 [project.urls]
 Repository = "https://github.com/Princeton-CDH/neuxml"
 Changelog = "https://github.com/Princeton-CDH/neuxml/blob/main/CHANGELOG.rst"
+
+[project.scripts]
+neuxml-refresh-catalog = "neuxml.catalog:refresh_catalog"
 
 [tool.hatch.build]
 artifacts = ["neuxml/xpath/lextab.py", "neuxml/xpath/parsetab.py"]
