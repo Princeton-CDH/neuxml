@@ -46,6 +46,9 @@ dev = [
 Repository = "https://github.com/Princeton-CDH/neuxml"
 Changelog = "https://github.com/Princeton-CDH/neuxml/blob/main/CHANGELOG.rst"
 
+[project.scripts]
+neuxml-refresh-catalog = "neuxml.catalog:refresh_catalog"
+
 [tool.hatch.build]
 artifacts = ["neuxml/xpath/lextab.py", "neuxml/xpath/parsetab.py"]
 
