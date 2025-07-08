@@ -29,7 +29,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Text Processing :: Markup :: XML",
 ]
-dependencies = ["ply>=3.8", "lxml>=3.4", "rdflib>=3.0"]
+dependencies = ["ply>=3.8", "lxml>=6.0", "rdflib>=3.0"]
 
 [project.optional-dependencies]
 dev = [
