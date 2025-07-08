@@ -1,6 +1,13 @@
 Change & Version Information
 ============================
 
+1.1
+---
+
+* Requires lxml 6.0 or greater, which enforces `no_network` by default when parsing
+* XML catalog files have been updated and now include Dublin Core schemas.
+
+
 1.0.0
 -----
 
