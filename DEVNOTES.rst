@@ -59,3 +59,9 @@ in that module, and store the schemas and catalog file in the subdirectory
 
 To specify other remote schema URLs and catalog locations, use the provided
 keyword arguments ``xsd_schemas``, ``xmlcatalog_dir``, and ``xmlcatalog_file``.
+
+To refresh the defaults, use the project script which calls the same method:
+
+.. code-block:: shell
+
+    neuxml-refresh-catalog

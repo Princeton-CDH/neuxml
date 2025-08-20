@@ -65,7 +65,10 @@ XSD_SCHEMAS = [
     "http://www.loc.gov/mods/xml.xsd",
     "http://www.w3.org/2001/xml.xsd",
     "http://www.w3.org/2001/03/xml.xsd",
-    "http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd",
+    # "http://www.dublincore.org/schemas/xmls/simpledc20021212.xsd",
+    "http://dublincore.org/schemas/xmls/simpledc20021212.xsd",
+    "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
+    "http://dublincore.org/2010/10/11/dctype.rdf",
 ]
 # Deprecated URLs. Current schema lives on Github at https://github.com/StateArchivesOfNorthCarolina/tomes-eaxs.
 # 'http://www.archives.ncdcr.gov/mail-account.xsd',
@@ -137,7 +140,7 @@ def download_schema(uri, path, comment=None):
     except requests.exceptions.HTTPError as err:
         msg = "Failed to download schema %s" % schema
         msg += "(error codes %s)" % err.response.status_code
-        logger.warn(msg)
+        logger.warning(msg)
 
         return False
 
@@ -203,3 +206,14 @@ def refresh_catalog(xsd_schemas=None, xmlcatalog_dir=None, xmlcatalog_file=None)
         with open(xmlcatalog_file, "wb") as xml_catalog:
             catalog.serializeDocument(xml_catalog, pretty=True)
     return catalog
+
+
+def refresh_cli():
+    """
+    Command line access to :meth:`refresh_catalog`. Configures logging
+    for `neuxml` to DEBUG level so downloads will be reported.
+    """
+    # configure logging with minimal format to output downloads and any errors
+    logging.basicConfig(format="%(message)s", level=logging.WARNING)
+    logging.getLogger("neuxml").setLevel(logging.DEBUG)
+    refresh_catalog()

@@ -1710,4 +1710,4 @@ Therefore, two definitions are needed for the usage attribute, one for <url> ("u
 		</xs:restriction>
 	</xs:simpleType>
 	<!-- -->
-<!--Downloaded by neuxml 1.1.3 on 2025-04-01--></xs:schema>
+<!--Downloaded by neuxml 1.1.0.dev0 on 2025-08-20--></xs:schema>

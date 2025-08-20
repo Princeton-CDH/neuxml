@@ -21,7 +21,7 @@ except ImportError:
     # use rdflib if it's available, but it's ok if it's not
     rdflib = None
 
-from neuxml import xmlmap
+from neuxml import xmlmap, XMLCATALOG_DIR
 
 
 class _BaseDublinCore(xmlmap.XmlObject):
@@ -105,7 +105,8 @@ class DublinCore(_BaseDublinCore):
     "list of all DC elements as instances of :class:`DublinCoreElement`"
 
     # RDF declaration of the Recommended DCMI types
-    DCMI_TYPES_RDF = "http://dublincore.org/2010/10/11/dctype.rdf"
+    # DCMI_TYPES_RDF = "http://dublincore.org/2010/10/11/dctype.rdf"
+    DCMI_TYPES_RDF = f"{XMLCATALOG_DIR}/dctype.rdf"
     DCMI_TYPE_URI = "http://purl.org/dc/dcmitype/"
     if rdflib:
         DCMI_TYPE_URI = rdflib.URIRef(DCMI_TYPE_URI)
