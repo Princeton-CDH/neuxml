@@ -32,9 +32,9 @@ To run unit tests for a specific module, use syntax like this::
 
     pytest test/test_xpath.py
 
-To generate sphinx documentation::
+To compile sphinx documentation::
 
-    cd doc
+    cd docs
     make html
 
 XML catalog
