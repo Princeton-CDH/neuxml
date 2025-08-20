@@ -15,12 +15,12 @@ master_doc = "index"
 
 project = "neuxml"
 copyright = "2025, Center for Digital Humanities at Princeton"
-version = "%d.%d" % neuxml.__version_info__[:2]
+version = neuxml.__version__
 release = neuxml.__version__
 modindex_common_prefix = ["neuxml."]
 
 html_theme = "alabaster"
-html_style = "style.css"
+# html_style = "style.css"
 html_theme_options = {
     # 'logo': 'logo.png',
     "github_user": "Princeton-CDH",
@@ -38,7 +38,7 @@ html_sidebars = {
 pygments_style = "sphinx"
 
 # html_style = 'default.css'
-# html_static_path = ['static']
+html_static_path = ["_static"]
 htmlhelp_basename = "neuxmldoc"
 
 latex_documents = [
@@ -46,6 +46,4 @@ latex_documents = [
 ]
 
 # configuration for intersphinx: refer to the Python standard library
-intersphinx_mapping = {
-    "python": ("http://docs.python.org/", None),
-}
+intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
