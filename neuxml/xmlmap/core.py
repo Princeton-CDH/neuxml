@@ -35,21 +35,6 @@ __all__ = [
     "load_xslt",
 ]
 
-# NB: When parsing XML in this module, we explicitly create a new parser
-#   each time. Without this, lxml 2.2.7 uses a global default parser. When
-#   parsing strings, lxml appears to set that parser into no-network mode,
-#   causing subsequent network-based parses to fail. Specifically, under
-#   lxml 2.2.7, the second call here fails::
-#
-#   >>> etree.fromstring('<foo/>') # set global parser to no-network
-#   >>> etree.parse('http://www.w3.org/2001/xml.xsd') # fails in no-network mode
-#
-#   If we simply construct a separate parser each time, parses will be
-#   marginally slower, but this lxml bug will not affect us.
-#
-#   This lxml behavior has been logged as a bug:
-#   https://bugs.launchpad.net/lxml/+bug/673205
-
 
 def parseUri(stream, uri=None):
     """Read an XML document from a URI, and return a :mod:`lxml.etree`
@@ -92,6 +77,7 @@ def loadSchema(uri, base_uri=None):
         raise IOError("Failed to load schema %s : %s" % (error_uri, io_err))
     except etree.XMLSchemaParseError as parse_err:
         # re-raise as a schema parse error, but ensure includes details about schema being loaded
+        print(parse_err)
         raise etree.XMLSchemaParseError(
             "Failed to parse schema %s -- %s" % (error_uri, parse_err)
         )
@@ -564,16 +550,13 @@ class XmlObject(object, metaclass=XmlObjectType):
         )  # regular text or text after a node
 
 
-""" April 2016. Removing Urllib2Resolver so we can support
-  loading local copies of schema and skip validation in get_xml_parser """
-
-
 def _get_xmlparser(xmlclass=XmlObject, validate=False, resolver=None):
     """Initialize an instance of :class:`lxml.etree.XMLParser` with appropriate
     settings for validation.  If validation is requested and the specified
     instance of :class:`XmlObject` has an XSD_SCHEMA defined, that will be used.
     Otherwise, uses DTD validation. Switched resolver to None to skip validation.
     """
+    opts = {}
     if validate:
         if hasattr(xmlclass, "XSD_SCHEMA") and xmlclass.XSD_SCHEMA is not None:
             # If the schema has already been loaded, use that.
@@ -583,10 +566,10 @@ def _get_xmlparser(xmlclass=XmlObject, validate=False, resolver=None):
             # otherwise, load the schema
             if xmlschema is None:
                 xmlschema = loadSchema(xmlclass.XSD_SCHEMA)
-            opts = {"schema": xmlschema}
+            opts["schema"] = xmlschema
         else:
             # if configured XmlObject does not have a schema defined, assume DTD validation
-            opts = {"dtd_validation": True}
+            opts["dtd_validation"] = True
     else:
         # If validation is not requested, then the parsing should fail
         # only for well-formedness issues.
@@ -596,7 +579,7 @@ def _get_xmlparser(xmlclass=XmlObject, validate=False, resolver=None):
         # them. However, the XML spec declares ID uniqueness as a
         # validation constraint, not a well-formedness
         # constraint. (See https://www.w3.org/TR/xml/#id.)
-        opts = {"collect_ids": False}
+        opts["collect_ids"] = False
 
     parser = etree.XMLParser(**opts)
 

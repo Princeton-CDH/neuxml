@@ -15,8 +15,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import pytest
 import unittest
+
+import pytest
+
+try:
+    import rdflib
+except ImportError:
+    # use rdflib if it's available, but it's ok if it's not
+    rdflib = None
+
 
 from neuxml.xmlmap.core import load_xmlobject_from_string
 from neuxml.xmlmap.dc import DublinCore
@@ -126,9 +134,10 @@ class TestDc(unittest.TestCase):
             b'xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"' in dc_xml
         )
 
-    def test_isvalid(self):
+    def test_is_valid(self):
         self.assertTrue(self.dc.is_valid())
 
+    def test_is_not_valid(self):
         invalid = """<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
   <dc:title>Feet in the Fire</dc:title>
         <not_a_dc_field>bogus</not_a_dc_field>
@@ -137,7 +146,7 @@ class TestDc(unittest.TestCase):
         invalid_dc = load_xmlobject_from_string(invalid, DublinCore)
         self.assertFalse(invalid_dc.is_valid())
 
-    @pytest.mark.skip(reason="request to real server by RDFLib")
+    @pytest.mark.skipif(rdflib is None, reason="requires rdflib")
     def test_dcmitypes(self):
         types = self.dc.dcmi_types
         self.assertTrue(isinstance(types, list))

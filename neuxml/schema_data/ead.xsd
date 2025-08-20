@@ -1847,4 +1847,4 @@
 		<xs:attributeGroup ref="a.common"/>
 		<xs:attributeGroup ref="xlink:resourceLink"/>
 	</xs:complexType>
-<!--Downloaded by neuxml 1.1.3 on 2025-04-01--></xs:schema>
+<!--Downloaded by neuxml 1.1.0.dev0 on 2025-08-20--></xs:schema>

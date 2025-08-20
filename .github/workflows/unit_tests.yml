@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
+        rdflib: [true, false]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,10 +34,14 @@ jobs:
             pip-${{ hashFiles('pyproject.toml') }}
             pip-
 
-      - name: Install package with dependencies
+      - name: Install package with test dependencies
         run: |
-          pip install -e '.[dev]'
+          pip install -e '.[test]'
           pip install codecov
+
+      - name: Install package with rdf dependencies if enabled
+        if: ${{ matrix.rdflib }}
+        run: pip install -e '.[rdf]'
 
       - name: Generate PLY lextab and parsetab artifacts
         run: python -c "import neuxml.xpath.core"

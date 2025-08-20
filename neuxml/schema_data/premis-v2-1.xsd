@@ -1254,4 +1254,4 @@ Element Declarations
 	<xs:element name="mdWrap" type="mdWrapDefinition"/>
 	<xs:element name="xmlData" type="xmlDataDefinition"/>
 	<!-- -->
-<!--Downloaded by neuxml 1.1.3 on 2025-04-01--></xs:schema>
+<!--Downloaded by neuxml 1.1.0.dev0 on 2025-08-20--></xs:schema>
